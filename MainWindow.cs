@@ -1146,10 +1146,7 @@ public partial class MainWindow : Form
                         absence.positionY = absence.from;
                 }
 
-                if (absence.plusCoordinates)
-                    absence.plusCoordinates = false;
-                else
-                    absence.plusCoordinates = true;
+                absence.plusCoordinates = !absence.plusCoordinates;
 
                 absence.help = absence.from;
                 absence.from = absence.to;

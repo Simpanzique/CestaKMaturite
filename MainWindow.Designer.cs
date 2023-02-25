@@ -123,7 +123,7 @@
             // 
             this.Player.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.Player.BackColor = System.Drawing.Color.Chocolate;
-            this.Player.Location = new System.Drawing.Point(714, 301);
+            this.Player.Location = new System.Drawing.Point(508, 191);
             this.Player.Name = "Player";
             this.Player.Size = new System.Drawing.Size(75, 115);
             this.Player.TabIndex = 1;
