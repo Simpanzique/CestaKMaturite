@@ -27,7 +27,7 @@ internal class Enemy
 
     public Enemy(int positionX, int positionY, int width, int height, Color color,
         int _health, bool _gravitation, bool _moving, int _xLeft, int _xRight, int _movementSpeed,
-        string _type, int _projectileCooldown, GroupBox scene)
+        string _type, int _projectileCooldown, Panel scene)
     {
         //X,Y,Width,Height,Color,HP,Gravitation,Moving
         //color premenit na img
@@ -54,7 +54,7 @@ internal class Enemy
         Count++;
     }
 
-    public void ShootProjectile(Enemy enemy, PictureBox player, GroupBox panel)
+    public void ShootProjectile(Enemy enemy, PictureBox player, Panel panel)
     {
         if (enemy.projectile != null)
         {
@@ -110,7 +110,7 @@ internal class Enemy
         }
     }
 
-    public void CheckHealth(Enemy enemy, GroupBox panel)
+    public void CheckHealth(Enemy enemy, Panel panel)
     {
         if (enemy.health <= 0)
         {

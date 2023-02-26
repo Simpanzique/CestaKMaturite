@@ -4,7 +4,7 @@ internal class Nugget
     public PictureBox pb;
     public int healthAdd;
     static int Count = 1;
-    public Nugget(int positionX, int positionY, int _healthAdd, Color color, GroupBox panel)
+    public Nugget(int positionX, int positionY, int _healthAdd, Color color, Panel panel)
     {
         healthAdd = _healthAdd;
         pb = new PictureBox

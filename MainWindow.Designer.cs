@@ -28,615 +28,599 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.GameScene = new System.Windows.Forms.GroupBox();
-            this.lbPozastaveno = new System.Windows.Forms.Label();
-            this.lbStats = new System.Windows.Forms.Label();
-            this.Player = new System.Windows.Forms.PictureBox();
-            this.lbPress = new System.Windows.Forms.Label();
-            this.lbGameOver = new System.Windows.Forms.Label();
-            this.Menu = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btExit = new System.Windows.Forms.Button();
-            this.btOptions = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btPlay = new System.Windows.Forms.Button();
-            this.UpdateMethod = new System.Windows.Forms.Timer(this.components);
-            this.AbilityQ = new System.Windows.Forms.Timer(this.components);
-            this.Pause = new System.Windows.Forms.Panel();
-            this.panelPauza = new System.Windows.Forms.Panel();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.btMenu = new System.Windows.Forms.Button();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbNazev = new System.Windows.Forms.Label();
-            this.Dash = new System.Windows.Forms.Timer(this.components);
-            this.abilityLMB = new System.Windows.Forms.Timer(this.components);
-            this.DMGcooldown = new System.Windows.Forms.Timer(this.components);
-            this.Absence1 = new System.Windows.Forms.Timer(this.components);
-            this.Absence2 = new System.Windows.Forms.Timer(this.components);
-            this.Oberhofnerova = new System.Windows.Forms.Timer(this.components);
-            this.Hacek = new System.Windows.Forms.Timer(this.components);
-            this.NuggetDisappear = new System.Windows.Forms.Timer(this.components);
-            this.Lemka = new System.Windows.Forms.Timer(this.components);
-            this.GameScene.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Player)).BeginInit();
-            this.Menu.SuspendLayout();
-            this.Pause.SuspendLayout();
-            this.panelPauza.SuspendLayout();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            GameScene = new Panel();
+            lbPozastaveno = new Label();
+            lbStats = new Label();
+            Player = new PictureBox();
+            lbPress = new Label();
+            lbGameOver = new Label();
+            Menu = new Panel();
+            label2 = new Label();
+            btExit = new Button();
+            btOptions = new Button();
+            label1 = new Label();
+            btPlay = new Button();
+            UpdateMethod = new System.Windows.Forms.Timer(components);
+            AbilityQ = new System.Windows.Forms.Timer(components);
+            Pause = new Panel();
+            panelPauza = new Panel();
+            label17 = new Label();
+            label16 = new Label();
+            label15 = new Label();
+            label18 = new Label();
+            label19 = new Label();
+            label20 = new Label();
+            btMenu = new Button();
+            label12 = new Label();
+            label13 = new Label();
+            label14 = new Label();
+            label9 = new Label();
+            label10 = new Label();
+            label11 = new Label();
+            label6 = new Label();
+            label7 = new Label();
+            label8 = new Label();
+            label5 = new Label();
+            label4 = new Label();
+            label3 = new Label();
+            lbNazev = new Label();
+            Dash = new System.Windows.Forms.Timer(components);
+            abilityLMB = new System.Windows.Forms.Timer(components);
+            DMGcooldown = new System.Windows.Forms.Timer(components);
+            Absence1 = new System.Windows.Forms.Timer(components);
+            Absence2 = new System.Windows.Forms.Timer(components);
+            Oberhofnerova = new System.Windows.Forms.Timer(components);
+            Hacek = new System.Windows.Forms.Timer(components);
+            NuggetDisappear = new System.Windows.Forms.Timer(components);
+            Lemka = new System.Windows.Forms.Timer(components);
+            Stark = new System.Windows.Forms.Timer(components);
+            GameScene.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
+            Menu.SuspendLayout();
+            Pause.SuspendLayout();
+            panelPauza.SuspendLayout();
+            SuspendLayout();
             // 
             // GameScene
             // 
-            this.GameScene.Controls.Add(this.lbPozastaveno);
-            this.GameScene.Controls.Add(this.lbStats);
-            this.GameScene.Controls.Add(this.Player);
-            this.GameScene.Enabled = false;
-            this.GameScene.Location = new System.Drawing.Point(0, 0);
-            this.GameScene.Name = "GameScene";
-            this.GameScene.Padding = new System.Windows.Forms.Padding(0);
-            this.GameScene.Size = new System.Drawing.Size(1520, 825);
-            this.GameScene.TabIndex = 3;
-            this.GameScene.TabStop = false;
-            this.GameScene.Visible = false;
+            GameScene.BackColor = SystemColors.ActiveCaption;
+            GameScene.Controls.Add(lbPozastaveno);
+            GameScene.Controls.Add(lbStats);
+            GameScene.Controls.Add(Player);
+            GameScene.Enabled = false;
+            GameScene.Location = new Point(0, 0);
+            GameScene.Name = "GameScene";
+            GameScene.Size = new Size(1520, 825);
+            GameScene.TabIndex = 3;
+            GameScene.Visible = false;
             // 
             // lbPozastaveno
             // 
-            this.lbPozastaveno.AutoSize = true;
-            this.lbPozastaveno.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lbPozastaveno.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lbPozastaveno.Location = new System.Drawing.Point(441, -203);
-            this.lbPozastaveno.Name = "lbPozastaveno";
-            this.lbPozastaveno.Size = new System.Drawing.Size(578, 46);
-            this.lbPozastaveno.TabIndex = 7;
-            this.lbPozastaveno.Text = "Pozastaveno - Pro spuštění zmáčkni F";
+            lbPozastaveno.AutoSize = true;
+            lbPozastaveno.BackColor = SystemColors.ActiveCaption;
+            lbPozastaveno.Font = new Font("Segoe UI", 25F, FontStyle.Regular, GraphicsUnit.Point);
+            lbPozastaveno.Location = new Point(441, -203);
+            lbPozastaveno.Name = "lbPozastaveno";
+            lbPozastaveno.Size = new Size(578, 46);
+            lbPozastaveno.TabIndex = 7;
+            lbPozastaveno.Text = "Pozastaveno - Pro spuštění zmáčkni F";
             // 
             // lbStats
             // 
-            this.lbStats.AutoSize = true;
-            this.lbStats.BackColor = System.Drawing.SystemColors.InfoText;
-            this.lbStats.Font = new System.Drawing.Font("Cascadia Code", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lbStats.ForeColor = System.Drawing.Color.Lime;
-            this.lbStats.Location = new System.Drawing.Point(9, 6);
-            this.lbStats.Name = "lbStats";
-            this.lbStats.Padding = new System.Windows.Forms.Padding(2, 2, 5, 5);
-            this.lbStats.Size = new System.Drawing.Size(79, 24);
-            this.lbStats.TabIndex = 6;
-            this.lbStats.Text = "F3 Stats";
+            lbStats.AutoSize = true;
+            lbStats.BackColor = SystemColors.InfoText;
+            lbStats.Font = new Font("Cascadia Code", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lbStats.ForeColor = Color.Lime;
+            lbStats.Location = new Point(9, 6);
+            lbStats.Name = "lbStats";
+            lbStats.Padding = new Padding(2, 2, 5, 5);
+            lbStats.Size = new Size(79, 24);
+            lbStats.TabIndex = 6;
+            lbStats.Text = "F3 Stats";
+            lbStats.Visible = false;
             // 
             // Player
             // 
-            this.Player.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.Player.BackColor = System.Drawing.Color.Chocolate;
-            this.Player.Location = new System.Drawing.Point(508, 191);
-            this.Player.Name = "Player";
-            this.Player.Size = new System.Drawing.Size(75, 115);
-            this.Player.TabIndex = 1;
-            this.Player.TabStop = false;
-            this.Player.Tag = "Player";
+            Player.Anchor = AnchorStyles.None;
+            Player.BackColor = Color.Chocolate;
+            Player.Location = new Point(138, 477);
+            Player.Name = "Player";
+            Player.Size = new Size(75, 115);
+            Player.TabIndex = 1;
+            Player.TabStop = false;
+            Player.Tag = "Player";
             // 
             // lbPress
             // 
-            this.lbPress.AutoSize = true;
-            this.lbPress.BackColor = System.Drawing.Color.Transparent;
-            this.lbPress.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbPress.ForeColor = System.Drawing.Color.Red;
-            this.lbPress.Location = new System.Drawing.Point(586, -200);
-            this.lbPress.Name = "lbPress";
-            this.lbPress.Size = new System.Drawing.Size(397, 108);
-            this.lbPress.TabIndex = 16;
-            this.lbPress.Text = "Zkus to za rok\r\n       nebo zmáčkni R";
+            lbPress.AutoSize = true;
+            lbPress.BackColor = Color.Transparent;
+            lbPress.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point);
+            lbPress.ForeColor = Color.Red;
+            lbPress.Location = new Point(586, -200);
+            lbPress.Name = "lbPress";
+            lbPress.Size = new Size(397, 108);
+            lbPress.TabIndex = 16;
+            lbPress.Text = "Zkus to za rok\r\n       nebo zmáčkni R";
             // 
             // lbGameOver
             // 
-            this.lbGameOver.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbGameOver.AutoSize = true;
-            this.lbGameOver.BackColor = System.Drawing.Color.Transparent;
-            this.lbGameOver.Font = new System.Drawing.Font("Segoe UI", 50F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbGameOver.Location = new System.Drawing.Point(450, -200);
-            this.lbGameOver.Name = "lbGameOver";
-            this.lbGameOver.Size = new System.Drawing.Size(619, 89);
-            this.lbGameOver.TabIndex = 15;
-            this.lbGameOver.Text = "Neodmaturoval si!";
+            lbGameOver.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lbGameOver.AutoSize = true;
+            lbGameOver.BackColor = Color.Transparent;
+            lbGameOver.Font = new Font("Segoe UI", 50F, FontStyle.Bold, GraphicsUnit.Point);
+            lbGameOver.Location = new Point(450, -200);
+            lbGameOver.Name = "lbGameOver";
+            lbGameOver.Size = new Size(619, 89);
+            lbGameOver.TabIndex = 15;
+            lbGameOver.Text = "Neodmaturoval si!";
             // 
             // Menu
             // 
-            this.Menu.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.Menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.Menu.Controls.Add(this.label2);
-            this.Menu.Controls.Add(this.btExit);
-            this.Menu.Controls.Add(this.btOptions);
-            this.Menu.Controls.Add(this.label1);
-            this.Menu.Controls.Add(this.btPlay);
-            this.Menu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Menu.Location = new System.Drawing.Point(0, 0);
-            this.Menu.Name = "Menu";
-            this.Menu.Size = new System.Drawing.Size(1520, 825);
-            this.Menu.TabIndex = 14;
+            Menu.BackColor = SystemColors.ActiveCaption;
+            Menu.BackgroundImageLayout = ImageLayout.Stretch;
+            Menu.Controls.Add(label2);
+            Menu.Controls.Add(btExit);
+            Menu.Controls.Add(btOptions);
+            Menu.Controls.Add(label1);
+            Menu.Controls.Add(btPlay);
+            Menu.Dock = DockStyle.Fill;
+            Menu.Location = new Point(0, 0);
+            Menu.Name = "Menu";
+            Menu.Size = new Size(1520, 825);
+            Menu.TabIndex = 14;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(1281, 788);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(172, 28);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "© RP - Petr 2023";
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
+            label2.ForeColor = Color.White;
+            label2.Location = new Point(1281, 788);
+            label2.Name = "label2";
+            label2.Size = new Size(172, 28);
+            label2.TabIndex = 4;
+            label2.Text = "© RP - Petr 2023";
             // 
             // btExit
             // 
-            this.btExit.BackColor = System.Drawing.Color.RosyBrown;
-            this.btExit.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btExit.Location = new System.Drawing.Point(977, 499);
-            this.btExit.Name = "btExit";
-            this.btExit.Size = new System.Drawing.Size(248, 65);
-            this.btExit.TabIndex = 3;
-            this.btExit.TabStop = false;
-            this.btExit.Text = "Exit";
-            this.btExit.UseVisualStyleBackColor = false;
-            this.btExit.Click += new System.EventHandler(this.btExit_Click);
+            btExit.BackColor = Color.RosyBrown;
+            btExit.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            btExit.Location = new Point(977, 499);
+            btExit.Name = "btExit";
+            btExit.Size = new Size(248, 65);
+            btExit.TabIndex = 3;
+            btExit.TabStop = false;
+            btExit.Text = "Exit";
+            btExit.UseVisualStyleBackColor = false;
+            btExit.Click += btExit_Click;
             // 
             // btOptions
             // 
-            this.btOptions.BackColor = System.Drawing.Color.RosyBrown;
-            this.btOptions.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btOptions.Location = new System.Drawing.Point(977, 403);
-            this.btOptions.Name = "btOptions";
-            this.btOptions.Size = new System.Drawing.Size(248, 65);
-            this.btOptions.TabIndex = 2;
-            this.btOptions.TabStop = false;
-            this.btOptions.Text = "Možnosti";
-            this.btOptions.UseVisualStyleBackColor = false;
-            this.btOptions.Click += new System.EventHandler(this.btOptions_Click);
+            btOptions.BackColor = Color.RosyBrown;
+            btOptions.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            btOptions.Location = new Point(977, 403);
+            btOptions.Name = "btOptions";
+            btOptions.Size = new Size(248, 65);
+            btOptions.TabIndex = 2;
+            btOptions.TabStop = false;
+            btOptions.Text = "Možnosti";
+            btOptions.UseVisualStyleBackColor = false;
+            btOptions.Click += btOptions_Click;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(869, 141);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(335, 54);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Cesta k Maturitě";
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(869, 141);
+            label1.Name = "label1";
+            label1.Size = new Size(335, 54);
+            label1.TabIndex = 1;
+            label1.Text = "Cesta k Maturitě";
             // 
             // btPlay
             // 
-            this.btPlay.BackColor = System.Drawing.Color.RosyBrown;
-            this.btPlay.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btPlay.Location = new System.Drawing.Point(977, 307);
-            this.btPlay.Name = "btPlay";
-            this.btPlay.Size = new System.Drawing.Size(248, 65);
-            this.btPlay.TabIndex = 0;
-            this.btPlay.TabStop = false;
-            this.btPlay.Text = "Hrát";
-            this.btPlay.UseVisualStyleBackColor = false;
-            this.btPlay.Click += new System.EventHandler(this.btPlay_Click);
+            btPlay.BackColor = Color.RosyBrown;
+            btPlay.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            btPlay.Location = new Point(977, 307);
+            btPlay.Name = "btPlay";
+            btPlay.Size = new Size(248, 65);
+            btPlay.TabIndex = 0;
+            btPlay.TabStop = false;
+            btPlay.Text = "Hrát";
+            btPlay.UseVisualStyleBackColor = false;
+            btPlay.Click += btPlay_Click;
             // 
             // UpdateMethod
             // 
-            this.UpdateMethod.Interval = 1;
-            this.UpdateMethod.Tick += new System.EventHandler(this.UpdateMethod_Tick);
+            UpdateMethod.Interval = 1;
+            UpdateMethod.Tick += UpdateMethod_Tick;
             // 
             // AbilityQ
             // 
-            this.AbilityQ.Interval = 1000;
-            this.AbilityQ.Tick += new System.EventHandler(this.AbilityQ_Tick);
+            AbilityQ.Interval = 1000;
+            AbilityQ.Tick += AbilityQ_Tick;
             // 
             // Pause
             // 
-            this.Pause.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.Pause.Controls.Add(this.panelPauza);
-            this.Pause.Controls.Add(this.label18);
-            this.Pause.Controls.Add(this.label19);
-            this.Pause.Controls.Add(this.label20);
-            this.Pause.Controls.Add(this.btMenu);
-            this.Pause.Controls.Add(this.label12);
-            this.Pause.Controls.Add(this.label13);
-            this.Pause.Controls.Add(this.label14);
-            this.Pause.Controls.Add(this.label9);
-            this.Pause.Controls.Add(this.label10);
-            this.Pause.Controls.Add(this.label11);
-            this.Pause.Controls.Add(this.label6);
-            this.Pause.Controls.Add(this.label7);
-            this.Pause.Controls.Add(this.label8);
-            this.Pause.Controls.Add(this.label5);
-            this.Pause.Controls.Add(this.label4);
-            this.Pause.Controls.Add(this.label3);
-            this.Pause.Controls.Add(this.lbNazev);
-            this.Pause.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Pause.Enabled = false;
-            this.Pause.Location = new System.Drawing.Point(0, 0);
-            this.Pause.Name = "Pause";
-            this.Pause.Size = new System.Drawing.Size(1520, 825);
-            this.Pause.TabIndex = 4;
-            this.Pause.Visible = false;
+            Pause.BackColor = SystemColors.ActiveCaption;
+            Pause.Controls.Add(panelPauza);
+            Pause.Controls.Add(label18);
+            Pause.Controls.Add(label19);
+            Pause.Controls.Add(label20);
+            Pause.Controls.Add(btMenu);
+            Pause.Controls.Add(label12);
+            Pause.Controls.Add(label13);
+            Pause.Controls.Add(label14);
+            Pause.Controls.Add(label9);
+            Pause.Controls.Add(label10);
+            Pause.Controls.Add(label11);
+            Pause.Controls.Add(label6);
+            Pause.Controls.Add(label7);
+            Pause.Controls.Add(label8);
+            Pause.Controls.Add(label5);
+            Pause.Controls.Add(label4);
+            Pause.Controls.Add(label3);
+            Pause.Controls.Add(lbNazev);
+            Pause.Dock = DockStyle.Fill;
+            Pause.Enabled = false;
+            Pause.Location = new Point(0, 0);
+            Pause.Name = "Pause";
+            Pause.Size = new Size(1520, 825);
+            Pause.TabIndex = 4;
+            Pause.Visible = false;
             // 
             // panelPauza
             // 
-            this.panelPauza.BackColor = System.Drawing.Color.Transparent;
-            this.panelPauza.Controls.Add(this.label17);
-            this.panelPauza.Controls.Add(this.label16);
-            this.panelPauza.Controls.Add(this.label15);
-            this.panelPauza.Location = new System.Drawing.Point(12, 12);
-            this.panelPauza.Name = "panelPauza";
-            this.panelPauza.Size = new System.Drawing.Size(419, 100);
-            this.panelPauza.TabIndex = 21;
+            panelPauza.BackColor = Color.Transparent;
+            panelPauza.Controls.Add(label17);
+            panelPauza.Controls.Add(label16);
+            panelPauza.Controls.Add(label15);
+            panelPauza.Location = new Point(12, 12);
+            panelPauza.Name = "panelPauza";
+            panelPauza.Size = new Size(419, 100);
+            panelPauza.TabIndex = 21;
             // 
             // label17
             // 
-            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label17.AutoSize = true;
-            this.label17.BackColor = System.Drawing.Color.Transparent;
-            this.label17.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label17.ForeColor = System.Drawing.Color.White;
-            this.label17.Location = new System.Drawing.Point(3, 26);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(249, 37);
-            this.label17.TabIndex = 13;
-            this.label17.Text = "Pauza/Pokračovat";
+            label17.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label17.AutoSize = true;
+            label17.BackColor = Color.Transparent;
+            label17.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label17.ForeColor = Color.White;
+            label17.Location = new Point(3, 26);
+            label17.Name = "label17";
+            label17.Size = new Size(249, 37);
+            label17.TabIndex = 13;
+            label17.Text = "Pauza/Pokračovat";
             // 
             // label16
             // 
-            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label16.AutoSize = true;
-            this.label16.BackColor = System.Drawing.Color.Transparent;
-            this.label16.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label16.ForeColor = System.Drawing.Color.White;
-            this.label16.Location = new System.Drawing.Point(258, 26);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(28, 37);
-            this.label16.TabIndex = 14;
-            this.label16.Text = "-";
+            label16.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label16.AutoSize = true;
+            label16.BackColor = Color.Transparent;
+            label16.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label16.ForeColor = Color.White;
+            label16.Location = new Point(258, 26);
+            label16.Name = "label16";
+            label16.Size = new Size(28, 37);
+            label16.TabIndex = 14;
+            label16.Text = "-";
             // 
             // label15
             // 
-            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label15.AutoSize = true;
-            this.label15.BackColor = System.Drawing.Color.Transparent;
-            this.label15.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label15.ForeColor = System.Drawing.Color.White;
-            this.label15.Location = new System.Drawing.Point(292, 26);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(103, 37);
-            this.label15.TabIndex = 15;
-            this.label15.Text = "Escape";
+            label15.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label15.AutoSize = true;
+            label15.BackColor = Color.Transparent;
+            label15.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label15.ForeColor = Color.White;
+            label15.Location = new Point(292, 26);
+            label15.Name = "label15";
+            label15.Size = new Size(103, 37);
+            label15.TabIndex = 15;
+            label15.Text = "Escape";
             // 
             // label18
             // 
-            this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label18.AutoSize = true;
-            this.label18.BackColor = System.Drawing.Color.Transparent;
-            this.label18.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label18.ForeColor = System.Drawing.Color.White;
-            this.label18.Location = new System.Drawing.Point(869, 510);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(31, 37);
-            this.label18.TabIndex = 20;
-            this.label18.Text = "E";
+            label18.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label18.AutoSize = true;
+            label18.BackColor = Color.Transparent;
+            label18.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label18.ForeColor = Color.White;
+            label18.Location = new Point(869, 510);
+            label18.Name = "label18";
+            label18.Size = new Size(31, 37);
+            label18.TabIndex = 20;
+            label18.Text = "E";
             // 
             // label19
             // 
-            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label19.AutoSize = true;
-            this.label19.BackColor = System.Drawing.Color.Transparent;
-            this.label19.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label19.ForeColor = System.Drawing.Color.White;
-            this.label19.Location = new System.Drawing.Point(714, 510);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(28, 37);
-            this.label19.TabIndex = 19;
-            this.label19.Text = "-";
+            label19.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label19.AutoSize = true;
+            label19.BackColor = Color.Transparent;
+            label19.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label19.ForeColor = Color.White;
+            label19.Location = new Point(714, 510);
+            label19.Name = "label19";
+            label19.Size = new Size(28, 37);
+            label19.TabIndex = 19;
+            label19.Text = "-";
             // 
             // label20
             // 
-            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label20.AutoSize = true;
-            this.label20.BackColor = System.Drawing.Color.Transparent;
-            this.label20.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label20.ForeColor = System.Drawing.Color.White;
-            this.label20.Location = new System.Drawing.Point(536, 510);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(80, 37);
-            this.label20.TabIndex = 18;
-            this.label20.Text = "Dash";
+            label20.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label20.AutoSize = true;
+            label20.BackColor = Color.Transparent;
+            label20.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label20.ForeColor = Color.White;
+            label20.Location = new Point(536, 510);
+            label20.Name = "label20";
+            label20.Size = new Size(80, 37);
+            label20.TabIndex = 18;
+            label20.Text = "Dash";
             // 
             // btMenu
             // 
-            this.btMenu.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btMenu.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btMenu.Location = new System.Drawing.Point(618, 623);
-            this.btMenu.Name = "btMenu";
-            this.btMenu.Size = new System.Drawing.Size(242, 59);
-            this.btMenu.TabIndex = 17;
-            this.btMenu.TabStop = false;
-            this.btMenu.Text = "Zpátky do menu";
-            this.btMenu.UseVisualStyleBackColor = false;
-            this.btMenu.Click += new System.EventHandler(this.btMenu_Click);
+            btMenu.BackColor = Color.WhiteSmoke;
+            btMenu.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            btMenu.Location = new Point(618, 623);
+            btMenu.Name = "btMenu";
+            btMenu.Size = new Size(242, 59);
+            btMenu.TabIndex = 17;
+            btMenu.TabStop = false;
+            btMenu.Text = "Zpátky do menu";
+            btMenu.UseVisualStyleBackColor = false;
+            btMenu.Click += btMenu_Click;
             // 
             // label12
             // 
-            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label12.AutoSize = true;
-            this.label12.BackColor = System.Drawing.Color.Transparent;
-            this.label12.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label12.ForeColor = System.Drawing.Color.White;
-            this.label12.Location = new System.Drawing.Point(869, 440);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(37, 37);
-            this.label12.TabIndex = 12;
-            this.label12.Text = "Q";
+            label12.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label12.AutoSize = true;
+            label12.BackColor = Color.Transparent;
+            label12.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label12.ForeColor = Color.White;
+            label12.Location = new Point(869, 440);
+            label12.Name = "label12";
+            label12.Size = new Size(37, 37);
+            label12.TabIndex = 12;
+            label12.Text = "Q";
             // 
             // label13
             // 
-            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label13.AutoSize = true;
-            this.label13.BackColor = System.Drawing.Color.Transparent;
-            this.label13.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label13.ForeColor = System.Drawing.Color.White;
-            this.label13.Location = new System.Drawing.Point(714, 440);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(28, 37);
-            this.label13.TabIndex = 11;
-            this.label13.Text = "-";
+            label13.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label13.AutoSize = true;
+            label13.BackColor = Color.Transparent;
+            label13.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label13.ForeColor = Color.White;
+            label13.Location = new Point(714, 440);
+            label13.Name = "label13";
+            label13.Size = new Size(28, 37);
+            label13.TabIndex = 11;
+            label13.Text = "-";
             // 
             // label14
             // 
-            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label14.AutoSize = true;
-            this.label14.BackColor = System.Drawing.Color.Transparent;
-            this.label14.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label14.ForeColor = System.Drawing.Color.White;
-            this.label14.Location = new System.Drawing.Point(536, 440);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(99, 37);
-            this.label14.TabIndex = 10;
-            this.label14.Text = "Výpad";
+            label14.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label14.AutoSize = true;
+            label14.BackColor = Color.Transparent;
+            label14.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label14.ForeColor = Color.White;
+            label14.Location = new Point(536, 440);
+            label14.Name = "label14";
+            label14.Size = new Size(99, 37);
+            label14.TabIndex = 10;
+            label14.Text = "Výpad";
             // 
             // label9
             // 
-            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label9.AutoSize = true;
-            this.label9.BackColor = System.Drawing.Color.Transparent;
-            this.label9.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(869, 377);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(71, 37);
-            this.label9.TabIndex = 9;
-            this.label9.Text = "LTM";
+            label9.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label9.AutoSize = true;
+            label9.BackColor = Color.Transparent;
+            label9.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label9.ForeColor = Color.White;
+            label9.Location = new Point(869, 377);
+            label9.Name = "label9";
+            label9.Size = new Size(71, 37);
+            label9.TabIndex = 9;
+            label9.Text = "LTM";
             // 
             // label10
             // 
-            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.Transparent;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(714, 377);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(28, 37);
-            this.label10.TabIndex = 8;
-            this.label10.Text = "-";
+            label10.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label10.AutoSize = true;
+            label10.BackColor = Color.Transparent;
+            label10.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label10.ForeColor = Color.White;
+            label10.Location = new Point(714, 377);
+            label10.Name = "label10";
+            label10.Size = new Size(28, 37);
+            label10.TabIndex = 8;
+            label10.Text = "-";
             // 
             // label11
             // 
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.Transparent;
-            this.label11.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label11.ForeColor = System.Drawing.Color.White;
-            this.label11.Location = new System.Drawing.Point(536, 379);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(80, 37);
-            this.label11.TabIndex = 7;
-            this.label11.Text = "Útok";
+            label11.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label11.AutoSize = true;
+            label11.BackColor = Color.Transparent;
+            label11.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label11.ForeColor = Color.White;
+            label11.Location = new Point(536, 379);
+            label11.Name = "label11";
+            label11.Size = new Size(80, 37);
+            label11.TabIndex = 7;
+            label11.Text = "Útok";
             // 
             // label6
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(869, 318);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(136, 37);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "Mezerník";
+            label6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label6.AutoSize = true;
+            label6.BackColor = Color.Transparent;
+            label6.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label6.ForeColor = Color.White;
+            label6.Location = new Point(869, 318);
+            label6.Name = "label6";
+            label6.Size = new Size(136, 37);
+            label6.TabIndex = 6;
+            label6.Text = "Mezerník";
             // 
             // label7
             // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.Transparent;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(714, 318);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(28, 37);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "-";
+            label7.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label7.AutoSize = true;
+            label7.BackColor = Color.Transparent;
+            label7.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label7.ForeColor = Color.White;
+            label7.Location = new Point(714, 318);
+            label7.Name = "label7";
+            label7.Size = new Size(28, 37);
+            label7.TabIndex = 5;
+            label7.Text = "-";
             // 
             // label8
             // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.Transparent;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(536, 318);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(79, 37);
-            this.label8.TabIndex = 4;
-            this.label8.Text = "Skok";
+            label8.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label8.AutoSize = true;
+            label8.BackColor = Color.Transparent;
+            label8.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label8.ForeColor = Color.White;
+            label8.Location = new Point(536, 318);
+            label8.Name = "label8";
+            label8.Size = new Size(79, 37);
+            label8.TabIndex = 4;
+            label8.Text = "Skok";
             // 
             // label5
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(869, 257);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(64, 37);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "A,D";
+            label5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label5.AutoSize = true;
+            label5.BackColor = Color.Transparent;
+            label5.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label5.ForeColor = Color.White;
+            label5.Location = new Point(869, 257);
+            label5.Name = "label5";
+            label5.Size = new Size(64, 37);
+            label5.TabIndex = 3;
+            label5.Text = "A,D";
             // 
             // label4
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(714, 257);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(28, 37);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "-";
+            label4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label4.ForeColor = Color.White;
+            label4.Location = new Point(714, 257);
+            label4.Name = "label4";
+            label4.Size = new Size(28, 37);
+            label4.TabIndex = 2;
+            label4.Text = "-";
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(536, 257);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(98, 37);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Pohyb";
+            label3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            label3.AutoSize = true;
+            label3.BackColor = Color.Transparent;
+            label3.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label3.ForeColor = Color.White;
+            label3.Location = new Point(536, 257);
+            label3.Name = "label3";
+            label3.Size = new Size(98, 37);
+            label3.TabIndex = 1;
+            label3.Text = "Pohyb";
             // 
             // lbNazev
             // 
-            this.lbNazev.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbNazev.AutoSize = true;
-            this.lbNazev.BackColor = System.Drawing.Color.Transparent;
-            this.lbNazev.Font = new System.Drawing.Font("Segoe UI", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lbNazev.ForeColor = System.Drawing.Color.White;
-            this.lbNazev.Location = new System.Drawing.Point(651, 73);
-            this.lbNazev.Name = "lbNazev";
-            this.lbNazev.Size = new System.Drawing.Size(179, 72);
-            this.lbNazev.TabIndex = 0;
-            this.lbNazev.Text = "Pauza";
+            lbNazev.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lbNazev.AutoSize = true;
+            lbNazev.BackColor = Color.Transparent;
+            lbNazev.Font = new Font("Segoe UI", 40F, FontStyle.Bold, GraphicsUnit.Point);
+            lbNazev.ForeColor = Color.White;
+            lbNazev.Location = new Point(651, 73);
+            lbNazev.Name = "lbNazev";
+            lbNazev.Size = new Size(179, 72);
+            lbNazev.TabIndex = 0;
+            lbNazev.Text = "Pauza";
             // 
             // Dash
             // 
-            this.Dash.Interval = 500;
-            this.Dash.Tick += new System.EventHandler(this.Dash_Tick);
+            Dash.Interval = 500;
+            Dash.Tick += Dash_Tick;
             // 
             // abilityLMB
             // 
-            this.abilityLMB.Interval = 20;
-            this.abilityLMB.Tick += new System.EventHandler(this.abilityLMB_Tick);
+            abilityLMB.Interval = 20;
+            abilityLMB.Tick += abilityLMB_Tick;
             // 
             // DMGcooldown
             // 
-            this.DMGcooldown.Interval = 2000;
-            this.DMGcooldown.Tick += new System.EventHandler(this.DMGcooldown_Tick);
+            DMGcooldown.Interval = 2000;
+            DMGcooldown.Tick += DMGcooldown_Tick;
             // 
             // Absence1
             // 
-            this.Absence1.Tick += new System.EventHandler(this.Absence1_Tick);
+            Absence1.Tick += Absence1_Tick;
             // 
             // Absence2
             // 
-            this.Absence2.Tick += new System.EventHandler(this.Absence2_Tick);
+            Absence2.Tick += Absence2_Tick;
             // 
             // Oberhofnerova
             // 
-            this.Oberhofnerova.Tick += new System.EventHandler(this.Oberhofnerova_Tick);
+            Oberhofnerova.Tick += Oberhofnerova_Tick;
             // 
             // Hacek
             // 
-            this.Hacek.Tick += new System.EventHandler(this.Hacek_Tick);
+            Hacek.Tick += Hacek_Tick;
             // 
             // NuggetDisappear
             // 
-            this.NuggetDisappear.Tick += new System.EventHandler(this.NuggetDisappear_Tick);
+            NuggetDisappear.Tick += NuggetDisappear_Tick;
             // 
             // Lemka
             // 
-            this.Lemka.Tick += new System.EventHandler(this.Lemka_Tick);
+            Lemka.Tick += Lemka_Tick;
+            // 
+            // Stark
+            // 
+            Stark.Tick += Stark_Tick;
             // 
             // MainWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1520, 825);
-            this.Controls.Add(this.lbPress);
-            this.Controls.Add(this.lbGameOver);
-            this.Controls.Add(this.GameScene);
-            this.Controls.Add(this.Menu);
-            this.Controls.Add(this.Pause);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "MainWindow";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Cesta k Maturitě";
-            this.Load += new System.EventHandler(this.GameScene_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyUp);
-            this.GameScene.ResumeLayout(false);
-            this.GameScene.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Player)).EndInit();
-            this.Menu.ResumeLayout(false);
-            this.Menu.PerformLayout();
-            this.Pause.ResumeLayout(false);
-            this.Pause.PerformLayout();
-            this.panelPauza.ResumeLayout(false);
-            this.panelPauza.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1520, 825);
+            Controls.Add(lbPress);
+            Controls.Add(lbGameOver);
+            Controls.Add(GameScene);
+            Controls.Add(Menu);
+            Controls.Add(Pause);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "MainWindow";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Cesta k Maturitě";
+            Load += GameScene_Load;
+            KeyDown += MainWindow_KeyDown;
+            KeyUp += MainWindow_KeyUp;
+            GameScene.ResumeLayout(false);
+            GameScene.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)Player).EndInit();
+            Menu.ResumeLayout(false);
+            Menu.PerformLayout();
+            Pause.ResumeLayout(false);
+            Pause.PerformLayout();
+            panelPauza.ResumeLayout(false);
+            panelPauza.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private GroupBox GameScene;
+        private Panel GameScene;
         private Label lbStats;
         private PictureBox Player;
         private System.Windows.Forms.Timer UpdateMethod;
@@ -681,5 +665,6 @@
         private System.Windows.Forms.Timer Hacek;
         private System.Windows.Forms.Timer NuggetDisappear;
         private System.Windows.Forms.Timer Lemka;
+        private System.Windows.Forms.Timer Stark;
     }
 }

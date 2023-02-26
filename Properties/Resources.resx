@@ -118,10 +118,85 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="capsule_616x353" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\capsule_616x353.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="baseball" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\baseball.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="medium-8ada72015e1dcfb8c84f877be7134221" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\medium-8ada72015e1dcfb8c84f877be7134221.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="chalk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\chalk.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="dash" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dash.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="death" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\death.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ground.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="hit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\hit.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="hitEnemy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\hitEnemy.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="jump" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\jump.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Knizka" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Knizka.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lemka" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lemka.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Milanka" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Milanka.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nextLevel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nextLevel.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="nugget" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nugget.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="PC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="projectile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\projectile.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="projectileDestroy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\projectileDestroy.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Pruzina" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pruzina.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="q" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\q.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ruler" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ruler.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="run" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\run.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="select" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\select.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Skrinka" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Skrinka.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="spring" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\spring.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Tuzka" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Tuzka.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tuzka_reversed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Tuzka_reversed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="walk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\walk.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="win" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\win.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

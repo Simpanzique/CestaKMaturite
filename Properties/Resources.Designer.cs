@@ -61,11 +61,223 @@ namespace Petr_RP_Silksong.Properties {
         }
         
         /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream baseball {
+            get {
+                return ResourceManager.GetStream("baseball", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream chalk {
+            get {
+                return ResourceManager.GetStream("chalk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream dash {
+            get {
+                return ResourceManager.GetStream("dash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream death {
+            get {
+                return ResourceManager.GetStream("death", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream ground {
+            get {
+                return ResourceManager.GetStream("ground", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream hit {
+            get {
+                return ResourceManager.GetStream("hit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream hitEnemy {
+            get {
+                return ResourceManager.GetStream("hitEnemy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream jump {
+            get {
+                return ResourceManager.GetStream("jump", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap capsule_616x353 {
+        internal static System.Drawing.Bitmap Knizka {
             get {
-                object obj = ResourceManager.GetObject("capsule_616x353", resourceCulture);
+                object obj = ResourceManager.GetObject("Knizka", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream lemka {
+            get {
+                return ResourceManager.GetStream("lemka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Milanka {
+            get {
+                object obj = ResourceManager.GetObject("Milanka", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream nextLevel {
+            get {
+                return ResourceManager.GetStream("nextLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream nugget {
+            get {
+                return ResourceManager.GetStream("nugget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap PC {
+            get {
+                object obj = ResourceManager.GetObject("PC", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream projectile {
+            get {
+                return ResourceManager.GetStream("projectile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream projectileDestroy {
+            get {
+                return ResourceManager.GetStream("projectileDestroy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pruzina {
+            get {
+                object obj = ResourceManager.GetObject("Pruzina", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream q {
+            get {
+                return ResourceManager.GetStream("q", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream ruler {
+            get {
+                return ResourceManager.GetStream("ruler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream run {
+            get {
+                return ResourceManager.GetStream("run", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream select {
+            get {
+                return ResourceManager.GetStream("select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Skrinka {
+            get {
+                object obj = ResourceManager.GetObject("Skrinka", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream spring {
+            get {
+                return ResourceManager.GetStream("spring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Tuzka {
+            get {
+                object obj = ResourceManager.GetObject("Tuzka", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,10 +285,28 @@ namespace Petr_RP_Silksong.Properties {
         /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap medium_8ada72015e1dcfb8c84f877be7134221 {
+        internal static System.Drawing.Bitmap Tuzka_reversed {
             get {
-                object obj = ResourceManager.GetObject("medium-8ada72015e1dcfb8c84f877be7134221", resourceCulture);
+                object obj = ResourceManager.GetObject("Tuzka_reversed", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream walk {
+            get {
+                return ResourceManager.GetStream("walk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream win {
+            get {
+                return ResourceManager.GetStream("win", resourceCulture);
             }
         }
     }

@@ -1,10 +1,12 @@
-﻿namespace Petr_RP_Silksong;
+﻿using Petr_RP_Silksong.Properties;
+namespace Petr_RP_Silksong;
 
 internal class Terrain
 {
     public PictureBox pb;
     static int Count = 1;
-    public Terrain(int positionX, int positionY, int width, int height, Color color, GroupBox scene)
+    public bool spawn = true;
+    public Terrain(int positionX, int positionY, int width, int height, Bitmap image, Panel scene)
     {
         pb = new PictureBox
         {
@@ -12,11 +14,20 @@ internal class Terrain
             Top = positionY,
             Width = width,
             Height = height,
-            BackColor = color,
+            BackgroundImage = image,
+            BackgroundImageLayout = ImageLayout.Stretch,
             Tag = "Terrain",
-            Name = "terrain" + Count
+            Name = "terrain" + Count,
         };
-        scene.Controls.Add(pb);
+        if (width == 60 && height == 50)
+        {
+            pb.Name = "spring";
+            pb.Tag = "Spring";
+            scene.Controls.Add(pb);
+        }
+        else
+            scene.Controls.Add(pb);
+            
 
         Count++;
     }
