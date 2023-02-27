@@ -1,5 +1,4 @@
-﻿using Petr_RP_Silksong.Properties;
-namespace Petr_RP_Silksong;
+﻿namespace Petr_RP_Silksong;
 
 internal class Terrain
 {

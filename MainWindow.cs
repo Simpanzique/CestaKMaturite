@@ -16,8 +16,8 @@ public partial class MainWindow : Form
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
     int levelCount = 1, playerHealth = 5, dmgIndex, enMiddle, absence1Index, absence2Index, lemkaIndex;
     bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false, lemkaCooldown, lemkaRight; //managment
-    int OberhofnerovaHP = 10, LemkaHP = 10, HacekHP = 10, SysalovaHP = 10, StarkHP = 50, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
-    int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false; //bossfight
+    int OberhofnerovaHP = 10, LemkaHP = 10, HacekHP = 10, SysalovaHP = 10, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
+    int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false,baseballCooldown = false,changedPhase = false; //bossfight
     string info, info1;
 
 
@@ -376,7 +376,13 @@ public partial class MainWindow : Form
                 {
                     if (enemy.pb == closestEnemy)
                     {
-                        if (!hitQ)
+                        if(enemy == stark && !hitQ)
+                        {
+                            enemy.health -= StarkHP/15;
+                            hitQ = true;
+                            enemy.CheckHealth(enemy, GameScene);
+                        }
+                        else if (!hitQ)
                         {
                             enemy.health -= 4;
                             hitQ = true;
@@ -411,6 +417,7 @@ public partial class MainWindow : Form
                 HitboxAttackTop.Height = rulerLength;
                 HitboxAttackTop.BackColor = Color.Blue;
                 GameScene.Controls.Add(HitboxAttackTop);
+                HitboxAttackTop.BringToFront();
                 attackLMBcooldown = true;
                 alreadyHit = false;
                 abilityLMB.Interval = 100;
@@ -431,6 +438,7 @@ public partial class MainWindow : Form
                         BackColor = Color.Blue
                     };
                     GameScene.Controls.Add(HitboxAttackRight);
+                    HitboxAttackRight.BringToFront();
                     attackLMBcooldown = true;
                     alreadyHit = false;
                     abilityLMB.Interval = 100;
@@ -449,6 +457,7 @@ public partial class MainWindow : Form
                         BackColor = Color.Blue
                     };
                     GameScene.Controls.Add(HitboxAttackLeft);
+                    HitboxAttackLeft.BringToFront();
                     attackLMBcooldown = true;
                     alreadyHit = false;
                     abilityLMB.Interval = 100;
@@ -530,10 +539,11 @@ public partial class MainWindow : Form
                         Hit(HitboxLemkaRight);
                 }
 
+                //BOSS FIGHT
                 //stark movement phase 1
                 if (enemy == stark && bossPhase == 1)
                 {
-                    stark.moveSwitch = true;
+                    stark.moveSwitch = false;
                     if(Math.Abs(stark.pb.Left + 135 - Player.Left) < 20)
                     {
                         stark.moveLeft = false;
@@ -544,7 +554,7 @@ public partial class MainWindow : Form
                         stark.moveLeft = true;
                         stark.moveRight = false;
                     }
-                    else
+                    else if(stark.pb.Left + 135 < Player.Left)
                     {
                         stark.moveRight = true;
                         stark.moveLeft = false;
@@ -556,15 +566,57 @@ public partial class MainWindow : Form
 
 
                 //stark baseballka
-                if (enemy == stark && bossPhase == 1)
+                if (enemy == stark && bossPhase == 1 && !baseballCooldown)
                 {
-                    if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 20)
+                    if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 40 && Player.Top+Player.Height > stark.pb.Top + 465)
                     {
                         stark.moving = false;
                         starkIndex = 0;
                         Stark.Interval = 1000;
                         Stark.Start();
                     }
+                }
+
+                //dmg hracovi
+                if (baseballka != null && baseballka.Bounds.IntersectsWith(Player.Bounds) && canGetHit)
+                    Hit(baseballka);
+
+                //hrac dava dmg Starkovi
+                if (baseballGetDMG && !alreadyHit && baseballka != null && ((HitboxAttackLeft != null && baseballka.Bounds.IntersectsWith(HitboxAttackLeft.Bounds)) ||
+                        (HitboxAttackRight != null && baseballka.Bounds.IntersectsWith(HitboxAttackRight.Bounds)) ||
+                        (HitboxAttackTop != null && baseballka.Bounds.IntersectsWith(HitboxAttackTop.Bounds))))
+                {
+                    stark.health -= StarkHP/30;
+                    alreadyHit = true;
+                    stark.CheckHealth(stark, GameScene);
+                }
+
+                //zjisteni Starkovo HP a zmìna bossPhase
+                //první dva znièení baseballky
+                if(stark != null)
+                {
+                    if(bossPhase == 1)
+                    {
+                        if (!changedPhase && (stark.health == StarkHP - 3 * (StarkHP / 30) || stark.health == StarkHP - 6 * (StarkHP / 30)))
+                        {
+                            Stark.Stop();
+                            Stark.Start();
+                            Stark.Interval = 1;
+                            starkIndex = 1;
+                            changedPhase = true;
+                        }
+                        else if (!changedPhase && (stark.health == StarkHP - 10 * (StarkHP / 30))) //finalni zniceni baseballky
+                        {
+                            DestroyAll(baseballka, GameScene);
+                            stark.moving = true;
+                            bossPhase = 2;
+                            Stark.Interval = 3000;
+                            changedPhase = true;
+                        }
+                        else if (!(stark.health == StarkHP - 3 * (StarkHP / 30)) && !(stark.health == StarkHP - 6 * (StarkHP / 30)) && !(stark.health == StarkHP - 10 * (StarkHP / 30)))
+                            changedPhase = false;
+                    }
+                    
                 }
 
                 //enemy doleva a doprava
@@ -600,40 +652,15 @@ public partial class MainWindow : Form
                 //bouchání LMB
                 if (enemy != stark)
                 {
-                    if (HitboxAttackLeft != null)
+                    if((HitboxAttackLeft != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackLeft.Bounds)) ||
+                        (HitboxAttackRight != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackRight.Bounds)) ||
+                        (HitboxAttackTop != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackTop.Bounds)))
                     {
-                        if (enemy.pb.Bounds.IntersectsWith(HitboxAttackLeft.Bounds))
+                        if (!alreadyHit)
                         {
-                            if (!alreadyHit && !unHitable)
-                            {
-                                enemy.health -= 2;
-                                alreadyHit = true;
-                                enemy.CheckHealth(enemy, GameScene);
-                            }
-                        }
-                    }
-                    if (HitboxAttackRight != null)
-                    {
-                        if (enemy.pb.Bounds.IntersectsWith(HitboxAttackRight.Bounds))
-                        {
-                            if (!alreadyHit && !unHitable)
-                            {
-                                enemy.health -= 2;
-                                alreadyHit = true;
-                                enemy.CheckHealth(enemy, GameScene);
-                            }
-                        }
-                    }
-                    if (HitboxAttackTop != null)
-                    {
-                        if (enemy.pb.Bounds.IntersectsWith(HitboxAttackTop.Bounds))
-                        {
-                            if (!alreadyHit && !unHitable)
-                            {
-                                enemy.health -= 2;
-                                alreadyHit = true;
-                                enemy.CheckHealth(enemy, GameScene);
-                            }
+                            enemy.health -= 2;
+                            alreadyHit = true;
+                            enemy.CheckHealth(enemy, GameScene);
                         }
                     }
                 }
@@ -843,6 +870,7 @@ public partial class MainWindow : Form
         }
         if (stark != null)
             info = Convert.ToString(stark.health);
+        info1 = baseballCooldown.ToString();
         lbStats.Text =
                 "OnGround: " + onGround +
                 "\nisJumping: " + isJumping +
@@ -854,6 +882,7 @@ public partial class MainWindow : Form
                 "\nFacing: " + (facingRight ? "Right" : "Left") +
                 "\nPlayerHealth: " + playerHealth +
                 "\nCheatHealth: " + cheatHealth +
+                "\nBossPhase: " + bossPhase.ToString() + 
                 "\nInfo: " + info +
                 "\nInfo1: " + info1;
     }
@@ -867,7 +896,6 @@ public partial class MainWindow : Form
                 DestroyAll(HitboxAttackRight, GameScene);
             if (HitboxAttackTop != null)
                 DestroyAll(HitboxAttackTop, GameScene);
-
 
             LMB = false;
             abilityLMB.Interval = 600;
@@ -1047,39 +1075,56 @@ public partial class MainWindow : Form
     {
         if(bossPhase == 1)
         {
+            //bouchani baseballkou
             if(starkIndex == 0)
             {
                 //bouchne
-                baseballka = new PictureBox //dodelat rozmery
+                baseballka = new PictureBox
                 {
-                    Left = stark.pb.Left,
-                    Top = stark.pb.Top + 200,
-                    Width = stark.pb.Width,
-                    Height = stark.pb.Height-200,
+                    Left = stark.pb.Left+55,
+                    Top = stark.pb.Top + 465,
+                    Width = 225,
+                    Height = 185,
                     BackColor = Color.Purple,
                 };
-
+                GameScene.Controls.Add(baseballka);
+                baseballka.BringToFront();
+                baseballGetDMG = false;
+                baseballCooldown = true;
                 baseballSlam++;
 
-                if(baseballSlam % 3 == 0)
+                if (baseballSlam % 3 == 0)
                 {
-
+                    baseballGetDMG = true;
+                    baseballCooldown = true;
+                    Stark.Stop();
                 }
                 else
                 {
-                    
+                    baseballGetDMG = false;
+                    Stark.Interval = 500;
                 }
-                
             }
+            else if(starkIndex == 1)
+            {
+                DestroyAll(baseballka, GameScene);
+                stark.moving = true;
+                Stark.Interval = 3000;
+            }
+            else if(starkIndex == 2)
+                baseballCooldown = false;
+
             starkIndex++;
         }
         else if (bossPhase == 2)
         {
+            //spawn enemy a strileni kridy
             stark.ShootProjectile(stark, Player, GameScene);
         }
         else if (bossPhase == 3)
         {
-
+            //dashuje pres mistnost
+            starkQ = true;
         }
         
     }
@@ -1279,7 +1324,7 @@ public partial class MainWindow : Form
         dmgIndex = 0;
         DMGcooldown.Interval = 100;
         DMGcooldown.Start();
-        if (!cheatHealth)
+        if (!cheatHealth || unHitable)
         {
             playerHealth--;
             info = "hit s " + pb.Name;
