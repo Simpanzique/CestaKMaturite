@@ -17,7 +17,7 @@ public partial class MainWindow : Form
     int levelCount = 1, playerHealth = 5, dmgIndex, enMiddle, absence1Index, absence2Index, lemkaIndex;
     bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false, lemkaCooldown, lemkaRight; //managment
     int OberhofnerovaHP = 10, LemkaHP = 10, HacekHP = 10, SysalovaHP = 10, StarkHP = 50, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
-    int bossPhase = 0; bool starkQ = false; //bossfight
+    int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false; //bossfight
     string info, info1;
 
 
@@ -44,7 +44,9 @@ public partial class MainWindow : Form
     Enemy[] enemyArray;
     Absence[] absenceArray;
     List<Nugget> nuggetList = new();
+
     Enemy stark;
+    PictureBox baseballka;
 
     private void UpdateMethod_Tick(object sender, EventArgs e)
     {
@@ -528,9 +530,41 @@ public partial class MainWindow : Form
                         Hit(HitboxLemkaRight);
                 }
 
-                if (enemy == stark) //stark movement
+                //stark movement phase 1
+                if (enemy == stark && bossPhase == 1)
                 {
+                    stark.moveSwitch = true;
+                    if(Math.Abs(stark.pb.Left + 135 - Player.Left) < 20)
+                    {
+                        stark.moveLeft = false;
+                        stark.moveRight = false;
+                    }
+                    else if(stark.pb.Left + 135 > Player.Left)
+                    {
+                        stark.moveLeft = true;
+                        stark.moveRight = false;
+                    }
+                    else
+                    {
+                        stark.moveRight = true;
+                        stark.moveLeft = false;
+                    }
+                }
+                //stark movement phase 2 je default moving
 
+                //stark movement phase 3
+
+
+                //stark baseballka
+                if (enemy == stark && bossPhase == 1)
+                {
+                    if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 20)
+                    {
+                        stark.moving = false;
+                        starkIndex = 0;
+                        Stark.Interval = 1000;
+                        Stark.Start();
+                    }
                 }
 
                 //enemy doleva a doprava
@@ -1011,7 +1045,43 @@ public partial class MainWindow : Form
     }
     private void Stark_Tick(object sender, EventArgs e)
     {
-        stark.ShootProjectile(stark, Player, GameScene);
+        if(bossPhase == 1)
+        {
+            if(starkIndex == 0)
+            {
+                //bouchne
+                baseballka = new PictureBox //dodelat rozmery
+                {
+                    Left = stark.pb.Left,
+                    Top = stark.pb.Top + 200,
+                    Width = stark.pb.Width,
+                    Height = stark.pb.Height-200,
+                    BackColor = Color.Purple,
+                };
+
+                baseballSlam++;
+
+                if(baseballSlam % 3 == 0)
+                {
+
+                }
+                else
+                {
+                    
+                }
+                
+            }
+            starkIndex++;
+        }
+        else if (bossPhase == 2)
+        {
+            stark.ShootProjectile(stark, Player, GameScene);
+        }
+        else if (bossPhase == 3)
+        {
+
+        }
+        
     }
 
     private void NuggetDisappear_Tick(object sender, EventArgs e)

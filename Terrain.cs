@@ -23,7 +23,6 @@ internal class Terrain
         {
             pb.Name = "spring";
             pb.Tag = "Spring";
-            scene.Controls.Add(pb);
         }
         else
             scene.Controls.Add(pb);
