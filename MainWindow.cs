@@ -561,6 +561,8 @@ public partial class MainWindow : Form
                     }
                 }
                 //stark movement phase 2 je default moving
+                if (enemy == stark && bossPhase == 2)
+                    stark.moveSwitch = true;
 
                 //stark movement phase 3
 
