@@ -93,7 +93,7 @@ public partial class MainWindow : Form
 
         //Hitboxy
         HitboxLeft = new Rectangle(Player.Left - 3, Player.Top, 3, Player.Height - 2);
-        HitboxRight = new Rectangle(Player.Left + Player.Width, Player.Top, 3, Player.Height - 2);
+        HitboxRight = new Rectangle(Player.Right, Player.Top, 3, Player.Height - 2);
         HitboxUp = new Rectangle(Player.Left, Player.Top - 4, Player.Width, 2);
         HitboxDown = new Rectangle(Player.Left + 2, Player.Bottom - 2, Player.Width - 4, 2);
 
@@ -350,7 +350,7 @@ public partial class MainWindow : Form
 
             if (attackQphase1)
             {
-                if (QOnLeft && Player.Right - (closestEnemy.Left + closestEnemy.Width / 2) < 10)
+                if (QOnLeft && Player.Right - (closestEnemy.Right / 2) < 10)
                 {
                     Player.Left += 15;
                     QToLeft = false;
@@ -517,14 +517,14 @@ public partial class MainWindow : Form
                         enemy.moveSwitch = true;
 
                     //Lemka utok
-                    if (((enemy.pb.Left - Player.Left - Player.Width) < 100 && enemy.pb.Left > (Player.Left + Player.Width)) ||
-                        (Player.Left - (enemy.pb.Left + enemy.pb.Width) < 100 && (enemy.pb.Left + enemy.pb.Width) < Player.Left))
+                    if (((enemy.pb.Left - Player.Left - Player.Width) < 100 && enemy.pb.Left > Player.Right) ||
+                        (Player.Left - (enemy.pb.Right) < 100 && (enemy.pb.Right) < Player.Left))
                     {
                         if ((Player.Top + Player.Height) > enemy.pb.Top && Player.Top < (enemy.pb.Top + enemy.pb.Height) && !lemkaCooldown)
                         {
-                            if ((enemy.pb.Left - Player.Left - Player.Width) < 100 && enemy.pb.Left > (Player.Left + Player.Width))
+                            if ((enemy.pb.Left - Player.Left - Player.Width) < 100 && enemy.pb.Left > Player.Right)
                                 lemkaRight = false;
-                            if (Player.Left - (enemy.pb.Left + enemy.pb.Width) < 100 && (enemy.pb.Left + enemy.pb.Width) < Player.Left)
+                            if (Player.Left - enemy.pb.Right < 100 && enemy.pb.Right < Player.Left)
                                 lemkaRight = true;
                             enemy.moving = false;
                             lemka = enemy as Enemy;
@@ -849,7 +849,7 @@ public partial class MainWindow : Form
 
         if (knockback)
         {
-            if (Player.Left + Player.Width < enMiddle && moveLeft)
+            if (Player.Right < enMiddle && moveLeft)
             {
                 Player.Left -= 10;
                 Dash.Interval = 1;
@@ -1018,7 +1018,7 @@ public partial class MainWindow : Form
             {
                 HitboxLemkaRight = new PictureBox
                 {
-                    Left = lemka.pb.Left + lemka.pb.Width,
+                    Left = lemka.pb.Right,
                     Top = lemka.pb.Top + 50,
                     Width = 100,
                     Height = 80,
@@ -1175,7 +1175,7 @@ public partial class MainWindow : Form
     }
     void Hit(PictureBox pb)
     {
-        enMiddle = pb.Left + pb.Width;
+        enMiddle = pb.Right;
         canGetHit = false;
         knockback = true;
         dmgIndex = 0;
