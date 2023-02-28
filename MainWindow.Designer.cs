@@ -36,6 +36,23 @@
             lbPress = new Label();
             lbGameOver = new Label();
             Menu = new Panel();
+            label30 = new Label();
+            difficultySelect = new Panel();
+            lbZaskolak = new Label();
+            label29 = new Label();
+            label28 = new Label();
+            btInsane = new Button();
+            label27 = new Label();
+            label26 = new Label();
+            btHard = new Button();
+            label25 = new Label();
+            label24 = new Label();
+            label23 = new Label();
+            btNormal = new Button();
+            label21 = new Label();
+            btEasy = new Button();
+            label22 = new Label();
+            btContinue = new Button();
             label2 = new Label();
             btExit = new Button();
             btOptions = new Button();
@@ -78,6 +95,7 @@
             GameScene.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
             Menu.SuspendLayout();
+            difficultySelect.SuspendLayout();
             Pause.SuspendLayout();
             panelPauza.SuspendLayout();
             SuspendLayout();
@@ -159,16 +177,216 @@
             // 
             Menu.BackColor = SystemColors.ActiveCaption;
             Menu.BackgroundImageLayout = ImageLayout.Stretch;
+            Menu.Controls.Add(label30);
+            Menu.Controls.Add(difficultySelect);
+            Menu.Controls.Add(btContinue);
             Menu.Controls.Add(label2);
             Menu.Controls.Add(btExit);
             Menu.Controls.Add(btOptions);
             Menu.Controls.Add(label1);
             Menu.Controls.Add(btPlay);
-            Menu.Dock = DockStyle.Fill;
             Menu.Location = new Point(0, 0);
             Menu.Name = "Menu";
             Menu.Size = new Size(1520, 825);
             Menu.TabIndex = 14;
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.BackColor = Color.Transparent;
+            label30.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
+            label30.ForeColor = Color.White;
+            label30.Location = new Point(44, 788);
+            label30.Name = "label30";
+            label30.Size = new Size(323, 28);
+            label30.TabIndex = 7;
+            label30.Text = "Arty - Jakub Svoboda (@j4c.k0b)";
+            // 
+            // difficultySelect
+            // 
+            difficultySelect.Controls.Add(lbZaskolak);
+            difficultySelect.Controls.Add(label29);
+            difficultySelect.Controls.Add(label28);
+            difficultySelect.Controls.Add(btInsane);
+            difficultySelect.Controls.Add(label27);
+            difficultySelect.Controls.Add(label26);
+            difficultySelect.Controls.Add(btHard);
+            difficultySelect.Controls.Add(label25);
+            difficultySelect.Controls.Add(label24);
+            difficultySelect.Controls.Add(label23);
+            difficultySelect.Controls.Add(btNormal);
+            difficultySelect.Controls.Add(label21);
+            difficultySelect.Controls.Add(btEasy);
+            difficultySelect.Controls.Add(label22);
+            difficultySelect.Location = new Point(68, 165);
+            difficultySelect.Name = "difficultySelect";
+            difficultySelect.Size = new Size(738, 567);
+            difficultySelect.TabIndex = 6;
+            difficultySelect.Visible = false;
+            // 
+            // lbZaskolak
+            // 
+            lbZaskolak.AutoSize = true;
+            lbZaskolak.BackColor = SystemColors.ActiveCaption;
+            lbZaskolak.ForeColor = Color.Blue;
+            lbZaskolak.Location = new Point(29, 535);
+            lbZaskolak.Name = "lbZaskolak";
+            lbZaskolak.Size = new Size(270, 15);
+            lbZaskolak.TabIndex = 15;
+            lbZaskolak.Text = "Pro zpřístupnění obtížnosti Záškolák, dokonči hru.";
+            // 
+            // label29
+            // 
+            label29.AutoSize = true;
+            label29.ForeColor = Color.Red;
+            label29.Location = new Point(653, 520);
+            label29.Name = "label29";
+            label29.Size = new Size(41, 15);
+            label29.TabIndex = 14;
+            label29.Text = "1 život";
+            // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Font = new Font("Segoe UI", 15.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label28.Location = new Point(195, 458);
+            label28.Name = "label28";
+            label28.Size = new Size(490, 90);
+            label28.TabIndex = 13;
+            label28.Text = "Začínáš s podmíněným vyloučením, tudíž špatně\r\nse na někoho podíváš a takzvaně letíš.\r\n\r\n";
+            // 
+            // btInsane
+            // 
+            btInsane.BackColor = Color.Crimson;
+            btInsane.Enabled = false;
+            btInsane.Location = new Point(29, 458);
+            btInsane.Name = "btInsane";
+            btInsane.Size = new Size(138, 40);
+            btInsane.TabIndex = 12;
+            btInsane.Text = "Záškolák";
+            btInsane.UseVisualStyleBackColor = false;
+            btInsane.Click += btDifficulty;
+            btInsane.MouseEnter += btInsane_MouseEnter;
+            btInsane.MouseLeave += btInsane_MouseLeave;
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.ForeColor = Color.Red;
+            label27.Location = new Point(646, 414);
+            label27.Name = "label27";
+            label27.Size = new Size(48, 15);
+            label27.TabIndex = 11;
+            label27.Text = "5 životů";
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Font = new Font("Segoe UI", 15.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label26.Location = new Point(195, 335);
+            label26.Name = "label26";
+            label26.Size = new Size(529, 60);
+            label26.TabIndex = 10;
+            label26.Text = "Na studium kašleš a prostě nějak doufáš, že prolezeš\r\ndo dalšího ročníku a dokončíš studium.\r\n";
+            // 
+            // btHard
+            // 
+            btHard.BackColor = Color.DarkKhaki;
+            btHard.Location = new Point(29, 335);
+            btHard.Name = "btHard";
+            btHard.Size = new Size(138, 40);
+            btHard.TabIndex = 9;
+            btHard.Text = "Flákač";
+            btHard.UseVisualStyleBackColor = false;
+            btHard.Click += btDifficulty;
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.ForeColor = Color.Red;
+            label25.Location = new Point(523, 293);
+            label25.Name = "label25";
+            label25.Size = new Size(171, 15);
+            label25.TabIndex = 8;
+            label25.Text = "5 životů,nugetky jsou povolené";
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Font = new Font("Segoe UI", 15.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label24.Location = new Point(195, 212);
+            label24.Name = "label24";
+            label24.Size = new Size(449, 60);
+            label24.TabIndex = 7;
+            label24.Text = "Občas něco pokazíš, ale jinak většinu chápeš\r\na nemáš větší problémy se studiem.";
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.ForeColor = Color.Red;
+            label23.Location = new Point(357, 175);
+            label23.Name = "label23";
+            label23.Size = new Size(337, 15);
+            label23.TabIndex = 6;
+            label23.Text = "5 životů, obnova 1HP po každém levelu,nugetky jsou povolené";
+            // 
+            // btNormal
+            // 
+            btNormal.BackColor = Color.Yellow;
+            btNormal.Location = new Point(29, 212);
+            btNormal.Name = "btNormal";
+            btNormal.Size = new Size(138, 40);
+            btNormal.TabIndex = 5;
+            btNormal.Text = "Průměrný student";
+            btNormal.UseVisualStyleBackColor = false;
+            btNormal.Click += btDifficulty;
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.Font = new Font("Segoe UI", 15.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label21.Location = new Point(202, 89);
+            label21.Name = "label21";
+            label21.Size = new Size(445, 60);
+            label21.TabIndex = 4;
+            label21.Text = "Nemáš domácí úkol? Nevadí. Přijdeš pozdě?\r\nV pohodě. Něco si pokazil? Stává se.";
+            // 
+            // btEasy
+            // 
+            btEasy.BackColor = Color.GreenYellow;
+            btEasy.Location = new Point(29, 89);
+            btEasy.Name = "btEasy";
+            btEasy.Size = new Size(138, 40);
+            btEasy.TabIndex = 3;
+            btEasy.Text = "Učitelů miláček";
+            btEasy.UseVisualStyleBackColor = false;
+            btEasy.Click += btDifficulty;
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.BackColor = Color.Transparent;
+            label22.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point);
+            label22.ForeColor = Color.White;
+            label22.Location = new Point(17, 11);
+            label22.Name = "label22";
+            label22.Size = new Size(363, 54);
+            label22.TabIndex = 2;
+            label22.Text = "Vyber si obtížnost";
+            // 
+            // btContinue
+            // 
+            btContinue.BackColor = Color.IndianRed;
+            btContinue.Enabled = false;
+            btContinue.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            btContinue.Location = new Point(980, 246);
+            btContinue.Name = "btContinue";
+            btContinue.Size = new Size(248, 65);
+            btContinue.TabIndex = 5;
+            btContinue.TabStop = false;
+            btContinue.Text = "Pokračovat";
+            btContinue.UseVisualStyleBackColor = false;
+            btContinue.Click += btContinue_Click;
             // 
             // label2
             // 
@@ -186,12 +404,12 @@
             // 
             btExit.BackColor = Color.RosyBrown;
             btExit.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            btExit.Location = new Point(977, 499);
+            btExit.Location = new Point(980, 550);
             btExit.Name = "btExit";
             btExit.Size = new Size(248, 65);
             btExit.TabIndex = 3;
             btExit.TabStop = false;
-            btExit.Text = "Exit";
+            btExit.Text = "Opustit hru";
             btExit.UseVisualStyleBackColor = false;
             btExit.Click += btExit_Click;
             // 
@@ -199,12 +417,12 @@
             // 
             btOptions.BackColor = Color.RosyBrown;
             btOptions.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            btOptions.Location = new Point(977, 403);
+            btOptions.Location = new Point(980, 454);
             btOptions.Name = "btOptions";
             btOptions.Size = new Size(248, 65);
             btOptions.TabIndex = 2;
             btOptions.TabStop = false;
-            btOptions.Text = "Možnosti";
+            btOptions.Text = "Ovládání";
             btOptions.UseVisualStyleBackColor = false;
             btOptions.Click += btOptions_Click;
             // 
@@ -214,7 +432,7 @@
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(869, 141);
+            label1.Location = new Point(869, 91);
             label1.Name = "label1";
             label1.Size = new Size(335, 54);
             label1.TabIndex = 1;
@@ -224,12 +442,12 @@
             // 
             btPlay.BackColor = Color.RosyBrown;
             btPlay.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
-            btPlay.Location = new Point(977, 307);
+            btPlay.Location = new Point(980, 358);
             btPlay.Name = "btPlay";
             btPlay.Size = new Size(248, 65);
             btPlay.TabIndex = 0;
             btPlay.TabStop = false;
-            btPlay.Text = "Hrát";
+            btPlay.Text = "Nová hra";
             btPlay.UseVisualStyleBackColor = false;
             btPlay.Click += btPlay_Click;
             // 
@@ -588,8 +806,7 @@
             // 
             // MainWindow
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Inherit;
             ClientSize = new Size(1520, 825);
             Controls.Add(lbPress);
             Controls.Add(lbGameOver);
@@ -610,6 +827,8 @@
             ((System.ComponentModel.ISupportInitialize)Player).EndInit();
             Menu.ResumeLayout(false);
             Menu.PerformLayout();
+            difficultySelect.ResumeLayout(false);
+            difficultySelect.PerformLayout();
             Pause.ResumeLayout(false);
             Pause.PerformLayout();
             panelPauza.ResumeLayout(false);
@@ -666,5 +885,22 @@
         private System.Windows.Forms.Timer NuggetDisappear;
         private System.Windows.Forms.Timer Lemka;
         private System.Windows.Forms.Timer Stark;
+        private Button btContinue;
+        private Panel difficultySelect;
+        private Label lbZaskolak;
+        private Label label29;
+        private Label label28;
+        private Button btInsane;
+        private Label label27;
+        private Label label26;
+        private Button btHard;
+        private Label label25;
+        private Label label24;
+        private Label label23;
+        private Button btNormal;
+        private Label label21;
+        private Button btEasy;
+        private Label label22;
+        private Label label30;
     }
 }

@@ -14,11 +14,12 @@ public partial class MainWindow : Form
     int jumpSpeed, dashX, dashIndex; //pohyb
     bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, QToLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain; //utok
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
-    int levelCount = 1, playerHealth = 5, dmgIndex, enMiddle, absence1Index, absence2Index, lemkaIndex;
-    bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false, lemkaCooldown, lemkaRight; //managment
+    int levelCount = 1, playerHealth, dmgIndex, enMiddle, absence1Index, absence2Index;
+    bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false;//managment
+    bool lemkaCooldown, lemkaRight; int lemkaIndex; //enemy
     int OberhofnerovaHP = 10, LemkaHP = 10, HacekHP = 10, SysalovaHP = 10, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
-    int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false,baseballCooldown = false,changedPhase = false; //bossfight
-    string info, info1;
+    int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false; //bossfight
+    string difficulty, info, info1;
 
 
     Rectangle HitboxLeft;
@@ -65,7 +66,7 @@ public partial class MainWindow : Form
             LMB = false;
 
         //šance 1/10000 kazdou milisekundu (1/100s) ze se nekde nahodne spawne nuggetka
-        if (Random.Shared.Next(0, 10001) == 10000 && !nuggetSpawn)
+        if (Random.Shared.Next(0, 10001) == 10000 && !nuggetSpawn && (difficulty == "Easy" || difficulty == "Normal"))
         {
             nuggetSpawn = true;
             bool intersects = true;
@@ -376,9 +377,9 @@ public partial class MainWindow : Form
                 {
                     if (enemy.pb == closestEnemy)
                     {
-                        if(enemy == stark && !hitQ)
+                        if (enemy == stark && !hitQ)
                         {
-                            enemy.health -= StarkHP/15;
+                            enemy.health -= StarkHP / 15;
                             hitQ = true;
                             enemy.CheckHealth(enemy, GameScene);
                         }
@@ -544,17 +545,17 @@ public partial class MainWindow : Form
                 if (enemy == stark && bossPhase == 1)
                 {
                     stark.moveSwitch = false;
-                    if(Math.Abs(stark.pb.Left + 135 - Player.Left) < 20)
+                    if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 20)
                     {
                         stark.moveLeft = false;
                         stark.moveRight = false;
                     }
-                    else if(stark.pb.Left + 135 > Player.Left)
+                    else if (stark.pb.Left + 135 > Player.Left)
                     {
                         stark.moveLeft = true;
                         stark.moveRight = false;
                     }
-                    else if(stark.pb.Left + 135 < Player.Left)
+                    else if (stark.pb.Left + 135 < Player.Left)
                     {
                         stark.moveRight = true;
                         stark.moveLeft = false;
@@ -570,7 +571,7 @@ public partial class MainWindow : Form
                 //stark baseballka
                 if (enemy == stark && bossPhase == 1 && !baseballCooldown)
                 {
-                    if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 40 && Player.Top+Player.Height > stark.pb.Top + 465)
+                    if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 40 && Player.Top + Player.Height > stark.pb.Top + 465)
                     {
                         stark.moving = false;
                         starkIndex = 0;
@@ -588,16 +589,16 @@ public partial class MainWindow : Form
                         (HitboxAttackRight != null && baseballka.Bounds.IntersectsWith(HitboxAttackRight.Bounds)) ||
                         (HitboxAttackTop != null && baseballka.Bounds.IntersectsWith(HitboxAttackTop.Bounds))))
                 {
-                    stark.health -= StarkHP/30;
+                    stark.health -= StarkHP / 30;
                     alreadyHit = true;
                     stark.CheckHealth(stark, GameScene);
                 }
 
                 //zjisteni Starkovo HP a zmìna bossPhase
                 //první dva znièení baseballky
-                if(stark != null)
+                if (stark != null)
                 {
-                    if(bossPhase == 1)
+                    if (bossPhase == 1)
                     {
                         if (!changedPhase && (stark.health == StarkHP - 3 * (StarkHP / 30) || stark.health == StarkHP - 6 * (StarkHP / 30)))
                         {
@@ -618,7 +619,7 @@ public partial class MainWindow : Form
                         else if (!(stark.health == StarkHP - 3 * (StarkHP / 30)) && !(stark.health == StarkHP - 6 * (StarkHP / 30)) && !(stark.health == StarkHP - 10 * (StarkHP / 30)))
                             changedPhase = false;
                     }
-                    
+
                 }
 
                 //enemy doleva a doprava
@@ -654,7 +655,7 @@ public partial class MainWindow : Form
                 //bouchání LMB
                 if (enemy != stark)
                 {
-                    if((HitboxAttackLeft != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackLeft.Bounds)) ||
+                    if ((HitboxAttackLeft != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackLeft.Bounds)) ||
                         (HitboxAttackRight != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackRight.Bounds)) ||
                         (HitboxAttackTop != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackTop.Bounds)))
                     {
@@ -884,7 +885,8 @@ public partial class MainWindow : Form
                 "\nFacing: " + (facingRight ? "Right" : "Left") +
                 "\nPlayerHealth: " + playerHealth +
                 "\nCheatHealth: " + cheatHealth +
-                "\nBossPhase: " + bossPhase.ToString() + 
+                "\nBossPhase: " + bossPhase.ToString() +
+                "\nDifficulty: "+difficulty +
                 "\nInfo: " + info +
                 "\nInfo1: " + info1;
     }
@@ -1075,15 +1077,15 @@ public partial class MainWindow : Form
     }
     private void Stark_Tick(object sender, EventArgs e)
     {
-        if(bossPhase == 1)
+        if (bossPhase == 1)
         {
             //bouchani baseballkou
-            if(starkIndex == 0)
+            if (starkIndex == 0)
             {
                 //bouchne
                 baseballka = new PictureBox
                 {
-                    Left = stark.pb.Left+55,
+                    Left = stark.pb.Left + 55,
                     Top = stark.pb.Top + 465,
                     Width = 225,
                     Height = 185,
@@ -1107,13 +1109,13 @@ public partial class MainWindow : Form
                     Stark.Interval = 500;
                 }
             }
-            else if(starkIndex == 1)
+            else if (starkIndex == 1)
             {
                 DestroyAll(baseballka, GameScene);
                 stark.moving = true;
                 Stark.Interval = 3000;
             }
-            else if(starkIndex == 2)
+            else if (starkIndex == 2)
                 baseballCooldown = false;
 
             starkIndex++;
@@ -1128,160 +1130,13 @@ public partial class MainWindow : Form
             //dashuje pres mistnost
             starkQ = true;
         }
-        
+
     }
 
     private void NuggetDisappear_Tick(object sender, EventArgs e)
     {
         DestroyAll(nuggetPB, GameScene);
         NuggetDisappear.Stop();
-    }
-
-    private void MainWindow_KeyDown(object sender, KeyEventArgs e)
-    {
-        //Input - zmacknuti
-        if (!disableallInputs)
-        {
-            if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
-                A = true;
-            if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
-                D = true;
-            if (e.KeyCode == Keys.Space && Space == false)
-                Space = true;
-            if (e.KeyCode == Keys.Q)
-                Q = true;
-            if (e.KeyCode == Keys.E)
-                E = true;
-            if (e.KeyCode == Keys.F3)
-            {
-                if (lbStats.Visible)
-                    lbStats.Visible = false;
-                else
-                    lbStats.Visible = true;
-            }
-            if (e.KeyCode == Keys.Escape)
-            {
-                if (!Pause.Visible)
-                {
-                    Pause.Visible = true;
-                    Pause.Enabled = true;
-                    GameScene.Enabled = false;
-                    GameScene.Visible = false;
-                    UpdateMethod.Stop();
-                    panelPauza.Visible = true;
-                    lbNazev.Text = "Pauza";
-                    this.Focus();
-                }
-                else
-                {
-                    Pause.Visible = false;
-                    Pause.Enabled = false;
-                    GameScene.Enabled = true;
-                    GameScene.Visible = true;
-                    UpdateMethod.Start();
-                    this.Focus();
-                }
-            }
-            if (e.KeyCode == Keys.F && paused)
-            {
-                lbPozastaveno.Top = -200;
-                UpdateMethod.Start();
-                paused = false;
-            }
-            if (e.KeyCode == Keys.K)
-            {
-                foreach (Enemy enemy in enemyArray)
-                {
-                    if (enemy != stark)
-                    {
-                        enemy.health = 0;
-                        enemy.CheckHealth(enemy, GameScene);
-                    }
-                }
-
-            }
-            if (e.KeyCode == Keys.L)
-            {
-                if (cheatHealth)
-                    cheatHealth = false;
-                else
-                    cheatHealth = true;
-            }
-        }
-        else
-        {
-            if (e.KeyCode == Keys.R)
-            {
-                //Reset
-                Reset();
-
-                //promenny s defaultni hodnotou
-                lbGameOver.Top = -200;
-                lbPress.Top = -200;
-                canDash = true;
-                attackLMBcooldown = false;
-                levelCount = 1;
-                playerHealth = 5;
-                canGetHit = true;
-                disableallInputs = false;
-                unHitable = false;
-                UpdateMethod.Interval = 1;
-                GameScene.Enabled = true;
-            }
-        }
-    }
-
-    private void MainWindow_KeyUp(object sender, KeyEventArgs e)
-    {
-        //Input - uvolneni
-        if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
-            A = false;
-        if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
-            D = false;
-        if (e.KeyCode == Keys.Space)
-            Space = false;
-        if (e.KeyCode == Keys.Q)
-            Q = false;
-        if (e.KeyCode == Keys.E)
-            E = false;
-
-    }
-    private void GameScene_Load(object sender, EventArgs e)
-    {
-
-    }
-
-    private void btPlay_Click(object sender, EventArgs e)
-    {
-        Menu.Visible = false;
-        Menu.Enabled = false;
-        GameScene.Enabled = true;
-        GameScene.Visible = true;
-        UpdateMethod.Start();
-        this.Focus();
-    }
-
-    private void btOptions_Click(object sender, EventArgs e)
-    {
-        Menu.Visible = false;
-        Menu.Enabled = false;
-        Pause.Enabled = true;
-        Pause.Visible = true;
-        panelPauza.Visible = false;
-        lbNazev.Text = "Možnosti";
-        this.Focus();
-    }
-    private void btMenu_Click(object sender, EventArgs e)
-    {
-        Pause.Enabled = false;
-        Pause.Visible = false;
-        Menu.Visible = true;
-        Menu.Enabled = true;
-        this.Focus();
-    }
-    private void btExit_Click(object sender, EventArgs e)
-    {
-        Application.Exit();
     }
 
     void Absence(Absence absence)
@@ -1383,6 +1238,35 @@ public partial class MainWindow : Form
         Player.Left = 75;
         Player.Top = 526;
     }
+    void FullReset()
+    {
+        //pozice,timery,bloky,enemy...
+        Reset();
+
+        lbGameOver.Top = -200;
+        lbPress.Top = -200;
+
+        //default promenny
+        canDash = true;
+        attackLMBcooldown = false;
+        levelCount = 1;
+        if (difficulty != "Insane")
+            playerHealth = 5;
+        else
+            playerHealth = 1;
+        canGetHit = true;
+        disableallInputs = false;
+        unHitable = false;
+        nuggetSpawn = false;
+        bossPhase = 0;
+        baseballSlam = 0;
+        starkQ = false;
+        baseballGetDMG = false;
+        baseballCooldown = false;
+        changedPhase = false;
+        UpdateMethod.Interval = 1;
+        GameScene.Enabled = true;
+    }
     void LevelPrepare()
     {
         //fix na Q
@@ -1396,7 +1280,7 @@ public partial class MainWindow : Form
             attackQcooldown = false;
         }
         //doplni jedno HP
-        if (playerHealth < 5)
+        if (playerHealth < 5 && difficulty == "Easy")
             playerHealth++;
 
         Reset();
@@ -1487,9 +1371,11 @@ public partial class MainWindow : Form
 
         absenceArray = new Absence[] { absence1, absence2 };
 
-        Nugget nugget1 = new(714, 73, 2, Color.Blue, GameScene);
-
-        nuggetList.Add(nugget1);
+        if (difficulty == "Easy" || difficulty == "Normal")
+        {
+            Nugget nugget1 = new(714, 73, 2, Color.Blue, GameScene);
+            nuggetList.Add(nugget1);
+        }
 
         absence1Index = 0;
         Absence1.Interval = 1;
@@ -1566,6 +1452,179 @@ public partial class MainWindow : Form
         Stark.Interval = stark.projectileCooldown;
 
         bossPhase = 1;
+    }
+    private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+    {
+        //Input - zmacknuti
+        if (!disableallInputs)
+        {
+            if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
+                A = true;
+            if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
+                D = true;
+            if (e.KeyCode == Keys.Space && Space == false)
+                Space = true;
+            if (e.KeyCode == Keys.Q)
+                Q = true;
+            if (e.KeyCode == Keys.E)
+                E = true;
+            if (e.KeyCode == Keys.F3)
+            {
+                if (lbStats.Visible)
+                    lbStats.Visible = false;
+                else
+                    lbStats.Visible = true;
+            }
+            if (e.KeyCode == Keys.Escape)
+            {
+                if (!Pause.Visible)
+                {
+                    Pause.Visible = true;
+                    Pause.Enabled = true;
+                    GameScene.Enabled = false;
+                    GameScene.Visible = false;
+                    UpdateMethod.Stop();
+                    panelPauza.Visible = true;
+                    lbNazev.Text = "Pauza";
+                    this.Focus();
+                }
+                else
+                {
+                    Pause.Visible = false;
+                    Pause.Enabled = false;
+                    GameScene.Enabled = true;
+                    GameScene.Visible = true;
+                    UpdateMethod.Start();
+                    this.Focus();
+                }
+            }
+            if (e.KeyCode == Keys.F && paused)
+            {
+                lbPozastaveno.Top = -200;
+                UpdateMethod.Start();
+                paused = false;
+            }
+            if (e.KeyCode == Keys.K)
+            {
+                foreach (Enemy enemy in enemyArray)
+                {
+                    if (enemy != stark)
+                    {
+                        enemy.health = 0;
+                        enemy.CheckHealth(enemy, GameScene);
+                    }
+                }
+
+            }
+            if (e.KeyCode == Keys.L)
+            {
+                if (cheatHealth)
+                    cheatHealth = false;
+                else
+                    cheatHealth = true;
+            }
+        }
+        else
+        {
+            if (e.KeyCode == Keys.R)
+                FullReset();
+        }
+    }
+
+    private void MainWindow_KeyUp(object sender, KeyEventArgs e)
+    {
+        //Input - uvolneni
+        if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
+            A = false;
+        if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
+            D = false;
+        if (e.KeyCode == Keys.Space)
+            Space = false;
+        if (e.KeyCode == Keys.Q)
+            Q = false;
+        if (e.KeyCode == Keys.E)
+            E = false;
+
+    }
+    private void GameScene_Load(object sender, EventArgs e)
+    {
+
+    }
+
+    private void btPlay_Click(object sender, EventArgs e)
+    {
+        difficultySelect.Visible = true;
+    }
+
+    private void btOptions_Click(object sender, EventArgs e)
+    {
+        Menu.Visible = false;
+        Menu.Enabled = false;
+        Pause.Enabled = true;
+        Pause.Visible = true;
+        panelPauza.Visible = false;
+        lbNazev.Text = "Možnosti";
+        Focus();
+    }
+    private void btMenu_Click(object sender, EventArgs e)
+    {
+        Pause.Enabled = false;
+        Pause.Visible = false;
+        Menu.Visible = true;
+        Menu.Enabled = true;
+        Focus();
+    }
+    private void btExit_Click(object sender, EventArgs e)
+    {
+        Application.Exit();
+    }
+
+    private void btDifficulty(object sender, EventArgs e)
+    {
+        Button diff = sender as Button;
+        if (diff.Name == "btEasy")
+            difficulty = "Easy";
+        if (diff.Name == "btNormal")
+            difficulty = "Normal";
+        if (diff.Name == "btHard")
+            difficulty = "Hard";
+        if (diff.Name == "btInsane")
+        {
+            difficulty = "Insane";
+            playerHealth = 1;
+        }
+        else
+            playerHealth = 5;
+
+        FullReset();
+
+        btContinue.Enabled = true;
+        difficultySelect.Visible = false;
+        Menu.Visible = false;
+        Menu.Enabled = false;
+        GameScene.Enabled = true;
+        GameScene.Visible = true;
+        Focus();
+        UpdateMethod.Start();
+    }
+
+    private void btContinue_Click(object sender, EventArgs e)
+    {
+        Menu.Visible = false;
+        Menu.Enabled = false;
+        GameScene.Enabled = true;
+        GameScene.Visible = true;
+        Focus();
+        UpdateMethod.Start();
+    }
+    private void btInsane_MouseEnter(object sender, EventArgs e)
+    {
+        lbZaskolak.Visible = true;
+    }
+
+    private void btInsane_MouseLeave(object sender, EventArgs e)
+    {
+        lbZaskolak.Visible = false;
     }
 }
 
