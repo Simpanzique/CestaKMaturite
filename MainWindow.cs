@@ -427,9 +427,9 @@ public partial class MainWindow : Form
             }
             else
             {
-                if (LMB && facingRight && !attackLMBcooldown)
+                if (LMB && !attackLMBcooldown && cursor.X > Player.Left + (Player.Width/2))
                 {
-                    //utok doleva
+                    //utok doprava
                     HitboxAttackRight = new PictureBox
                     {
                         Left = Player.Right,
@@ -446,9 +446,9 @@ public partial class MainWindow : Form
                     abilityLMBIndex = 0;
                     abilityLMB.Start();
                 }
-                if (LMB && !facingRight && !attackLMBcooldown)
+                if (LMB && !attackLMBcooldown && cursor.X < Player.Left + (Player.Width/2))
                 {
-                    //utok doprava
+                    //utok doleva
                     HitboxAttackLeft = new PictureBox
                     {
                         Left = Player.Left - rulerLength,
