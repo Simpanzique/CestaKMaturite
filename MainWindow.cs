@@ -10,12 +10,12 @@ public partial class MainWindow : Form
 
     //Globální promìnné
     bool A, D, Space, Q, E, LMB; //hráèovo inputy
-    bool moveLeft, moveRight, onTop, isJumping, onGround, lastInputLeft, facingRight, dashLeft, dashRight, banInput, canDash = true; //pohyb
-    int jumpSpeed, dashX, dashIndex; //pohyb
+    bool moveLeft, moveRight, onTop, isJumping, onGround, lastInputLeft, facingRight, dashLeft, dashRight, banInput, canDash = true, landed, touchedGround; //pohyb
+    int jumpSpeed, dashX, dashIndex, hupIndex; //pohyb
     bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, QToLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain; //utok
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
     int levelCount = 1, playerHealth, dmgIndex, enMiddle, absence1Index, absence2Index;
-    bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false;//managment
+    bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false; //managment
     bool lemkaCooldown, lemkaRight; int lemkaIndex; //enemy
     int OberhofnerovaHP = 10, LemkaHP = 10, HacekHP = 10, SysalovaHP = 10, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false; //bossfight
@@ -40,6 +40,7 @@ public partial class MainWindow : Form
 
     PictureBox closestEnemy;
     PictureBox nuggetPB;
+    PictureBox landedBlock;
 
     Terrain[] terrainArray;
     Enemy[] enemyArray;
@@ -64,6 +65,8 @@ public partial class MainWindow : Form
             LMB = true;
         else
             LMB = false;
+
+        #region Nuggetka
 
         //šance 1/10000 kazdou milisekundu (1/100s) ze se nekde nahodne spawne nuggetka
         if (Random.Shared.Next(0, 10001) == 10000 && !nuggetSpawn && (difficulty == "Easy" || difficulty == "Normal"))
@@ -90,6 +93,23 @@ public partial class MainWindow : Form
             NuggetDisappear.Start();
         }
 
+        if (nuggetList != null)
+        {
+            foreach (Nugget nugget in nuggetList)
+            {
+                if (nugget.pb.Bounds.IntersectsWith(Player.Bounds) && playerHealth < 5)
+                {
+                    if (playerHealth + nugget.healthAdd > 5)
+                        playerHealth = 5;
+                    else
+                        playerHealth += nugget.healthAdd;
+
+                    DestroyAll(nugget.pb, GameScene);
+                }
+            }
+        }
+
+        #endregion
 
         //Hitboxy
         HitboxLeft = new Rectangle(Player.Left - 3, Player.Top, 3, Player.Height - 2);
@@ -101,26 +121,60 @@ public partial class MainWindow : Form
         HitboxDashRight = new Rectangle(Player.Left + 15, Player.Top, Player.Width, Player.Height - 2);
 
         //platformy
-        foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag == "Terrain"))
+        foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null))
         {
-            if (terrain.Bounds.IntersectsWith(HitboxLeft))
-                moveLeft = false;
-            if (terrain.Bounds.IntersectsWith(HitboxRight))
-                moveRight = false;
-            if (terrain.Bounds.IntersectsWith(HitboxDown) && Player.Bottom - 20 <= terrain.Top && jumpSpeed < 0)
+            if (terrain.Tag.ToString().Contains("Terrain"))
             {
-                Player.Top = terrain.Top - Player.Height + 1;
-                onTop = true;
-                jumpSpeed = 0;
-                isJumping = false;
-            }
-            if (terrain.Bounds.IntersectsWith(HitboxUp))
-            {
-                jumpSpeed = -2;
-                isJumping = false;
-                underTerrain = true;
+                if (terrain.Bounds.IntersectsWith(HitboxLeft))
+                    moveLeft = false;
+                if (terrain.Bounds.IntersectsWith(HitboxRight))
+                    moveRight = false;
+                if (terrain.Bounds.IntersectsWith(HitboxDown) && Player.Bottom - 20 <= terrain.Top && jumpSpeed < 0)
+                {
+                    Player.Top = terrain.Top - Player.Height + 1;
+                    onTop = true;
+                    jumpSpeed = 0;
+                    isJumping = false;
+
+                    //setup na pohoupnutí knížek
+                    if (terrain.Tag.ToString().Contains("Book"))
+                    {
+                        if (!touchedGround)
+                            landed = true;
+                        touchedGround = true;
+
+                        landedBlock = terrain as PictureBox;
+                    }
+                }
+                if (terrain.Bounds.IntersectsWith(HitboxUp))
+                {
+                    jumpSpeed = -2;
+                    isJumping = false;
+                    underTerrain = true;
+                }
             }
         }
+
+        //pohoupnutí knížek
+        if (landedBlock != null && landed)
+        {
+            switch (hupIndex)
+            {
+                case 0: landedBlock.Top += 1; Player.Top += 1; break;
+                case 2: landedBlock.Top += 2; Player.Top += 2; break;
+                case 4: landedBlock.Top += 3; Player.Top += 3; break;
+                case 6: landedBlock.Top += 2; Player.Top += 2; break;
+                case 8: landedBlock.Top += 1; Player.Top += 1; break;
+                case 12: landedBlock.Top -= 1; Player.Top -= 1; break;
+                case 14: landedBlock.Top -= 2; Player.Top -= 2; break;
+                case 16: landedBlock.Top -= 3; Player.Top -= 3; break;
+                case 18: landedBlock.Top -= 2; Player.Top -= 2; break;
+                case 20: landedBlock.Top -= 1; Player.Top -= 1;landed = false; hupIndex = 0; break;
+            }
+            hupIndex++;
+        }
+        if (!onGround)
+            touchedGround = false;
 
         //Doleva a Doprava
         if (!(A && D))
@@ -192,10 +246,10 @@ public partial class MainWindow : Form
         //pružina
         foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null))
         {
-            if (terrain.Tag == "Spring" && Player.Bounds.IntersectsWith(terrain.Bounds))
+            if (terrain.Tag.ToString().Contains("Spring") && Player.Bounds.IntersectsWith(terrain.Bounds))
             {
                 isJumping = true;
-                jumpSpeed = 35;
+                jumpSpeed = 31;
             }
         }
 
@@ -219,12 +273,15 @@ public partial class MainWindow : Form
             Dash.Interval = 300;
             Dash.Start();
         }
-        foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag == "Terrain"))
+        foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null))
         {
-            if (terrain.Bounds.IntersectsWith(HitboxDashLeft))
-                dashLeft = false;
-            if (terrain.Bounds.IntersectsWith(HitboxDashRight))
-                dashRight = false;
+            if (terrain.Tag.ToString().Contains("Terrain"))
+            {
+                if (terrain.Bounds.IntersectsWith(HitboxDashLeft))
+                    dashLeft = false;
+                if (terrain.Bounds.IntersectsWith(HitboxDashRight))
+                    dashRight = false;
+            }  
         }
 
         if (dashLeft && dashX - Player.Left < 300)
@@ -238,8 +295,7 @@ public partial class MainWindow : Form
             jumpSpeed = 0;
         }
 
-
-        //Enemy
+        //ENEMY
         //Poèet a Pole Enemákù
         int iEnemy = 0;
         foreach (PictureBox enemy in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag == "Enemy"))
@@ -275,12 +331,12 @@ public partial class MainWindow : Form
                     break;
             }
             levelCount++;
-
         }
         else
         {
             //když existují enemy (mùže být kombat)
 
+            #region AttackQ
             //porovnání vzdáleností a hledání nejbližšího Enemy na kurzor (enemyObjectArray[closestIndex])
             //pomocí tagù
             int[] enemyDistanceArray = new int[iEnemy];
@@ -407,6 +463,9 @@ public partial class MainWindow : Form
                 banInput = true;
             }
 
+            #endregion
+
+            #region Attack
             //Útok LMB
             if (LMB && cursor.Y < Player.Top && !attackLMBcooldown)
             {
@@ -427,7 +486,7 @@ public partial class MainWindow : Form
             }
             else
             {
-                if (LMB && !attackLMBcooldown && cursor.X > Player.Left + (Player.Width/2))
+                if (LMB && !attackLMBcooldown && cursor.X > Player.Left + (Player.Width / 2))
                 {
                     //utok doprava
                     HitboxAttackRight = new PictureBox
@@ -446,7 +505,7 @@ public partial class MainWindow : Form
                     abilityLMBIndex = 0;
                     abilityLMB.Start();
                 }
-                if (LMB && !attackLMBcooldown && cursor.X < Player.Left + (Player.Width/2))
+                if (LMB && !attackLMBcooldown && cursor.X < Player.Left + (Player.Width / 2))
                 {
                     //utok doleva
                     HitboxAttackLeft = new PictureBox
@@ -467,31 +526,12 @@ public partial class MainWindow : Form
                 }
             }
 
-
+            #endregion
 
             foreach (Enemy enemy in enemyArray)
             {
-                //gravitace ,nepoužívá se :( 
-                foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag == "Terrain"))
-                {
-                    if (enemy.gravitation)
-                    {
-                        if (enemy.pb.Top + enemy.pb.Height >= GameScene.Height)
-                        {
-                            enemy.pb.Top = GameScene.Height - enemy.pb.Height;
-                            enemy.stopGravitation = true;
-                        }
-                        if (enemy.pb.Bounds.IntersectsWith(terrain.Bounds))
-                        {
-                            enemy.pb.Top = terrain.Top - enemy.pb.Height;
-                            enemy.stopGravitation = true;
-                        }
-                        if (!enemy.stopGravitation)
-                            enemy.pb.Top += 1;
-                    }
-                }
-
-                if (enemy.type == "Lemka")
+                #region Lemka
+                if (enemy.type == "Lemka" && enemy.health > 0)
                 {
                     //Lemka movement
                     if (enemy.pb.Top + enemy.pb.Height > Player.Top + Player.Height - 5)
@@ -539,7 +579,9 @@ public partial class MainWindow : Form
                     if (HitboxLemkaRight != null && HitboxLemkaRight.Bounds.IntersectsWith(Player.Bounds) && canGetHit)
                         Hit(HitboxLemkaRight);
                 }
+                #endregion
 
+                #region BossFight
                 //BOSS FIGHT
                 //stark movement phase 1
                 if (enemy == stark && bossPhase == 1)
@@ -619,8 +661,9 @@ public partial class MainWindow : Form
                         else if (!(stark.health == StarkHP - 3 * (StarkHP / 30)) && !(stark.health == StarkHP - 6 * (StarkHP / 30)) && !(stark.health == StarkHP - 10 * (StarkHP / 30)))
                             changedPhase = false;
                     }
-
                 }
+
+                #endregion
 
                 //enemy doleva a doprava
                 if (enemy.moving)
@@ -672,7 +715,7 @@ public partial class MainWindow : Form
                 if (enemy.pb.Bounds.IntersectsWith(Player.Bounds) && canGetHit && (enemy != stark || (enemy == stark && bossPhase == 3)))
                     Hit(enemy.pb);
 
-
+                #region Projektily
                 //let projektilù
                 if (enemy.projectile != null)
                 {
@@ -681,8 +724,9 @@ public partial class MainWindow : Form
                         DestroyAll(enemy.projectile, GameScene);
                         enemy.projectileStop = true;
                     }
-                    foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag == "Terrain"))
+                    foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null))
                     {
+                        if (terrain.Tag.ToString().Contains("Terrain"))
                         if (enemy.projectile.Bounds.IntersectsWith(terrain.Bounds))
                         {
                             DestroyAll(enemy.projectile, GameScene);
@@ -728,13 +772,11 @@ public partial class MainWindow : Form
                             {
                                 enemy.projectileSpeedX = Math.Abs(Player.Left + Player.Width / 2 - enemy.projectile.Left + 15) / 80;
                                 enemy.projectileSpeedY = Math.Abs(Player.Top + Player.Height / 2 - enemy.projectile.Top + 15) / 50;
-                                info = "yes";
                             }
                             else
                             {
                                 enemy.projectileSpeedX = (Math.Abs(Player.Left + Player.Width / 2 - enemy.projectile.Left + 15) / 80) + 4;
                                 enemy.projectileSpeedY = (Math.Abs(Player.Top + Player.Height / 2 - enemy.projectile.Top + 15) / 50) + 4;
-                                info = "no";
                             }
 
                             if (enemy.projectile.Left + 15 > Player.Left + Player.Width / 2)
@@ -755,9 +797,12 @@ public partial class MainWindow : Form
                             Hacek.Start();
                     }
                 }
+
+                #endregion
             }
         }
 
+        #region Absence
         if (absenceArray != null)
         {
             foreach (Absence absence in absenceArray)
@@ -824,28 +869,10 @@ public partial class MainWindow : Form
                     }
                 }
                 if (absence.pb.Bounds.IntersectsWith(Player.Bounds) && canGetHit)
-                {
-                    info = "hit s absenci";
                     Hit(absence.pb);
-                }
             }
         }
-        if (nuggetList != null)
-        {
-            foreach (Nugget nugget in nuggetList)
-            {
-                if (nugget.pb.Bounds.IntersectsWith(Player.Bounds) && playerHealth < 5)
-                {
-                    if (playerHealth + nugget.healthAdd > 5)
-                        playerHealth = 5;
-                    else
-                        playerHealth += nugget.healthAdd;
-
-                    DestroyAll(nugget.pb, GameScene);
-                }
-            }
-        }
-
+        #endregion
 
         if (knockback)
         {
@@ -886,10 +913,13 @@ public partial class MainWindow : Form
                 "\nPlayerHealth: " + playerHealth +
                 "\nCheatHealth: " + cheatHealth +
                 "\nBossPhase: " + bossPhase.ToString() +
-                "\nDifficulty: "+difficulty +
+                "\nDifficulty: " + difficulty +
                 "\nInfo: " + info +
-                "\nInfo1: " + info1;
+                "\nInfo1: " + info1 +
+                "\nLanded: "+landed;
     }
+
+    #region playerTimers
     private void abilityLMB_Tick(object sender, EventArgs e)
     {
         if (abilityLMBIndex == 0)
@@ -973,6 +1003,9 @@ public partial class MainWindow : Form
         dmgIndex++;
     }
 
+    #endregion
+
+    #region Absence
     private void Absence1_Tick(object sender, EventArgs e)
     {
         if (absence1Index == 1)
@@ -1010,6 +1043,46 @@ public partial class MainWindow : Form
         }
         absence2Index++;
     }
+
+    void Absence(Absence absence)
+    {
+        if (absence.changeDirection)
+        {
+            if (absence.indexDirection != 0)
+            {
+                if (absence.type == "X")
+                {
+                    if (absence.positionX == absence.from)
+                        absence.positionX = absence.to;
+                    else
+                        absence.positionX = absence.from;
+                }
+                if (absence.type == "Y")
+                {
+                    if (absence.positionY == absence.from)
+                        absence.positionY = absence.to;
+                    else
+                        absence.positionY = absence.from;
+                }
+
+                absence.plusCoordinates = !absence.plusCoordinates;
+
+                absence.help = absence.from;
+                absence.from = absence.to;
+                absence.to = absence.help;
+
+                absence.boundsX = absence.positionX;
+                absence.boundsY = absence.positionY;
+            }
+
+            absence.indexDirection++;
+        }
+    }
+
+    #endregion
+
+    #region EnemyTimers
+
     private void Lemka_Tick(object sender, EventArgs e)
     {
         if (lemkaIndex == 0)
@@ -1133,45 +1206,13 @@ public partial class MainWindow : Form
 
     }
 
+    #endregion
+
+    #region Voidy
     private void NuggetDisappear_Tick(object sender, EventArgs e)
     {
         DestroyAll(nuggetPB, GameScene);
         NuggetDisappear.Stop();
-    }
-
-    void Absence(Absence absence)
-    {
-        if (absence.changeDirection)
-        {
-            if (absence.indexDirection != 0)
-            {
-                if (absence.type == "X")
-                {
-                    if (absence.positionX == absence.from)
-                        absence.positionX = absence.to;
-                    else
-                        absence.positionX = absence.from;
-                }
-                if (absence.type == "Y")
-                {
-                    if (absence.positionY == absence.from)
-                        absence.positionY = absence.to;
-                    else
-                        absence.positionY = absence.from;
-                }
-
-                absence.plusCoordinates = !absence.plusCoordinates;
-
-                absence.help = absence.from;
-                absence.from = absence.to;
-                absence.to = absence.help;
-
-                absence.boundsX = absence.positionX;
-                absence.boundsY = absence.positionY;
-            }
-
-            absence.indexDirection++;
-        }
     }
     void Hit(PictureBox pb)
     {
@@ -1267,6 +1308,10 @@ public partial class MainWindow : Form
         UpdateMethod.Interval = 1;
         GameScene.Enabled = true;
     }
+
+    #endregion
+
+    #region LevelDesign
     void LevelPrepare()
     {
         //fix na Q
@@ -1296,12 +1341,12 @@ public partial class MainWindow : Form
     void Level1()
     {
         LevelPrepare();
-        Terrain terrain1 = new(28, 658, 164, 39, Resources.Knizka, GameScene);
-        Terrain terrain2 = new(291, 753, 100, 72, Resources.PC, GameScene);
-        Terrain terrain3 = new(341, 444, 110, 33, Resources.Knizka, GameScene);
-        Terrain terrain4 = new(577, 260, 593, 34, Resources.Tuzka, GameScene);
-        Terrain terrain5 = new(1402, 460, 97, 34, Resources.Knizka, GameScene);
-        Terrain terrain6 = new(1263, 750, 100, 75, Resources.PC, GameScene);
+        Terrain terrain1 = new(28, 658, 164, 39, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain2 = new(291, 753, 100, 72, "Terrain", Resources.PC, GameScene);
+        Terrain terrain3 = new(341, 444, 110, 33, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain4 = new(577, 260, 593, 34, "Terrain", Resources.Tuzka, GameScene);
+        Terrain terrain5 = new(1402, 460, 97, 34, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain6 = new(1263, 750, 100, 75, "Terrain", Resources.PC, GameScene);
 
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3, terrain4, terrain5, terrain6 };
 
@@ -1320,13 +1365,13 @@ public partial class MainWindow : Form
     void Level2()
     {
         LevelPrepare();
-        Terrain terrain1 = new(28, 658, 164, 39, Resources.Knizka, GameScene);
-        Terrain terrain2 = new(28, 360, 97, 34, Resources.Knizka, GameScene);
-        Terrain terrain3 = new(457, 510, 593, 34, Resources.Tuzka, GameScene);
-        Terrain terrain4 = new(370, 189, 110, 33, Resources.Knizka, GameScene);
-        Terrain terrain5 = new(1088, 248, 100, 75, Resources.PC, GameScene);
-        Terrain terrain6 = new(705, 750, 100, 75, Resources.PC, GameScene);
-        Terrain terrain7 = new(1342, 659, 100, 167, Resources.Skrinka, GameScene);
+        Terrain terrain1 = new(28, 658, 164, 39, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain2 = new(28, 360, 97, 34, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain3 = new(457, 510, 593, 34, "Terrain", Resources.Tuzka, GameScene);
+        Terrain terrain4 = new(370, 189, 110, 33, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain5 = new(1088, 248, 100, 75, "Terrain", Resources.PC, GameScene);
+        Terrain terrain6 = new(705, 750, 100, 75, "Terrain", Resources.PC, GameScene);
+        Terrain terrain7 = new(1342, 659, 100, 167, "Terrain", Resources.Skrinka, GameScene);
 
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3, terrain4, terrain5, terrain6, terrain7 };
 
@@ -1352,12 +1397,12 @@ public partial class MainWindow : Form
     void Level3()
     {
         LevelPrepare();
-        Terrain terrain1 = new(28, 658, 164, 39, Resources.Knizka, GameScene);
-        Terrain terrain2 = new(270, 377, 100, 69, Resources.PC, GameScene);
-        Terrain terrain3 = new(455, 161, 593, 34, Resources.Tuzka, GameScene);
-        Terrain terrain4 = new(681, 531, 110, 33, Resources.Knizka, GameScene);
-        Terrain terrain5 = new(1029, 719, 91, 40, Resources.Knizka, GameScene);
-        Terrain terrain6 = new(1353, 640, 110, 75, Resources.PC, GameScene);
+        Terrain terrain1 = new(28, 658, 164, 39, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain2 = new(270, 377, 100, 69, "Terrain", Resources.PC, GameScene);
+        Terrain terrain3 = new(455, 161, 593, 34, "Terrain", Resources.Tuzka, GameScene);
+        Terrain terrain4 = new(681, 531, 110, 33, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain5 = new(1029, 719, 91, 40, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain6 = new(1353, 640, 110, 75, "Terrain", Resources.PC, GameScene);
 
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3, terrain4, terrain5, terrain6 };
 
@@ -1391,13 +1436,13 @@ public partial class MainWindow : Form
     void Level4()
     {
         LevelPrepare();
-        Terrain terrain1 = new(28, 658, 164, 39, Resources.Knizka, GameScene);
-        Terrain terrain2 = new(126, 280, 110, 35, Resources.Knizka, GameScene);
-        Terrain terrain3 = new(449, 524, 100, 49, Resources.Knizka, GameScene);
-        Terrain terrain4 = new(449, 753, 91, 72, Resources.PC, GameScene);
-        Terrain terrain5 = new(840, 480, 593, 40, Resources.Tuzka_reversed, GameScene);
-        Terrain terrain6 = new(840, 155, 593, 40, Resources.Tuzka_reversed, GameScene);
-        Terrain terrain7 = new(1323, 418, 110, 63, Resources.PC, GameScene);
+        Terrain terrain1 = new(28, 658, 164, 39, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain2 = new(126, 280, 110, 35, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain3 = new(449, 524, 100, 49, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain4 = new(449, 753, 91, 72, "Terrain", Resources.PC, GameScene);
+        Terrain terrain5 = new(840, 480, 593, 40, "Terrain", Resources.Tuzka_reversed, GameScene);
+        Terrain terrain6 = new(840, 155, 593, 40, "Terrain", Resources.Tuzka_reversed, GameScene);
+        Terrain terrain7 = new(1323, 418, 110, 63, "Terrain", Resources.PC, GameScene);
 
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3, terrain4, terrain5, terrain6, terrain7 };
 
@@ -1434,14 +1479,14 @@ public partial class MainWindow : Form
         Player.Left = 138;
         Player.Top = 477;
 
-        Terrain terrain1 = new(734, 609, 60, 50, Resources.Pruzina, GameScene);
-        Terrain terrain2 = new(121, 598, 112, 35, Resources.Knizka, GameScene);
-        Terrain terrain3 = new(402, 381, 112, 35, Resources.Knizka, GameScene);
-        Terrain terrain4 = new(977, 381, 112, 35, Resources.Knizka, GameScene);
-        Terrain terrain5 = new(1281, 598, 112, 35, Resources.Knizka, GameScene);
-        Terrain terrain6 = new(0, 795, 600, 30, Resources.Tuzka, GameScene);
-        Terrain terrain7 = new(920, 795, 600, 30, Resources.Tuzka_reversed, GameScene);
-        Terrain terrain8 = new(714, 658, 100, 167, Resources.Skrinka, GameScene);
+        Terrain terrain1 = new(734, 609, 60, 50, "Terrain Spring", Resources.Pruzina, GameScene);
+        Terrain terrain2 = new(121, 598, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain3 = new(402, 381, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain4 = new(977, 381, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain5 = new(1281, 598, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain6 = new(0, 795, 600, 30, "Terrain", Resources.Tuzka, GameScene);
+        Terrain terrain7 = new(920, 795, 600, 30, "Terrain", Resources.Tuzka_reversed, GameScene);
+        Terrain terrain8 = new(714, 658, 100, 167, "Terrain", Resources.Skrinka, GameScene);
 
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3, terrain4, terrain5, terrain6, terrain7, terrain8 };
 
@@ -1453,6 +1498,9 @@ public partial class MainWindow : Form
 
         bossPhase = 1;
     }
+
+    #endregion
+
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
     {
         //Input - zmacknuti
@@ -1486,7 +1534,7 @@ public partial class MainWindow : Form
                     UpdateMethod.Stop();
                     panelPauza.Visible = true;
                     lbNazev.Text = "Pauza";
-                    this.Focus();
+                    Focus();
                 }
                 else
                 {
@@ -1495,7 +1543,7 @@ public partial class MainWindow : Form
                     GameScene.Enabled = true;
                     GameScene.Visible = true;
                     UpdateMethod.Start();
-                    this.Focus();
+                    Focus();
                 }
             }
             if (e.KeyCode == Keys.F && paused)
@@ -1533,7 +1581,7 @@ public partial class MainWindow : Form
 
     private void MainWindow_KeyUp(object sender, KeyEventArgs e)
     {
-        //Input - uvolneni
+        //Input - uvolneni klavesy
         if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
             A = false;
         if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
@@ -1544,16 +1592,11 @@ public partial class MainWindow : Form
             Q = false;
         if (e.KeyCode == Keys.E)
             E = false;
-
-    }
-    private void GameScene_Load(object sender, EventArgs e)
-    {
-
     }
 
     private void btPlay_Click(object sender, EventArgs e)
     {
-        difficultySelect.Visible = true;
+        difficultySelect.Visible = !difficultySelect.Visible;
     }
 
     private void btOptions_Click(object sender, EventArgs e)

@@ -5,7 +5,7 @@ internal class Terrain
     public PictureBox pb;
     static int Count = 1;
     public bool spawn = true;
-    public Terrain(int positionX, int positionY, int width, int height, Bitmap image, Panel scene)
+    public Terrain(int positionX, int positionY, int width, int height, string Tag, Bitmap image, Panel scene)
     {
         pb = new PictureBox
         {
@@ -15,17 +15,12 @@ internal class Terrain
             Height = height,
             BackgroundImage = image,
             BackgroundImageLayout = ImageLayout.Stretch,
-            Tag = "Terrain",
+            Tag = Tag,
             Name = "terrain" + Count,
         };
-        if (width == 60 && height == 50)
-        {
-            pb.Name = "spring";
-            pb.Tag = "Spring";
-        }
-        else
+        //if (!Tag.Contains("Spring"))
             scene.Controls.Add(pb);
-            
+
 
         Count++;
     }

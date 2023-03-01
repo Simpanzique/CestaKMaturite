@@ -819,7 +819,6 @@
             Name = "MainWindow";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Cesta k Maturitě";
-            Load += GameScene_Load;
             KeyDown += MainWindow_KeyDown;
             KeyUp += MainWindow_KeyUp;
             GameScene.ResumeLayout(false);
