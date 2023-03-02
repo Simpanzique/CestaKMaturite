@@ -70,28 +70,31 @@
     <value>277, 5</value>
   </metadata>
   <metadata name="DMGcooldown.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>366, 7</value>
+    <value>484, 9</value>
   </metadata>
   <metadata name="Absence1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>481, 3</value>
+    <value>599, 5</value>
   </metadata>
   <metadata name="Absence2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>567, 4</value>
+    <value>685, 6</value>
   </metadata>
   <metadata name="Oberhofnerova.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>659, 6</value>
+    <value>777, 8</value>
   </metadata>
   <metadata name="Hacek.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>778, 8</value>
+    <value>896, 10</value>
   </metadata>
   <metadata name="NuggetDisappear.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>847, 11</value>
+    <value>965, 13</value>
   </metadata>
   <metadata name="Lemka.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>978, 13</value>
+    <value>1096, 15</value>
   </metadata>
   <metadata name="Stark.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1048, 13</value>
+    <value>1166, 15</value>
+  </metadata>
+  <metadata name="JumpCooldown.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>372, 8</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>39</value>

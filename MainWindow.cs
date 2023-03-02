@@ -1,6 +1,5 @@
-using Petr_RP_Silksong.Properties;
-
-namespace Petr_RP_Silksong;
+using Petr_RP_CestaKMaturite.Properties;
+namespace Petr_RP_CestaKMaturite;
 public partial class MainWindow : Form
 {
     public MainWindow()
@@ -10,7 +9,7 @@ public partial class MainWindow : Form
 
     //Globální promìnné
     bool A, D, Space, Q, E, LMB; //hráèovo inputy
-    bool moveLeft, moveRight, onTop, isJumping, onGround, lastInputLeft, facingRight, dashLeft, dashRight, banInput, canDash = true, landed, touchedGround; //pohyb
+    bool moveLeft, moveRight, onTop, isJumping, onGround, lastInputLeft, facingRight, dashLeft, dashRight, banInput, canDash = true, landed, touchedGround, jumpCooldown; //pohyb
     int jumpSpeed, dashX, dashIndex, hupIndex; //pohyb
     bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, QToLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain; //utok
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
@@ -148,6 +147,7 @@ public partial class MainWindow : Form
                 }
                 if (terrain.Bounds.IntersectsWith(HitboxUp))
                 {
+                    Player.Top = terrain.Bottom + 3;
                     jumpSpeed = -2;
                     isJumping = false;
                     underTerrain = true;
@@ -169,7 +169,7 @@ public partial class MainWindow : Form
                 case 14: landedBlock.Top -= 2; Player.Top -= 2; break;
                 case 16: landedBlock.Top -= 3; Player.Top -= 3; break;
                 case 18: landedBlock.Top -= 2; Player.Top -= 2; break;
-                case 20: landedBlock.Top -= 1; Player.Top -= 1;landed = false; hupIndex = 0; break;
+                case 20: landedBlock.Top -= 1; Player.Top -= 1; landed = false; hupIndex = 0; break;
             }
             hupIndex++;
         }
@@ -209,10 +209,12 @@ public partial class MainWindow : Form
         else
             onGround = false;
 
-        if (Space && onGround)
+        if (Space && onGround && !jumpCooldown)
         {
             isJumping = true;
             jumpSpeed = 24;
+            jumpCooldown = true;
+            JumpCooldown.Start();
         }
 
         //vrsek sceny
@@ -281,7 +283,7 @@ public partial class MainWindow : Form
                     dashLeft = false;
                 if (terrain.Bounds.IntersectsWith(HitboxDashRight))
                     dashRight = false;
-            }  
+            }
         }
 
         if (dashLeft && dashX - Player.Left < 300)
@@ -727,11 +729,11 @@ public partial class MainWindow : Form
                     foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null))
                     {
                         if (terrain.Tag.ToString().Contains("Terrain"))
-                        if (enemy.projectile.Bounds.IntersectsWith(terrain.Bounds))
-                        {
-                            DestroyAll(enemy.projectile, GameScene);
-                            enemy.projectileStop = true;
-                        }
+                            if (enemy.projectile.Bounds.IntersectsWith(terrain.Bounds))
+                            {
+                                DestroyAll(enemy.projectile, GameScene);
+                                enemy.projectileStop = true;
+                            }
                     }
                     if (enemy.projectile.Bounds.IntersectsWith(Player.Bounds) && canGetHit && (enemy.projectile.Name == "projectileO" + (Enemy.ProjectileCountO - 1) || enemy.projectile.Name == "projectileH" + (Enemy.ProjectileCountH - 1)))
                     {
@@ -916,7 +918,9 @@ public partial class MainWindow : Form
                 "\nDifficulty: " + difficulty +
                 "\nInfo: " + info +
                 "\nInfo1: " + info1 +
-                "\nLanded: "+landed;
+                "\nLanded: " + landed;
+
+        GC.Collect();
     }
 
     #region playerTimers
@@ -1274,6 +1278,8 @@ public partial class MainWindow : Form
             foreach (Nugget nugget in nuggetList)
                 DestroyAll(nugget.pb, GameScene);
         }
+        if (baseballka != null)
+            DestroyAll(baseballka, GameScene);
 
         //reset hráèe
         Player.Left = 75;
@@ -1649,6 +1655,7 @@ public partial class MainWindow : Form
         GameScene.Visible = true;
         Focus();
         UpdateMethod.Start();
+
     }
 
     private void btContinue_Click(object sender, EventArgs e)
@@ -1668,6 +1675,11 @@ public partial class MainWindow : Form
     private void btInsane_MouseLeave(object sender, EventArgs e)
     {
         lbZaskolak.Visible = false;
+    }
+
+    private void JumpCooldown_Tick(object sender, EventArgs e)
+    {
+        jumpCooldown = false;
     }
 }
 

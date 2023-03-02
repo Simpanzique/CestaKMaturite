@@ -1,4 +1,4 @@
-﻿namespace Petr_RP_Silksong
+﻿namespace Petr_RP_CestaKMaturite
 {
     partial class MainWindow
     {
@@ -92,6 +92,7 @@
             NuggetDisappear = new System.Windows.Forms.Timer(components);
             Lemka = new System.Windows.Forms.Timer(components);
             Stark = new System.Windows.Forms.Timer(components);
+            JumpCooldown = new System.Windows.Forms.Timer(components);
             GameScene.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
             Menu.SuspendLayout();
@@ -804,6 +805,11 @@
             // 
             Stark.Tick += Stark_Tick;
             // 
+            // JumpCooldown
+            // 
+            JumpCooldown.Interval = 500;
+            JumpCooldown.Tick += JumpCooldown_Tick;
+            // 
             // MainWindow
             // 
             AutoScaleMode = AutoScaleMode.Inherit;
@@ -901,5 +907,6 @@
         private Button btEasy;
         private Label label22;
         private Label label30;
+        private System.Windows.Forms.Timer JumpCooldown;
     }
 }
