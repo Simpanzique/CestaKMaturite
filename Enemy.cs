@@ -5,6 +5,7 @@ internal class Enemy
     public static int Count = 1;
     public static int ProjectileCountO = 1;
     public static int ProjectileCountH = 1;
+    public static int ProjectileCountS = 1;
 
     public int health;
     public PictureBox pb;
@@ -69,12 +70,22 @@ internal class Enemy
             enemy.projectile.Width = 30;
             enemy.projectile.Height = 30;
 
-            if (enemy.type == "Oberhofnerova")
+            if (enemy.type == "Oberhofnerova" || enemy.type == "Stark")
             {
-                //random co hodi
-                enemy.projectile.BackColor = Color.Yellow;
-
-                enemy.projectile.Name = "projectileO" + ProjectileCountO;
+                if(enemy.type == "Oberhofnerova")
+                {
+                    //random co hodi
+                    enemy.projectile.BackColor = Color.Yellow;
+                    enemy.projectile.Name = "projectileO" + ProjectileCountO;
+                    ProjectileCountO++;
+                }
+                else //Stark
+                {
+                    enemy.projectile.BackColor = Color.Yellow;
+                    enemy.projectile.Name = "projectileS" + ProjectileCountS;
+                    ProjectileCountS++;
+                }
+               
                 enemy.projectile.Left = enemy.pb.Left + 45;
                 enemy.projectile.Top = enemy.pb.Top + 45;
                 enemy.projectile.SetBounds(enemy.pb.Left + 45, enemy.pb.Top + 45, 30, 30);
@@ -90,8 +101,6 @@ internal class Enemy
                     enemy.projectileSpeedY = (enemy.player.Y - enemy.projectile.Bottom) / 50;
                 }
                 enemy.projectileStop = false;
-
-                ProjectileCountO++;
             }
             if (enemy.type == "Hacek")
             {

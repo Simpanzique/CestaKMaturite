@@ -658,11 +658,13 @@ public partial class MainWindow : Form
                             stark.moving = true;
                             bossPhase = 2;
                             Stark.Interval = 3000;
+                            Stark.Start();
                             changedPhase = true;
                         }
                         else if (!(stark.health == StarkHP - 3 * (StarkHP / 30)) && !(stark.health == StarkHP - 6 * (StarkHP / 30)) && !(stark.health == StarkHP - 10 * (StarkHP / 30)))
                             changedPhase = false;
                     }
+
                 }
 
                 #endregion
@@ -1576,6 +1578,11 @@ public partial class MainWindow : Form
                     cheatHealth = false;
                 else
                     cheatHealth = true;
+            }
+            if(e.KeyCode == Keys.J)
+            {
+                if (stark != null)
+                    stark.health = 40;
             }
         }
         else
