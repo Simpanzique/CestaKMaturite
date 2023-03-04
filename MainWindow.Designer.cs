@@ -30,6 +30,12 @@
         {
             components = new System.ComponentModel.Container();
             GameScene = new Panel();
+            health5 = new PictureBox();
+            health4 = new PictureBox();
+            health3 = new PictureBox();
+            health2 = new PictureBox();
+            lbLevel = new Label();
+            health1 = new PictureBox();
             lbPozastaveno = new Label();
             lbStats = new Label();
             Player = new PictureBox();
@@ -61,6 +67,7 @@
             UpdateMethod = new System.Windows.Forms.Timer(components);
             AbilityQ = new System.Windows.Forms.Timer(components);
             Pause = new Panel();
+            Sound = new PictureBox();
             panelPauza = new Panel();
             label17 = new Label();
             label16 = new Label();
@@ -94,16 +101,28 @@
             Stark = new System.Windows.Forms.Timer(components);
             JumpCooldown = new System.Windows.Forms.Timer(components);
             GameScene.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)health5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)health4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)health3).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)health2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)health1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
             Menu.SuspendLayout();
             difficultySelect.SuspendLayout();
             Pause.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)Sound).BeginInit();
             panelPauza.SuspendLayout();
             SuspendLayout();
             // 
             // GameScene
             // 
             GameScene.BackColor = SystemColors.ActiveCaption;
+            GameScene.Controls.Add(health5);
+            GameScene.Controls.Add(health4);
+            GameScene.Controls.Add(health3);
+            GameScene.Controls.Add(health2);
+            GameScene.Controls.Add(lbLevel);
+            GameScene.Controls.Add(health1);
             GameScene.Controls.Add(lbPozastaveno);
             GameScene.Controls.Add(lbStats);
             GameScene.Controls.Add(Player);
@@ -113,6 +132,61 @@
             GameScene.Size = new Size(1520, 825);
             GameScene.TabIndex = 3;
             GameScene.Visible = false;
+            // 
+            // health5
+            // 
+            health5.BackgroundImageLayout = ImageLayout.Stretch;
+            health5.Location = new Point(366, 12);
+            health5.Name = "health5";
+            health5.Size = new Size(65, 70);
+            health5.TabIndex = 13;
+            health5.TabStop = false;
+            // 
+            // health4
+            // 
+            health4.BackgroundImageLayout = ImageLayout.Stretch;
+            health4.Location = new Point(295, 12);
+            health4.Name = "health4";
+            health4.Size = new Size(65, 70);
+            health4.TabIndex = 12;
+            health4.TabStop = false;
+            // 
+            // health3
+            // 
+            health3.BackgroundImageLayout = ImageLayout.Stretch;
+            health3.Location = new Point(224, 12);
+            health3.Name = "health3";
+            health3.Size = new Size(65, 70);
+            health3.TabIndex = 11;
+            health3.TabStop = false;
+            // 
+            // health2
+            // 
+            health2.BackgroundImageLayout = ImageLayout.Stretch;
+            health2.Location = new Point(153, 12);
+            health2.Name = "health2";
+            health2.Size = new Size(65, 70);
+            health2.TabIndex = 10;
+            health2.TabStop = false;
+            // 
+            // lbLevel
+            // 
+            lbLevel.AutoSize = true;
+            lbLevel.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            lbLevel.Location = new Point(15, 28);
+            lbLevel.Name = "lbLevel";
+            lbLevel.Size = new Size(46, 30);
+            lbLevel.TabIndex = 9;
+            lbLevel.Text = "1/5";
+            // 
+            // health1
+            // 
+            health1.BackgroundImageLayout = ImageLayout.Stretch;
+            health1.Location = new Point(83, 12);
+            health1.Name = "health1";
+            health1.Size = new Size(65, 70);
+            health1.TabIndex = 8;
+            health1.TabStop = false;
             // 
             // lbPozastaveno
             // 
@@ -131,7 +205,7 @@
             lbStats.BackColor = SystemColors.InfoText;
             lbStats.Font = new Font("Cascadia Code", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lbStats.ForeColor = Color.Lime;
-            lbStats.Location = new Point(9, 6);
+            lbStats.Location = new Point(12, 91);
             lbStats.Name = "lbStats";
             lbStats.Padding = new Padding(2, 2, 5, 5);
             lbStats.Size = new Size(79, 24);
@@ -143,7 +217,7 @@
             // 
             Player.Anchor = AnchorStyles.None;
             Player.BackColor = Color.Chocolate;
-            Player.Location = new Point(138, 477);
+            Player.Location = new Point(618, 440);
             Player.Name = "Player";
             Player.Size = new Size(75, 115);
             Player.TabIndex = 1;
@@ -267,8 +341,6 @@
             btInsane.Text = "Záškolák";
             btInsane.UseVisualStyleBackColor = false;
             btInsane.Click += btDifficulty;
-            btInsane.MouseEnter += btInsane_MouseEnter;
-            btInsane.MouseLeave += btInsane_MouseLeave;
             // 
             // label27
             // 
@@ -465,6 +537,7 @@
             // Pause
             // 
             Pause.BackColor = SystemColors.ActiveCaption;
+            Pause.Controls.Add(Sound);
             Pause.Controls.Add(panelPauza);
             Pause.Controls.Add(label18);
             Pause.Controls.Add(label19);
@@ -490,6 +563,18 @@
             Pause.Size = new Size(1520, 825);
             Pause.TabIndex = 4;
             Pause.Visible = false;
+            // 
+            // Sound
+            // 
+            Sound.BackColor = Color.Transparent;
+            Sound.BackgroundImage = Properties.Resources.sound;
+            Sound.BackgroundImageLayout = ImageLayout.Stretch;
+            Sound.Location = new Point(1435, 15);
+            Sound.Name = "Sound";
+            Sound.Size = new Size(70, 70);
+            Sound.TabIndex = 8;
+            Sound.TabStop = false;
+            Sound.Click += Sound_Click;
             // 
             // panelPauza
             // 
@@ -829,6 +914,11 @@
             KeyUp += MainWindow_KeyUp;
             GameScene.ResumeLayout(false);
             GameScene.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)health5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)health4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)health3).EndInit();
+            ((System.ComponentModel.ISupportInitialize)health2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)health1).EndInit();
             ((System.ComponentModel.ISupportInitialize)Player).EndInit();
             Menu.ResumeLayout(false);
             Menu.PerformLayout();
@@ -836,6 +926,7 @@
             difficultySelect.PerformLayout();
             Pause.ResumeLayout(false);
             Pause.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)Sound).EndInit();
             panelPauza.ResumeLayout(false);
             panelPauza.PerformLayout();
             ResumeLayout(false);
@@ -908,5 +999,12 @@
         private Label label22;
         private Label label30;
         private System.Windows.Forms.Timer JumpCooldown;
+        private PictureBox Sound;
+        private Label lbLevel;
+        private PictureBox health1;
+        private PictureBox health5;
+        private PictureBox health4;
+        private PictureBox health3;
+        private PictureBox health2;
     }
 }

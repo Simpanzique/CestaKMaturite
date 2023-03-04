@@ -9,9 +9,7 @@ internal class Enemy
 
     public int health;
     public PictureBox pb;
-    public bool gravitation;
     public bool moving;
-    public bool stopGravitation = false;
     public bool moveLeft;
     public bool moveRight = true;
     public bool moveSwitch = true;
@@ -24,10 +22,16 @@ internal class Enemy
     public int projectileCooldown;
     public int projectileSpeedX;
     public int projectileSpeedY;
+    public bool projectileGoDown;
+    public bool projectileGoRight;
+    public bool projectileParry;
+    public bool projectileLeft;
+    public bool projectileRight;
+    public bool projectileUp;
     public Point player;
 
     public Enemy(int positionX, int positionY, int width, int height, Color color,
-        int _health, bool _gravitation, bool _moving, int _xLeft, int _xRight, int _movementSpeed,
+        int _health, bool _moving, int _xLeft, int _xRight, int _movementSpeed,
         string _type, int _projectileCooldown, Panel scene)
     {
         //X,Y,Width,Height,Color,HP,Gravitation,Moving
@@ -35,7 +39,6 @@ internal class Enemy
         projectileCooldown = _projectileCooldown;
         type = _type;
         health = _health;
-        gravitation = _gravitation;
         moving = _moving;
         xLeft = _xLeft;
         xRight = _xRight;
@@ -51,7 +54,8 @@ internal class Enemy
             Name = "enemy" + Count
         };
         scene.Controls.Add(pb);
-
+        if (type == "Oberhofnerova")
+            pb.BringToFront();
         Count++;
     }
 
@@ -64,64 +68,78 @@ internal class Enemy
             enemy.projectile.Dispose();
         }
 
-        if (enemy.health > 0)
+        enemy.projectile = new()
         {
-            enemy.projectile = new PictureBox();
-            enemy.projectile.Width = 30;
-            enemy.projectile.Height = 30;
+            Width = 30,
+            Height = 30
+        };
 
-            if (enemy.type == "Oberhofnerova" || enemy.type == "Stark")
+        if (enemy.type == "Oberhofnerova" || enemy.type == "Stark")
+        {
+            if(enemy.type == "Oberhofnerova")
             {
-                if(enemy.type == "Oberhofnerova")
-                {
-                    //random co hodi
-                    enemy.projectile.BackColor = Color.Yellow;
-                    enemy.projectile.Name = "projectileO" + ProjectileCountO;
-                    ProjectileCountO++;
-                }
-                else //Stark
-                {
-                    enemy.projectile.BackColor = Color.Yellow;
-                    enemy.projectile.Name = "projectileS" + ProjectileCountS;
-                    ProjectileCountS++;
-                }
-               
+                //random co hodi
+                enemy.projectile.BackColor = Color.Yellow;
+                enemy.projectile.Name = "projectileO" + ProjectileCountO;
                 enemy.projectile.Left = enemy.pb.Left + 45;
                 enemy.projectile.Top = enemy.pb.Top + 45;
                 enemy.projectile.SetBounds(enemy.pb.Left + 45, enemy.pb.Top + 45, 30, 30);
-                enemy.player = new Point(player.Left + player.Width / 2, player.Top + player.Height / 2);
-                if (enemy.player.Y - projectile.Bottom > 300)
-                {
-                    enemy.projectileSpeedX = Math.Abs(enemy.player.X - enemy.projectile.Left) / 100;
-                    enemy.projectileSpeedY = (enemy.player.Y - enemy.projectile.Bottom) / 100;
-                }
-                else
-                {
-                    enemy.projectileSpeedX = Math.Abs(enemy.player.X - enemy.projectile.Left) / 50;
-                    enemy.projectileSpeedY = (enemy.player.Y - enemy.projectile.Bottom) / 50;
-                }
-                enemy.projectileStop = false;
+                ProjectileCountO++;
             }
-            if (enemy.type == "Hacek")
+            else //Stark
             {
                 enemy.projectile.BackColor = Color.Yellow;
-
-                enemy.projectile.Name = "projectileH" + ProjectileCountH;
+                enemy.projectile.Name = "projectileS" + ProjectileCountS;
                 enemy.projectile.Left = enemy.pb.Left + 40;
-                enemy.projectile.Top = enemy.pb.Top + 75;
-                enemy.projectile.SetBounds(enemy.pb.Left + 40, enemy.pb.Top + 75, 30, 30);
-                enemy.projectileStop = false;
-
-                ProjectileCountH++;
+                enemy.projectile.Top = enemy.pb.Top + 60;
+                enemy.projectile.Width = 60;
+                enemy.projectile.Height = 80;
+                enemy.projectile.SetBounds(enemy.pb.Left + 40, enemy.pb.Top + 60, 60, 80);
+                ProjectileCountS++;
             }
+               
+            enemy.player = new Point(player.Left + player.Width / 2, player.Top + player.Height / 2);
+            if (enemy.player.Y - projectile.Bottom > 300)
+            {
+                enemy.projectileSpeedX = Math.Abs(enemy.player.X - enemy.projectile.Left) / 100;
+                enemy.projectileSpeedY = (enemy.player.Y - enemy.projectile.Bottom) / 100;
+            }
+            else
+            {
+                enemy.projectileSpeedX = Math.Abs(enemy.player.X - enemy.projectile.Left) / 50;
+                enemy.projectileSpeedY = (enemy.player.Y - enemy.projectile.Bottom) / 50;
+            }
+            enemy.projectileStop = false;
+            if (enemy.projectile.Bottom > enemy.player.Y)
+                projectileGoDown = false;
+            else
+                projectileGoDown = true;
 
-            panel.Controls.Add(enemy.projectile);
+            if (enemy.projectile.Left > enemy.player.X)
+                projectileGoRight = false;
+            else
+                projectileGoRight = true;
         }
+        if (enemy.type == "Hacek")
+        {
+            enemy.projectile.BackColor = Color.Yellow;
+
+            enemy.projectile.Name = "projectileH" + ProjectileCountH;
+            enemy.projectile.Left = enemy.pb.Left + 40;
+            enemy.projectile.Top = enemy.pb.Top + 75;
+            enemy.projectile.SetBounds(enemy.pb.Left + 40, enemy.pb.Top + 75, 30, 30);
+            enemy.projectileStop = false;
+
+            ProjectileCountH++;
+        }
+
+        panel.Controls.Add(enemy.projectile);
+        enemy.projectile.BringToFront();
     }
 
     public void CheckHealth(Enemy enemy, Panel panel)
     {
-        if (enemy.health <= 0)
+        if (enemy.health <= 0 && enemy.type != "Stark")
         {
             if (enemy.projectile != null)
             {
@@ -136,6 +154,11 @@ internal class Enemy
             enemy.pb.Bounds = Rectangle.Empty;
             panel.Controls.Remove(enemy.pb);
             enemy.pb.Dispose();
+        }
+        else if(enemy.health <= 0 && enemy.type == "Stark")
+        {
+            //Victory!
+
         }
     }
 }

@@ -85,13 +85,13 @@
     <value>896, 10</value>
   </metadata>
   <metadata name="NuggetDisappear.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>965, 13</value>
+    <value>963, 6</value>
   </metadata>
   <metadata name="Lemka.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1096, 15</value>
+    <value>1094, 8</value>
   </metadata>
   <metadata name="Stark.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1166, 15</value>
+    <value>1164, 8</value>
   </metadata>
   <metadata name="JumpCooldown.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>372, 8</value>

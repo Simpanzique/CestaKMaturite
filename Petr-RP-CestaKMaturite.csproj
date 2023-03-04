@@ -10,6 +10,48 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\baseball.wav" />
+    <None Remove="Resources\chalk.wav" />
+    <None Remove="Resources\dash.wav" />
+    <None Remove="Resources\death.wav" />
+    <None Remove="Resources\ground.wav" />
+    <None Remove="Resources\hit.wav" />
+    <None Remove="Resources\hitEnemy.wav" />
+    <None Remove="Resources\jump.wav" />
+    <None Remove="Resources\lemka.wav" />
+    <None Remove="Resources\nextLevel.wav" />
+    <None Remove="Resources\nugget.wav" />
+    <None Remove="Resources\projectile.wav" />
+    <None Remove="Resources\projectileDestroy.wav" />
+    <None Remove="Resources\q.wav" />
+    <None Remove="Resources\ruler.wav" />
+    <None Remove="Resources\run.wav" />
+    <None Remove="Resources\select.wav" />
+    <None Remove="Resources\spring.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\baseball.wav" />
+    <EmbeddedResource Include="Resources\chalk.wav" />
+    <EmbeddedResource Include="Resources\dash.wav" />
+    <EmbeddedResource Include="Resources\death.wav" />
+    <EmbeddedResource Include="Resources\ground.wav" />
+    <EmbeddedResource Include="Resources\hit.wav" />
+    <EmbeddedResource Include="Resources\hitEnemy.wav" />
+    <EmbeddedResource Include="Resources\jump.wav" />
+    <EmbeddedResource Include="Resources\lemka.wav" />
+    <EmbeddedResource Include="Resources\nextLevel.wav" />
+    <EmbeddedResource Include="Resources\nugget.wav" />
+    <EmbeddedResource Include="Resources\projectile.wav" />
+    <EmbeddedResource Include="Resources\projectileDestroy.wav" />
+    <EmbeddedResource Include="Resources\q.wav" />
+    <EmbeddedResource Include="Resources\ruler.wav" />
+    <EmbeddedResource Include="Resources\run.wav" />
+    <EmbeddedResource Include="Resources\select.wav" />
+    <EmbeddedResource Include="Resources\spring.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NAudio" Version="2.1.0" />
   </ItemGroup>
 

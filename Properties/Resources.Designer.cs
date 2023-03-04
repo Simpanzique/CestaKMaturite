@@ -106,6 +106,26 @@ namespace Petr_RP_CestaKMaturite.Properties {
         }
         
         /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap heart_empty {
+            get {
+                object obj = ResourceManager.GetObject("heart_empty", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap heart_full {
+            get {
+                object obj = ResourceManager.GetObject("heart_full", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream hit {
@@ -117,9 +137,9 @@ namespace Petr_RP_CestaKMaturite.Properties {
         /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream hitEnemy {
+        internal static System.IO.UnmanagedMemoryStream hitSomeone {
             get {
-                return ResourceManager.GetStream("hitEnemy", resourceCulture);
+                return ResourceManager.GetStream("hitSomeone", resourceCulture);
             }
         }
         
@@ -176,6 +196,16 @@ namespace Petr_RP_CestaKMaturite.Properties {
         internal static System.IO.UnmanagedMemoryStream nugget {
             get {
                 return ResourceManager.GetStream("nugget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nuggetka {
+            get {
+                object obj = ResourceManager.GetObject("nuggetka", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -264,6 +294,26 @@ namespace Petr_RP_CestaKMaturite.Properties {
         }
         
         /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sound {
+            get {
+                object obj = ResourceManager.GetObject("sound", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sound_muted {
+            get {
+                object obj = ResourceManager.GetObject("sound_muted", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream spring {
@@ -289,15 +339,6 @@ namespace Petr_RP_CestaKMaturite.Properties {
             get {
                 object obj = ResourceManager.GetObject("Tuzka_reversed", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream walk {
-            get {
-                return ResourceManager.GetStream("walk", resourceCulture);
             }
         }
         
