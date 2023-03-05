@@ -9,7 +9,7 @@ internal class SoundManager
     ComponentResourceManager rm = new(typeof(Resources));
     Stream stream;
     WaveOut waveOut;
-    string file;
+    readonly string file;
     readonly float volume;
     public static bool bannedSound;
 
@@ -19,7 +19,7 @@ internal class SoundManager
         volume = _volume;
 
         stream = (Stream)rm.GetObject(file);
-        waveOut = new WaveOut();
+        waveOut = new();
         waveOut.Init(new WaveFileReader(stream));
     }
 

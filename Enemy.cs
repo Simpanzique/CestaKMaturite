@@ -139,7 +139,7 @@ internal class Enemy
 
     public void CheckHealth(Enemy enemy, Panel panel)
     {
-        if (enemy.health <= 0 && enemy.type != "Stark")
+        if (enemy.health <= 0)
         {
             if (enemy.projectile != null)
             {
@@ -154,11 +154,6 @@ internal class Enemy
             enemy.pb.Bounds = Rectangle.Empty;
             panel.Controls.Remove(enemy.pb);
             enemy.pb.Dispose();
-        }
-        else if(enemy.health <= 0 && enemy.type == "Stark")
-        {
-            //Victory!
-
         }
     }
 }

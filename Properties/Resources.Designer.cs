@@ -275,6 +275,15 @@ namespace Petr_RP_CestaKMaturite.Properties {
         }
         
         /// <summary>
+        ///   Vyhledá lokalizovaný řetězec podobný .
+        /// </summary>
+        internal static string SaveFile {
+            get {
+                return ResourceManager.GetString("SaveFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream select {

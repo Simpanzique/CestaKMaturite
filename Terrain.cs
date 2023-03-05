@@ -18,9 +18,8 @@ internal class Terrain
             Tag = Tag,
             Name = "terrain" + Count,
         };
-        //if (!Tag.Contains("Spring"))
+        if (!Tag.Contains("Spring"))
             scene.Controls.Add(pb);
-
 
         Count++;
     }

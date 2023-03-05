@@ -30,6 +30,8 @@
         {
             components = new System.ComponentModel.Container();
             GameScene = new Panel();
+            StarkHealth = new PictureBox();
+            StarkHealthBackground = new PictureBox();
             health5 = new PictureBox();
             health4 = new PictureBox();
             health3 = new PictureBox();
@@ -101,6 +103,8 @@
             Stark = new System.Windows.Forms.Timer(components);
             JumpCooldown = new System.Windows.Forms.Timer(components);
             GameScene.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)StarkHealth).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)StarkHealthBackground).BeginInit();
             ((System.ComponentModel.ISupportInitialize)health5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)health4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)health3).BeginInit();
@@ -117,6 +121,8 @@
             // GameScene
             // 
             GameScene.BackColor = SystemColors.ActiveCaption;
+            GameScene.Controls.Add(StarkHealth);
+            GameScene.Controls.Add(StarkHealthBackground);
             GameScene.Controls.Add(health5);
             GameScene.Controls.Add(health4);
             GameScene.Controls.Add(health3);
@@ -132,6 +138,26 @@
             GameScene.Size = new Size(1520, 825);
             GameScene.TabIndex = 3;
             GameScene.Visible = false;
+            // 
+            // StarkHealth
+            // 
+            StarkHealth.BackColor = Color.Red;
+            StarkHealth.Location = new Point(651, 25);
+            StarkHealth.Name = "StarkHealth";
+            StarkHealth.Size = new Size(600, 50);
+            StarkHealth.TabIndex = 15;
+            StarkHealth.TabStop = false;
+            StarkHealth.Visible = false;
+            // 
+            // StarkHealthBackground
+            // 
+            StarkHealthBackground.BackColor = Color.Black;
+            StarkHealthBackground.Location = new Point(651, 25);
+            StarkHealthBackground.Name = "StarkHealthBackground";
+            StarkHealthBackground.Size = new Size(600, 50);
+            StarkHealthBackground.TabIndex = 14;
+            StarkHealthBackground.TabStop = false;
+            StarkHealthBackground.Visible = false;
             // 
             // health5
             // 
@@ -841,7 +867,7 @@
             lbNazev.BackColor = Color.Transparent;
             lbNazev.Font = new Font("Segoe UI", 40F, FontStyle.Bold, GraphicsUnit.Point);
             lbNazev.ForeColor = Color.White;
-            lbNazev.Location = new Point(651, 73);
+            lbNazev.Location = new Point(600, 73);
             lbNazev.Name = "lbNazev";
             lbNazev.Size = new Size(179, 72);
             lbNazev.TabIndex = 0;
@@ -914,6 +940,8 @@
             KeyUp += MainWindow_KeyUp;
             GameScene.ResumeLayout(false);
             GameScene.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)StarkHealth).EndInit();
+            ((System.ComponentModel.ISupportInitialize)StarkHealthBackground).EndInit();
             ((System.ComponentModel.ISupportInitialize)health5).EndInit();
             ((System.ComponentModel.ISupportInitialize)health4).EndInit();
             ((System.ComponentModel.ISupportInitialize)health3).EndInit();
@@ -1006,5 +1034,7 @@
         private PictureBox health4;
         private PictureBox health3;
         private PictureBox health2;
+        private PictureBox StarkHealth;
+        private PictureBox StarkHealthBackground;
     }
 }

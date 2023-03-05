@@ -37,12 +37,12 @@ public partial class MainWindow : Form
     bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, QToLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain; //utok
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
     int levelCount = 1, playerHealth, dmgIndex, enMiddle, absence1Index, absence2Index;
-    bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false, soundDeathOnce; //managment
+    bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false, soundDeathOnce, won; string difficulty; //managment
     bool lemkaCooldown, lemkaRight; int lemkaIndex; //enemy
     int OberhofnerovaHP = 10, LemkaHP = 10, HacekHP = 10, SysalovaHP = 10, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft; //bossfight
-    string difficulty, info, info1;
-
+    bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear; //fixy timer˘
+    string info, info1; //bullshit
 
     Rectangle HitboxLeft;
     Rectangle HitboxRight;
@@ -74,6 +74,7 @@ public partial class MainWindow : Form
 
     Enemy bossEnemy1;
     Enemy bossEnemy2;
+    Terrain spring;
 
     private void UpdateMethod_Tick(object sender, EventArgs e)
     {
@@ -360,8 +361,13 @@ public partial class MainWindow : Form
                     Level5();
                     //Pauza();
                     break;
-                default:
-                    levelCount = 0;
+                case 6:
+                    //VICTORY
+                    if (!won)
+                    {
+                        won = true;
+                        MessageBox.Show("yey");
+                    }
                     break;
             }
             levelCount++;
@@ -523,9 +529,9 @@ public partial class MainWindow : Form
                     HitboxAttackRight = new PictureBox
                     {
                         Left = Player.Right,
-                        Top = Player.Top,
+                        Top = Player.Top + 20,
                         Width = rulerLength,
-                        Height = Player.Height,
+                        Height = 75,
                         BackColor = Color.Blue
                     };
                     GameScene.Controls.Add(HitboxAttackRight);
@@ -543,9 +549,9 @@ public partial class MainWindow : Form
                     HitboxAttackLeft = new PictureBox
                     {
                         Left = Player.Left - rulerLength,
-                        Top = Player.Top,
+                        Top = Player.Top + 20,
                         Width = rulerLength,
-                        Height = Player.Height,
+                        Height = 75,
                         BackColor = Color.Blue
                     };
                     GameScene.Controls.Add(HitboxAttackLeft);
@@ -560,7 +566,7 @@ public partial class MainWindow : Form
             }
 
             #endregion
-            
+
             foreach (Enemy enemy in enemyArray)
             {
                 #region Lemka
@@ -640,11 +646,8 @@ public partial class MainWindow : Form
                 if (enemy == stark && bossPhase == 2 && !starkIdle)
                     stark.moveSwitch = true;
 
-                //stark movement phase 3
-                if (enemy == stark && bossPhase == 3)
-                {
+                //stark movement phase 3 (v timeru switchuje doleva/doprava)
 
-                }
                 //stark movement idle
                 if (enemy == stark && starkIdle)
                 {
@@ -702,6 +705,14 @@ public partial class MainWindow : Form
                                 stark.moveRight = false;
                             }
                         }
+                        foreach (Enemy bossEnemy in enemyArray)
+                        {
+                            if (bossEnemy != stark)
+                            {
+                                bossEnemy.health = 0;
+                                bossEnemy.CheckHealth(bossEnemy, GameScene);
+                            }
+                        }
                         SpawnEnemyBoss();
                     }
                     else if (!changedPhase && (stark.health == 40)) //finalni zniceni baseballky
@@ -723,7 +734,7 @@ public partial class MainWindow : Form
                             if (bossEnemy != stark)
                             {
                                 bossEnemy.health = 0;
-                                bossEnemy.CheckHealth(bossEnemy,GameScene);
+                                bossEnemy.CheckHealth(bossEnemy, GameScene);
                             }
                         }
                     }
@@ -744,23 +755,57 @@ public partial class MainWindow : Form
                             }
                         }
                         changedPhase = true;
-                        SpawnEnemyBoss();
-                    }
-                    else if (!changedPhase && (stark.health == 20))
-                    {
-                        bossPhase = 3;
-                        changedPhase = true;
                         foreach (Enemy bossEnemy in enemyArray)
                         {
                             if (bossEnemy != stark)
                             {
                                 bossEnemy.health = 0;
-                                bossEnemy.CheckHealth(bossEnemy,GameScene);
+                                bossEnemy.CheckHealth(bossEnemy, GameScene);
                             }
                         }
+                        SpawnEnemyBoss();
+                    }
+                    else if (!changedPhase && (stark.health == 20))
+                    {
+                        Stark.Stop();
+                        foreach (Enemy bossEnemy in enemyArray)
+                        {
+                            if (bossEnemy != stark)
+                            {
+                                bossEnemy.health = 0;
+                                bossEnemy.CheckHealth(bossEnemy, GameScene);
+                            }
+                        }
+                        foreach (Terrain book in terrainArray)
+                        {
+                            if (book.pb.Tag.ToString().Contains("Book"))
+                            {
+                                DestroyAll(book.pb, GameScene);
+                                soundProjectileDestroy.PlaySound();
+                            }
+                        }
+                        bossPhase = 3;
+                        changedPhase = true;
+                        starkQ = true;
+                        starkIdle = true;
+                        if (Player.Left > stark.pb.Right)
+                        {
+                            stark.moveRight = false;
+                            stark.moveLeft = true;
+                        }
+                        else
+                        {
+                            stark.moveLeft = false;
+                            stark.moveRight = true;
+                        }
+                        stark.movementSpeed = 10;
+                        GameScene.Controls.Add(spring.pb);
+                        starkIndex = 1;
+                        Stark.Interval = 5000;
+                        Stark.Start();
                     }
                     else if (!(stark.health == 54) && !(stark.health == 48) && !(stark.health == 40) && !(stark.health == 34) &&
-                        !(stark.health == 28) && !(stark.health == 20))
+                        !(stark.health == 28) && !(stark.health == 20) && stark.health > 20)
                     {
                         changedPhase = false;
                     }
@@ -771,6 +816,8 @@ public partial class MainWindow : Form
 
                     if ((stark.health == 54 && bossEnemyCount == 1) || (stark.health == 34 && bossEnemyCount == 1))
                         starkIdle = false;
+
+                    StarkHealth.Width = stark.health * 10;
                 }
 
                 #endregion
@@ -1383,8 +1430,25 @@ public partial class MainWindow : Form
         }
         else if (bossPhase == 3)
         {
-            //dashuje pres mistnost
-            starkQ = true;
+            if (starkIndex == 1)
+            {
+                stark.pb.BackColor = Color.Green;
+                Stark.Interval = 1000;
+            }
+            else if (starkIndex == 2)
+            {
+                stark.moveLeft = !stark.moveLeft;
+                stark.moveRight = !stark.moveRight;
+                stark.pb.BackColor = Color.Yellow;
+                Stark.Interval = 2000;
+            }
+            else if (starkIndex == 3)
+            {
+                stark.pb.BackColor = Color.Red;
+                Stark.Interval = 3000;
+                starkIndex = 0;
+            }
+            starkIndex++;
         }
     }
 
@@ -1480,12 +1544,8 @@ public partial class MainWindow : Form
         {
             foreach (Enemy enemy in enemyArray)
             {
-                if (enemy.projectile != null)
-                    DestroyAll(enemy.projectile, GameScene);
-                enemy.moving = false;
-                enemy.projectileStop = true;
-
-                DestroyAll(enemy.pb, GameScene);
+                enemy.health = 0;
+                enemy.CheckHealth(enemy, GameScene);
             }
         }
         if (terrainArray != null)
@@ -1512,6 +1572,9 @@ public partial class MainWindow : Form
         //reset hr·Ëe
         Player.Left = 75;
         Player.Top = 526;
+
+        StarkHealthBackground.Visible = false;
+        StarkHealth.Visible = false;
     }
     void FullReset()
     {
@@ -1602,9 +1665,42 @@ public partial class MainWindow : Form
 
     void TimerHandler(string action)
     {
-        if (action == "NewGame")
+        //bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear;
+        if (action == "Pause")
         {
-
+            if (Oberhofnerova.Enabled)
+                tOberhofnerova = true;
+            if (Hacek.Enabled)
+                tHacek = true;
+            if (JumpCooldown.Enabled)
+                tJumpCooldown = true;
+            if (DMGcooldown.Enabled)
+                tDMGCooldown = true;
+            if (NuggetDisappear.Enabled)
+                tNuggetDisappear = true;
+            Oberhofnerova.Stop();
+            Hacek.Stop();
+            JumpCooldown.Stop();
+            DMGcooldown.Stop();
+            NuggetDisappear.Stop();
+        }
+        if (action == "Play")
+        {
+            if (tOberhofnerova)
+                Oberhofnerova.Start();
+            if (tHacek)
+                Hacek.Start();
+            if (tJumpCooldown)
+                JumpCooldown.Start();
+            if (tDMGCooldown)
+                DMGcooldown.Start();
+            if (tNuggetDisappear)
+                NuggetDisappear.Start();
+            tOberhofnerova = false;
+            tHacek = false;
+            tJumpCooldown = false;
+            tDMGCooldown = false;
+            tNuggetDisappear = false;
         }
     }
 
@@ -1790,7 +1886,7 @@ public partial class MainWindow : Form
         Player.Left = 138;
         Player.Top = 477;
 
-        Terrain terrain1 = new(734, 609, 60, 50, "Terrain Spring", Resources.Pruzina, GameScene);
+        spring = new(734, 609, 60, 50, "Terrain Spring", Resources.Pruzina, GameScene);
         Terrain terrain2 = new(121, 598, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
         Terrain terrain3 = new(402, 381, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
         Terrain terrain4 = new(977, 381, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
@@ -1799,7 +1895,7 @@ public partial class MainWindow : Form
         Terrain terrain7 = new(920, 795, 600, 30, "Terrain", Resources.Tuzka_reversed, GameScene);
         Terrain terrain8 = new(714, 658, 100, 167, "Terrain", Resources.Skrinka, GameScene);
 
-        terrainArray = new Terrain[] { terrain1, terrain2, terrain3, terrain4, terrain5, terrain6, terrain7, terrain8 };
+        terrainArray = new Terrain[] { spring, terrain2, terrain3, terrain4, terrain5, terrain6, terrain7, terrain8 };
 
         stark = new(1185, 175, 335, 650, Color.Red, StarkHP, true, 0, 1185, StarkMovementSpeed, "Stark", 5000, GameScene);
 
@@ -1809,6 +1905,8 @@ public partial class MainWindow : Form
 
         bossPhase = 1;
         starkIdle = false;
+        StarkHealth.Visible = true;
+        StarkHealthBackground.Visible = true;
 
         lbLevel.Text = "5 / 5";
         lbLevel.ForeColor = Color.Red;
@@ -1846,9 +1944,11 @@ public partial class MainWindow : Form
                     Pause.Enabled = true;
                     GameScene.Enabled = false;
                     GameScene.Visible = false;
-                    UpdateMethod.Stop();
                     panelPauza.Visible = true;
                     lbNazev.Text = "Pauza";
+                    lbNazev.Left = 650;
+                    UpdateMethod.Stop();
+                    TimerHandler("Pause");
                     Focus();
                 }
                 else
@@ -1858,6 +1958,7 @@ public partial class MainWindow : Form
                     GameScene.Enabled = true;
                     GameScene.Visible = true;
                     UpdateMethod.Start();
+                    TimerHandler("Play");
                     Focus();
                 }
             }
@@ -1886,15 +1987,25 @@ public partial class MainWindow : Form
                 else
                     cheatHealth = true;
             }
-            if (e.KeyCode == Keys.J)
+            if (e.KeyCode == Keys.P)
             {
                 if (stark != null)
                     stark.health = 40;
+                changedPhase = false;
             }
-            if (e.KeyCode == Keys.H)
+            if (e.KeyCode == Keys.O)
             {
                 if (stark != null)
+                    stark.health = 20;
+                changedPhase = false;
+            }
+            if (e.KeyCode == Keys.I)
+            {
+                if (stark != null)
+                {
                     stark.health -= 2;
+                    stark.CheckHealth(stark, GameScene);
+                }
             }
         }
         else
@@ -1933,6 +2044,7 @@ public partial class MainWindow : Form
         Pause.Visible = true;
         panelPauza.Visible = false;
         lbNazev.Text = "Moûnosti";
+        lbNazev.Left = 600;
         Focus();
         soundSelect.PlaySound();
     }
@@ -1986,6 +2098,7 @@ public partial class MainWindow : Form
         GameScene.Visible = true;
         Focus();
         UpdateMethod.Start();
+        TimerHandler("Play");
         soundSelect.PlaySound();
     }
     private void JumpCooldown_Tick(object sender, EventArgs e)
