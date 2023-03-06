@@ -1479,18 +1479,22 @@ public partial class MainWindow : Form
             if(starkIndex == 0)
             {
                 //special, hacek objevi a nici knizky, prida pruzinu
+                int cooldown = 0;
                 foreach (Terrain book in terrainArray)
                 {
-                    if (book.pb.Tag.ToString().Contains("Book"))
+                    if (book.pb.Tag.ToString().Contains("Book") && book.pb.Bounds != Rectangle.Empty)
                     {
                         DestroyAll(book.pb, GameScene);
                         soundDestroy.PlaySound();
                         GameScene.Refresh();
                         Thread.Sleep(1000);
+                        cooldown += 1000;
                     }
                 }
                 GameScene.Controls.Add(spring.pb);
+                GameScene.Refresh();
                 soundSpring.PlaySound();
+                Thread.Sleep(4000 - cooldown);
 
                 DestroyAll(hacek, GameScene);
                 DestroyAll(hacekPlatforma, GameScene);
