@@ -30,6 +30,8 @@
         {
             components = new System.ComponentModel.Container();
             GameScene = new Panel();
+            lbRozvrh2 = new Label();
+            lbRozvrh1 = new Label();
             StarkHealth = new PictureBox();
             StarkHealthBackground = new PictureBox();
             health5 = new PictureBox();
@@ -121,6 +123,8 @@
             // GameScene
             // 
             GameScene.BackColor = SystemColors.ActiveCaption;
+            GameScene.Controls.Add(lbRozvrh2);
+            GameScene.Controls.Add(lbRozvrh1);
             GameScene.Controls.Add(StarkHealth);
             GameScene.Controls.Add(StarkHealthBackground);
             GameScene.Controls.Add(health5);
@@ -138,6 +142,30 @@
             GameScene.Size = new Size(1520, 825);
             GameScene.TabIndex = 3;
             GameScene.Visible = false;
+            // 
+            // lbRozvrh2
+            // 
+            lbRozvrh2.AutoSize = true;
+            lbRozvrh2.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            lbRozvrh2.ForeColor = Color.Red;
+            lbRozvrh2.Location = new Point(1210, 139);
+            lbRozvrh2.Name = "lbRozvrh2";
+            lbRozvrh2.Size = new Size(159, 56);
+            lbRozvrh2.TabIndex = 21;
+            lbRozvrh2.Text = "Nečekaná změna\r\n        v rozvrhu!";
+            lbRozvrh2.Visible = false;
+            // 
+            // lbRozvrh1
+            // 
+            lbRozvrh1.AutoSize = true;
+            lbRozvrh1.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
+            lbRozvrh1.ForeColor = Color.Red;
+            lbRozvrh1.Location = new Point(139, 139);
+            lbRozvrh1.Name = "lbRozvrh1";
+            lbRozvrh1.Size = new Size(159, 56);
+            lbRozvrh1.TabIndex = 18;
+            lbRozvrh1.Text = "Nečekaná změna\r\n        v rozvrhu!";
+            lbRozvrh1.Visible = false;
             // 
             // StarkHealth
             // 
@@ -243,7 +271,7 @@
             // 
             Player.Anchor = AnchorStyles.None;
             Player.BackColor = Color.Chocolate;
-            Player.Location = new Point(618, 440);
+            Player.Location = new Point(731, 377);
             Player.Name = "Player";
             Player.Size = new Size(75, 115);
             Player.TabIndex = 1;
@@ -1036,5 +1064,7 @@
         private PictureBox health2;
         private PictureBox StarkHealth;
         private PictureBox StarkHealthBackground;
+        private Label lbRozvrh1;
+        private Label lbRozvrh2;
     }
 }

@@ -14,6 +14,7 @@
     <None Remove="Resources\chalk.wav" />
     <None Remove="Resources\dash.wav" />
     <None Remove="Resources\death.wav" />
+    <None Remove="Resources\destroy.wav" />
     <None Remove="Resources\ground.wav" />
     <None Remove="Resources\hit.wav" />
     <None Remove="Resources\hitEnemy.wav" />
@@ -35,6 +36,7 @@
     <EmbeddedResource Include="Resources\chalk.wav" />
     <EmbeddedResource Include="Resources\dash.wav" />
     <EmbeddedResource Include="Resources\death.wav" />
+    <EmbeddedResource Include="Resources\destroy.wav" />
     <EmbeddedResource Include="Resources\ground.wav" />
     <EmbeddedResource Include="Resources\hit.wav" />
     <EmbeddedResource Include="Resources\hitEnemy.wav" />

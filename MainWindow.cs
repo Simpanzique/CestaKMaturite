@@ -28,6 +28,7 @@ public partial class MainWindow : Form
     readonly SoundManager soundRun = new("run", 0.5f);
     readonly SoundManager soundSelect = new("select", 0.5f);
     readonly SoundManager soundWin = new("win", 0.5f);
+    readonly SoundManager soundDestroy = new("destroy", 0.5f);
     #endregion
 
     //Globální promìnné
@@ -75,6 +76,9 @@ public partial class MainWindow : Form
     Enemy bossEnemy1;
     Enemy bossEnemy2;
     Terrain spring;
+    PictureBox hacek;
+    PictureBox hacekPlatforma;
+
 
     private void UpdateMethod_Tick(object sender, EventArgs e)
     {
@@ -767,7 +771,6 @@ public partial class MainWindow : Form
                     }
                     else if (!changedPhase && (stark.health == 20))
                     {
-                        Stark.Stop();
                         foreach (Enemy bossEnemy in enemyArray)
                         {
                             if (bossEnemy != stark)
@@ -776,14 +779,7 @@ public partial class MainWindow : Form
                                 bossEnemy.CheckHealth(bossEnemy, GameScene);
                             }
                         }
-                        foreach (Terrain book in terrainArray)
-                        {
-                            if (book.pb.Tag.ToString().Contains("Book"))
-                            {
-                                DestroyAll(book.pb, GameScene);
-                                soundProjectileDestroy.PlaySound();
-                            }
-                        }
+                        Stark.Stop();
                         bossPhase = 3;
                         changedPhase = true;
                         starkQ = true;
@@ -798,10 +794,60 @@ public partial class MainWindow : Form
                             stark.moveLeft = false;
                             stark.moveRight = true;
                         }
+                        if (stark.moveRight)
+                        {
+                            Player.Left = 170;
+                            Player.Top = 680;
+                            hacek = new PictureBox
+                            {
+                                Left = 15,
+                                Top = 105,
+                                Width = 110,
+                                Height = 180,
+                                BackColor = Color.Red,
+                                BackgroundImageLayout = ImageLayout.Stretch,
+                            };
+                            hacekPlatforma = new PictureBox
+                            {
+                                Left = 15,
+                                Top = 284,
+                                Width = 110,
+                                Height = 27,
+                                BackgroundImage = Resources.Knizka,
+                                BackgroundImageLayout = ImageLayout.Stretch,
+                            };
+                            lbRozvrh1.Visible = true;
+                        }
+                        else
+                        {
+                            Player.Left = 1250;
+                            Player.Top = 680;
+                            hacek = new PictureBox
+                            {
+                                Left = 1395,
+                                Top = 105,
+                                Width = 110,
+                                Height = 180,
+                                BackColor = Color.Red,
+                                BackgroundImageLayout = ImageLayout.Stretch,
+                            };
+                            hacekPlatforma = new PictureBox
+                            {
+                                Left = 1395,
+                                Top = 284,
+                                Width = 110,
+                                Height = 27,
+                                BackgroundImage = Resources.Knizka,
+                                BackgroundImageLayout = ImageLayout.Stretch,
+                            };
+                            lbRozvrh2.Visible = true;
+                        }
+                        GameScene.Controls.Add(hacek);
+                        GameScene.Controls.Add(hacekPlatforma);
+
                         stark.movementSpeed = 10;
-                        GameScene.Controls.Add(spring.pb);
-                        starkIndex = 1;
-                        Stark.Interval = 5000;
+                        starkIndex = 0;
+                        Stark.Interval = 500;
                         Stark.Start();
                     }
                     else if (!(stark.health == 54) && !(stark.health == 48) && !(stark.health == 40) && !(stark.health == 34) &&
@@ -890,7 +936,7 @@ public partial class MainWindow : Form
                                 DestroyAll(terrain, GameScene);
                                 DestroyAll(enemy.projectile, GameScene);
                                 enemy.projectileStop = true;
-                                soundProjectileDestroy.PlaySound();
+                                soundDestroy.PlaySound();
                             }
                             //když projektil narazí do terénu, znièí se
                             if (enemy.projectile.Bounds.IntersectsWith(terrain.Bounds))
@@ -1430,6 +1476,28 @@ public partial class MainWindow : Form
         }
         else if (bossPhase == 3)
         {
+            if(starkIndex == 0)
+            {
+                //special, hacek objevi a nici knizky, prida pruzinu
+                foreach (Terrain book in terrainArray)
+                {
+                    if (book.pb.Tag.ToString().Contains("Book"))
+                    {
+                        DestroyAll(book.pb, GameScene);
+                        soundDestroy.PlaySound();
+                        GameScene.Refresh();
+                        Thread.Sleep(1000);
+                    }
+                }
+                GameScene.Controls.Add(spring.pb);
+                soundSpring.PlaySound();
+
+                DestroyAll(hacek, GameScene);
+                DestroyAll(hacekPlatforma, GameScene);
+                lbRozvrh1.Visible = false;
+                lbRozvrh2.Visible = false;
+                Stark.Interval = 4000;
+            }
             if (starkIndex == 1)
             {
                 stark.pb.BackColor = Color.Green;

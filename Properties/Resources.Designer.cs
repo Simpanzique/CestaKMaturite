@@ -99,6 +99,15 @@ namespace Petr_RP_CestaKMaturite.Properties {
         /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream destroy {
+            get {
+                return ResourceManager.GetStream("destroy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream ground {
             get {
                 return ResourceManager.GetStream("ground", resourceCulture);
