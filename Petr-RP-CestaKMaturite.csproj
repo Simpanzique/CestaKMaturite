@@ -27,6 +27,7 @@
     <None Remove="Resources\q.wav" />
     <None Remove="Resources\ruler.wav" />
     <None Remove="Resources\run.wav" />
+    <None Remove="Resources\SaveFile.txt" />
     <None Remove="Resources\select.wav" />
     <None Remove="Resources\spring.wav" />
   </ItemGroup>
@@ -49,6 +50,7 @@
     <EmbeddedResource Include="Resources\q.wav" />
     <EmbeddedResource Include="Resources\ruler.wav" />
     <EmbeddedResource Include="Resources\run.wav" />
+    <EmbeddedResource Include="Resources\SaveFile.txt" />
     <EmbeddedResource Include="Resources\select.wav" />
     <EmbeddedResource Include="Resources\spring.wav" />
   </ItemGroup>

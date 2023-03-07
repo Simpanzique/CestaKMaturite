@@ -46,6 +46,8 @@
             lbPress = new Label();
             lbGameOver = new Label();
             Menu = new Panel();
+            pbHardestDifficulty = new PictureBox();
+            pbCompletedGame = new PictureBox();
             label30 = new Label();
             difficultySelect = new Panel();
             lbZaskolak = new Label();
@@ -71,6 +73,7 @@
             UpdateMethod = new System.Windows.Forms.Timer(components);
             AbilityQ = new System.Windows.Forms.Timer(components);
             Pause = new Panel();
+            label31 = new Label();
             Sound = new PictureBox();
             panelPauza = new Panel();
             label17 = new Label();
@@ -104,6 +107,7 @@
             Lemka = new System.Windows.Forms.Timer(components);
             Stark = new System.Windows.Forms.Timer(components);
             JumpCooldown = new System.Windows.Forms.Timer(components);
+            btResetProgress = new Button();
             GameScene.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)StarkHealth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StarkHealthBackground).BeginInit();
@@ -114,6 +118,8 @@
             ((System.ComponentModel.ISupportInitialize)health1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
             Menu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pbHardestDifficulty).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbCompletedGame).BeginInit();
             difficultySelect.SuspendLayout();
             Pause.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Sound).BeginInit();
@@ -306,6 +312,8 @@
             // 
             Menu.BackColor = SystemColors.ActiveCaption;
             Menu.BackgroundImageLayout = ImageLayout.Stretch;
+            Menu.Controls.Add(pbHardestDifficulty);
+            Menu.Controls.Add(pbCompletedGame);
             Menu.Controls.Add(label30);
             Menu.Controls.Add(difficultySelect);
             Menu.Controls.Add(btContinue);
@@ -318,6 +326,26 @@
             Menu.Name = "Menu";
             Menu.Size = new Size(1520, 825);
             Menu.TabIndex = 14;
+            // 
+            // pbHardestDifficulty
+            // 
+            pbHardestDifficulty.BackColor = Color.Maroon;
+            pbHardestDifficulty.Location = new Point(83, 15);
+            pbHardestDifficulty.Name = "pbHardestDifficulty";
+            pbHardestDifficulty.Size = new Size(50, 50);
+            pbHardestDifficulty.TabIndex = 9;
+            pbHardestDifficulty.TabStop = false;
+            pbHardestDifficulty.Visible = false;
+            // 
+            // pbCompletedGame
+            // 
+            pbCompletedGame.BackColor = Color.GreenYellow;
+            pbCompletedGame.Location = new Point(15, 15);
+            pbCompletedGame.Name = "pbCompletedGame";
+            pbCompletedGame.Size = new Size(50, 50);
+            pbCompletedGame.TabIndex = 8;
+            pbCompletedGame.TabStop = false;
+            pbCompletedGame.Visible = false;
             // 
             // label30
             // 
@@ -591,6 +619,8 @@
             // Pause
             // 
             Pause.BackColor = SystemColors.ActiveCaption;
+            Pause.Controls.Add(btResetProgress);
+            Pause.Controls.Add(label31);
             Pause.Controls.Add(Sound);
             Pause.Controls.Add(panelPauza);
             Pause.Controls.Add(label18);
@@ -618,10 +648,19 @@
             Pause.TabIndex = 4;
             Pause.Visible = false;
             // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Location = new Point(1370, 97);
+            label31.Name = "label31";
+            label31.Size = new Size(138, 45);
+            label31.TabIndex = 22;
+            label31.Text = "Doporučuji nezapínat,\r\notravný a zpomaluje hru.\r\n                                      <3";
+            // 
             // Sound
             // 
             Sound.BackColor = Color.Transparent;
-            Sound.BackgroundImage = Properties.Resources.sound;
+            Sound.BackgroundImage = Properties.Resources.sound_muted;
             Sound.BackgroundImageLayout = ImageLayout.Stretch;
             Sound.Location = new Point(1435, 15);
             Sound.Name = "Sound";
@@ -949,21 +988,36 @@
             JumpCooldown.Interval = 500;
             JumpCooldown.Tick += JumpCooldown_Tick;
             // 
+            // btResetProgress
+            // 
+            btResetProgress.BackColor = Color.RosyBrown;
+            btResetProgress.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            btResetProgress.Location = new Point(12, 779);
+            btResetProgress.Name = "btResetProgress";
+            btResetProgress.Size = new Size(108, 37);
+            btResetProgress.TabIndex = 23;
+            btResetProgress.TabStop = false;
+            btResetProgress.Text = "Reset úspěchů";
+            btResetProgress.UseVisualStyleBackColor = false;
+            btResetProgress.Click += btResetProgress_Click;
+            // 
             // MainWindow
             // 
             AutoScaleMode = AutoScaleMode.Inherit;
             ClientSize = new Size(1520, 825);
             Controls.Add(lbPress);
             Controls.Add(lbGameOver);
-            Controls.Add(GameScene);
-            Controls.Add(Menu);
             Controls.Add(Pause);
+            Controls.Add(Menu);
+            Controls.Add(GameScene);
+            DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "MainWindow";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Cesta k Maturitě";
+            Load += MainWindow_Load;
             KeyDown += MainWindow_KeyDown;
             KeyUp += MainWindow_KeyUp;
             GameScene.ResumeLayout(false);
@@ -978,6 +1032,8 @@
             ((System.ComponentModel.ISupportInitialize)Player).EndInit();
             Menu.ResumeLayout(false);
             Menu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pbHardestDifficulty).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbCompletedGame).EndInit();
             difficultySelect.ResumeLayout(false);
             difficultySelect.PerformLayout();
             Pause.ResumeLayout(false);
@@ -1066,5 +1122,9 @@
         private PictureBox StarkHealthBackground;
         private Label lbRozvrh1;
         private Label lbRozvrh2;
+        private PictureBox pbHardestDifficulty;
+        private PictureBox pbCompletedGame;
+        private Label label31;
+        private Button btResetProgress;
     }
 }

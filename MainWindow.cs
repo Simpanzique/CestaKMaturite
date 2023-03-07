@@ -37,13 +37,18 @@ public partial class MainWindow : Form
     int jumpSpeed, dashX, dashIndex, hupIndex; //pohyb
     bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, QToLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain; //utok
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
-    int levelCount = 1, playerHealth, dmgIndex, enMiddle, absence1Index, absence2Index;
+    int levelCount = 1, playerHealth, dmgIndex, enMiddle, absence1Index, absence2Index, currentLevel;
     bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false, soundDeathOnce, won; string difficulty; //managment
     bool lemkaCooldown, lemkaRight; int lemkaIndex; //enemy
-    int OberhofnerovaHP = 10, LemkaHP = 10, HacekHP = 10, SysalovaHP = 10, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
+    int OberhofnerovaHP = 6, LemkaHP = 12, HacekHP = 10, SysalovaHP = 12, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft; //bossfight
     bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear; //fixy timerù
     string info, info1; //bullshit
+    bool continueGame, completedGame, hardestDifficulty;
+    int savedHealth, savedLevel;
+
+    string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+    string fileName = "CestaKMaturite_SaveFile.txt";
 
     Rectangle HitboxLeft;
     Rectangle HitboxRight;
@@ -91,7 +96,7 @@ public partial class MainWindow : Form
         //kurzor
         Point cursor = this.PointToClient(Cursor.Position);
 
-        if ((Control.MouseButtons & MouseButtons.Left) != 0)
+        if (((Control.MouseButtons & MouseButtons.Left) != 0) && !disableallInputs)
             LMB = true;
         else
             LMB = false;
@@ -370,7 +375,21 @@ public partial class MainWindow : Form
                     if (!won)
                     {
                         won = true;
+                        continueGame = false;
+                        completedGame = true;
+                        if (difficulty == "Insane")
+                            hardestDifficulty = true;
+                        btContinue.Enabled = false;
+                        SaveFileWrite();
                         MessageBox.Show("yey");
+                        UpdateProgress();
+                        FullReset();
+                        UpdateMethod.Stop();
+                        GameScene.Visible = false;
+                        GameScene.Enabled = false;
+                        Menu.Visible = true;
+                        Menu.Enabled = true;
+                        Focus();
                     }
                     break;
             }
@@ -626,69 +645,70 @@ public partial class MainWindow : Form
 
                 #region BossFight
                 //BOSS FIGHT
-                //stark movement phase 1
-                if (enemy == stark && bossPhase == 1 && !starkIdle)
-                {
-                    stark.moveSwitch = false;
-                    if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 20)
-                    {
-                        stark.moveLeft = false;
-                        stark.moveRight = false;
-                    }
-                    else if (stark.pb.Left + 135 > Player.Left)
-                    {
-                        stark.moveLeft = true;
-                        stark.moveRight = false;
-                    }
-                    else if (stark.pb.Left + 135 < Player.Left)
-                    {
-                        stark.moveRight = true;
-                        stark.moveLeft = false;
-                    }
-                }
-                //stark movement phase 2 je default moving (zapíná se po znièení baseballky)
-                if (enemy == stark && bossPhase == 2 && !starkIdle)
-                    stark.moveSwitch = true;
 
-                //stark movement phase 3 (v timeru switchuje doleva/doprava)
-
-                //stark movement idle
-                if (enemy == stark && starkIdle)
-                {
-                    stark.moveSwitch = false;
-                    stark.moving = true;
-                }
-
-                //stark baseballka
-                if (enemy == stark && bossPhase == 1 && !baseballCooldown && !starkIdle)
-                {
-                    if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 40 && Player.Top + Player.Height > stark.pb.Top + 465)
-                    {
-                        stark.moving = false;
-                        starkIndex = 0;
-                        Stark.Interval = 1000;
-                        Stark.Start();
-                    }
-                }
-
-                //dmg hracovi
-                if (baseballka != null && baseballka.Bounds.IntersectsWith(Player.Bounds) && canGetHit)
-                    Hit(baseballka);
-
-                //hrac dava dmg Starkovi
-                if (baseballGetDMG && !alreadyHit && baseballka != null && ((HitboxAttackLeft != null && baseballka.Bounds.IntersectsWith(HitboxAttackLeft.Bounds)) ||
-                        (HitboxAttackRight != null && baseballka.Bounds.IntersectsWith(HitboxAttackRight.Bounds)) ||
-                        (HitboxAttackTop != null && baseballka.Bounds.IntersectsWith(HitboxAttackTop.Bounds))))
-                {
-                    stark.health -= 2;
-                    alreadyHit = true;
-                    stark.CheckHealth(stark, GameScene);
-                    soundhitSomeone.PlaySound();
-                }
-
-                //zjisteni Starkovo HP a zmìna bossPhase
                 if (stark != null)
                 {
+                    //stark movement phase 1
+                    if (enemy == stark && bossPhase == 1 && !starkIdle)
+                    {
+                        stark.moveSwitch = false;
+                        if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 20)
+                        {
+                            stark.moveLeft = false;
+                            stark.moveRight = false;
+                        }
+                        else if (stark.pb.Left + 135 > Player.Left)
+                        {
+                            stark.moveLeft = true;
+                            stark.moveRight = false;
+                        }
+                        else if (stark.pb.Left + 135 < Player.Left)
+                        {
+                            stark.moveRight = true;
+                            stark.moveLeft = false;
+                        }
+                    }
+                    //stark movement phase 2 je default moving (zapíná se po znièení baseballky)
+                    if (enemy == stark && bossPhase == 2 && !starkIdle)
+                        stark.moveSwitch = true;
+
+                    //stark movement phase 3 (v timeru switchuje doleva/doprava)
+
+                    //stark movement idle
+                    if (enemy == stark && starkIdle)
+                    {
+                        stark.moveSwitch = false;
+                        stark.moving = true;
+                    }
+
+                    //stark baseballka
+                    if (enemy == stark && bossPhase == 1 && !baseballCooldown && !starkIdle)
+                    {
+                        if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 40 && Player.Top + Player.Height > stark.pb.Top + 465)
+                        {
+                            stark.moving = false;
+                            starkIndex = 0;
+                            Stark.Interval = 1000;
+                            Stark.Start();
+                        }
+                    }
+
+                    //dmg hracovi
+                    if (baseballka != null && baseballka.Bounds.IntersectsWith(Player.Bounds) && canGetHit)
+                        Hit(baseballka);
+
+                    //hrac dava dmg Starkovi
+                    if (baseballGetDMG && !alreadyHit && baseballka != null && ((HitboxAttackLeft != null && baseballka.Bounds.IntersectsWith(HitboxAttackLeft.Bounds)) ||
+                            (HitboxAttackRight != null && baseballka.Bounds.IntersectsWith(HitboxAttackRight.Bounds)) ||
+                            (HitboxAttackTop != null && baseballka.Bounds.IntersectsWith(HitboxAttackTop.Bounds))))
+                    {
+                        stark.health -= 2;
+                        alreadyHit = true;
+                        stark.CheckHealth(stark, GameScene);
+                        soundhitSomeone.PlaySound();
+                    }
+
+                    //zjisteni Starkovo HP a zmìna bossPhase
                     if (!changedPhase && (stark.health == 54 || stark.health == 48))
                     {
                         Stark.Interval = 1;
@@ -1178,8 +1198,6 @@ public partial class MainWindow : Form
                 "\nLanded: " + landed +
                 "\nStarkIdle: " + starkIdle +
                 "\niEnemy: " + iEnemy.ToString();
-
-        GC.Collect();
     }
 
     #region playerTimers
@@ -1476,7 +1494,7 @@ public partial class MainWindow : Form
         }
         else if (bossPhase == 3)
         {
-            if(starkIndex == 0)
+            if (starkIndex == 0)
             {
                 //special, hacek objevi a nici knizky, prida pruzinu
                 int cooldown = 0;
@@ -1595,6 +1613,7 @@ public partial class MainWindow : Form
             playerHealth--;
             info = "hit s " + pb.Name;
         }
+        SaveFileWrite();
         HealthUI();
     }
     static private void DestroyAll(PictureBox pb, Panel panel)
@@ -1776,6 +1795,72 @@ public partial class MainWindow : Form
         }
     }
 
+    void SaveFileRead()
+    {
+        string filePath = Path.Combine(folderPath, fileName);
+
+        if (!File.Exists(filePath))
+        {
+            continueGame = false;
+            savedHealth = 0;
+            savedLevel = 0;
+            completedGame = false;
+            hardestDifficulty = false;
+            using (StreamWriter writer = File.CreateText(filePath))
+            {
+                writer.Write("false\n0\n0\nfalse\nfalse");
+            }
+        }
+        else
+        {
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                continueGame = Convert.ToBoolean(reader.ReadLine());
+                savedHealth = Convert.ToInt32(reader.ReadLine());
+                savedLevel = Convert.ToInt32(reader.ReadLine());
+                completedGame = Convert.ToBoolean(reader.ReadLine());
+                hardestDifficulty = Convert.ToBoolean(reader.ReadLine());
+            }
+        }
+    }
+
+    void SaveFileWrite()
+    {
+        // velmi jednoduchý saveFile, každá line jeden udaj
+        // pokraèovat ve høe, hp, level, dohral hru, dohral na nejtezsi obtiznost.. 
+
+        savedHealth = playerHealth;
+        savedLevel = currentLevel;
+        string saveFile = continueGame + "\n" + savedHealth + "\n" + savedLevel + "\n" + completedGame + "\n" + hardestDifficulty;
+        string filePath = Path.Combine(folderPath, fileName);
+
+        File.WriteAllTextAsync(filePath, saveFile);
+    }
+
+    void UpdateProgress()
+    {
+        SaveFileRead();
+        if (continueGame)
+        {
+            levelCount = savedLevel;
+            playerHealth = savedHealth;
+            btContinue.Enabled = true;
+        }
+        if (completedGame)
+        {
+            pbCompletedGame.Visible = true;
+            btInsane.Enabled = true;
+            lbZaskolak.Visible = false;
+        }
+        else
+            pbCompletedGame.Visible = false;
+
+        if (hardestDifficulty)
+            pbHardestDifficulty.Visible = true;
+        else
+            pbHardestDifficulty.Visible = false;
+    }
+
     #endregion
 
     #region LevelDesign
@@ -1834,6 +1919,8 @@ public partial class MainWindow : Form
         Oberhofnerova.Start();
 
         lbLevel.Text = "1 / 5";
+        currentLevel = 1;
+        SaveFileWrite();
     }
     void Level2()
     {
@@ -1867,6 +1954,8 @@ public partial class MainWindow : Form
         Absence1.Start();
 
         lbLevel.Text = "2 / 5";
+        currentLevel = 2;
+        SaveFileWrite();
     }
 
     void Level3()
@@ -1909,6 +1998,8 @@ public partial class MainWindow : Form
         Hacek.Start();
 
         lbLevel.Text = "3 / 5";
+        currentLevel = 3;
+        SaveFileWrite();
     }
     void Level4()
     {
@@ -1951,6 +2042,8 @@ public partial class MainWindow : Form
         Oberhofnerova.Start();
 
         lbLevel.Text = "4 / 5";
+        currentLevel = 4;
+        SaveFileWrite();
     }
     void Level5()
     {
@@ -1973,8 +2066,6 @@ public partial class MainWindow : Form
 
         enemyArray = new Enemy[] { stark };
 
-        Stark.Interval = stark.projectileCooldown;
-
         bossPhase = 1;
         starkIdle = false;
         StarkHealth.Visible = true;
@@ -1982,6 +2073,8 @@ public partial class MainWindow : Form
 
         lbLevel.Text = "5 / 5";
         lbLevel.ForeColor = Color.Red;
+        currentLevel = 5;
+        SaveFileWrite();
     }
 
     #endregion
@@ -2050,7 +2143,6 @@ public partial class MainWindow : Form
                         enemy.CheckHealth(enemy, GameScene);
                     }
                 }
-
             }
             if (e.KeyCode == Keys.L)
             {
@@ -2154,6 +2246,8 @@ public partial class MainWindow : Form
 
         FullReset();
         btContinue.Enabled = true;
+        continueGame = true;
+        SaveFileWrite();
         difficultySelect.Visible = false;
         Menu.Visible = false;
         Menu.Enabled = false;
@@ -2172,6 +2266,7 @@ public partial class MainWindow : Form
         UpdateMethod.Start();
         TimerHandler("Play");
         soundSelect.PlaySound();
+        HealthUI();
     }
     private void JumpCooldown_Tick(object sender, EventArgs e)
     {
@@ -2185,5 +2280,20 @@ public partial class MainWindow : Form
             Sound.BackgroundImage = Resources.sound_muted;
         else
             Sound.BackgroundImage = Resources.sound;
+    }
+
+    private void MainWindow_Load(object sender, EventArgs e)
+    {
+        UpdateProgress();
+    }
+
+    private void btResetProgress_Click(object sender, EventArgs e)
+    {
+        string filePath = Path.Combine(folderPath, fileName);
+        using (StreamWriter writer = File.CreateText(filePath))
+        {
+            writer.Write("false\n0\n0\nfalse\nfalse");
+        }
+        UpdateProgress();
     }
 }
