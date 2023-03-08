@@ -30,6 +30,7 @@
     <None Remove="Resources\SaveFile.txt" />
     <None Remove="Resources\select.wav" />
     <None Remove="Resources\spring.wav" />
+    <None Remove="Resources\Sysalova_Basnicka.wav" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +54,7 @@
     <EmbeddedResource Include="Resources\SaveFile.txt" />
     <EmbeddedResource Include="Resources\select.wav" />
     <EmbeddedResource Include="Resources\spring.wav" />
+    <EmbeddedResource Include="Resources\Sysalova_Basnicka.wav" />
   </ItemGroup>
 
   <ItemGroup>

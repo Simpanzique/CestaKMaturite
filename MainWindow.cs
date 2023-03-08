@@ -13,7 +13,6 @@ public partial class MainWindow : Form
     readonly SoundManager soundSpring = new("spring", 0.5f);
     readonly SoundManager soundDash = new("dash", 0f);
     readonly SoundManager soundDeath = new("death", 0.5f);
-    readonly SoundManager soundGround = new("ground", 0.5f);
     readonly SoundManager soundhitSomeone = new("hitSomeone", 0.5f);
     readonly SoundManager soundHit = new("hit", 0.5f);
     readonly SoundManager soundChalk = new("chalk", 0.5f);
@@ -25,7 +24,6 @@ public partial class MainWindow : Form
     readonly SoundManager soundProjectileDestroy = new("projectileDestroy", 0.2f);
     readonly SoundManager soundQ = new("q", 0.5f);
     readonly SoundManager soundRuler = new("ruler", 0.5f);
-    readonly SoundManager soundRun = new("run", 0.5f);
     readonly SoundManager soundSelect = new("select", 0.5f);
     readonly SoundManager soundWin = new("win", 0.5f);
     readonly SoundManager soundDestroy = new("destroy", 0.5f);
@@ -1613,6 +1611,8 @@ public partial class MainWindow : Form
             playerHealth--;
             info = "hit s " + pb.Name;
         }
+        if (playerHealth <= 0)
+            continueGame = false;
         SaveFileWrite();
         HealthUI();
     }
@@ -1625,6 +1625,24 @@ public partial class MainWindow : Form
     void Reset()
     {
         nuggetSpawn = false;
+
+        //fix na Q
+        if (attackQphase1 || attackQphase2)
+        {
+            attackQphase1 = false;
+            attackQphase2 = false;
+            AbilityQ.Stop();
+            banInput = false;
+            unHitable = false;
+            attackQcooldown = false;
+        }
+
+        //inputy
+        A = false;
+        D = false;
+        Space = false;
+        Q = false;
+        LMB = false;
 
         Absence1.Stop();
         Absence2.Stop();
@@ -1808,7 +1826,7 @@ public partial class MainWindow : Form
             hardestDifficulty = false;
             using (StreamWriter writer = File.CreateText(filePath))
             {
-                writer.Write("false\n0\n0\nfalse\nfalse");
+                writer.Write("false\n0\n0\nEasy\nfalse\nfalse");
             }
         }
         else
@@ -1818,6 +1836,7 @@ public partial class MainWindow : Form
                 continueGame = Convert.ToBoolean(reader.ReadLine());
                 savedHealth = Convert.ToInt32(reader.ReadLine());
                 savedLevel = Convert.ToInt32(reader.ReadLine());
+                difficulty = reader.ReadLine();
                 completedGame = Convert.ToBoolean(reader.ReadLine());
                 hardestDifficulty = Convert.ToBoolean(reader.ReadLine());
             }
@@ -1831,7 +1850,7 @@ public partial class MainWindow : Form
 
         savedHealth = playerHealth;
         savedLevel = currentLevel;
-        string saveFile = continueGame + "\n" + savedHealth + "\n" + savedLevel + "\n" + completedGame + "\n" + hardestDifficulty;
+        string saveFile = continueGame + "\n" + savedHealth + "\n" + savedLevel + "\n" + difficulty + "\n" + completedGame + "\n" + hardestDifficulty;
         string filePath = Path.Combine(folderPath, fileName);
 
         File.WriteAllTextAsync(filePath, saveFile);
@@ -1866,16 +1885,6 @@ public partial class MainWindow : Form
     #region LevelDesign
     void LevelPrepare()
     {
-        //fix na Q
-        if (attackQphase1 || attackQphase2)
-        {
-            attackQphase1 = false;
-            attackQphase2 = false;
-            AbilityQ.Stop();
-            banInput = false;
-            unHitable = false;
-            attackQcooldown = false;
-        }
         //doplni jedno HP
         if (playerHealth < 5 && difficulty == "Easy")
         {
@@ -1885,6 +1894,7 @@ public partial class MainWindow : Form
 
         Reset();
         soundNextLevel.PlaySound();
+        continueGame = true;
     }
 
     void Pauza()
