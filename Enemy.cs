@@ -7,6 +7,7 @@ internal class Enemy
     public static int ProjectileCountH = 1;
     public static int ProjectileCountS = 1;
 
+    public bool dead;
     public int health;
     public PictureBox pb;
     public bool moving;
@@ -150,6 +151,7 @@ internal class Enemy
 
             enemy.moving = false;
             enemy.projectileStop = true;
+            enemy.dead = true;
 
             enemy.pb.Bounds = Rectangle.Empty;
             panel.Controls.Remove(enemy.pb);

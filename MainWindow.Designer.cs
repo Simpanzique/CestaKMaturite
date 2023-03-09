@@ -73,6 +73,7 @@
             UpdateMethod = new System.Windows.Forms.Timer(components);
             AbilityQ = new System.Windows.Forms.Timer(components);
             Pause = new Panel();
+            btResetProgress = new Button();
             label31 = new Label();
             Sound = new PictureBox();
             panelPauza = new Panel();
@@ -107,7 +108,6 @@
             Lemka = new System.Windows.Forms.Timer(components);
             Stark = new System.Windows.Forms.Timer(components);
             JumpCooldown = new System.Windows.Forms.Timer(components);
-            btResetProgress = new Button();
             GameScene.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)StarkHealth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StarkHealthBackground).BeginInit();
@@ -648,6 +648,19 @@
             Pause.TabIndex = 4;
             Pause.Visible = false;
             // 
+            // btResetProgress
+            // 
+            btResetProgress.BackColor = Color.RosyBrown;
+            btResetProgress.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            btResetProgress.Location = new Point(12, 779);
+            btResetProgress.Name = "btResetProgress";
+            btResetProgress.Size = new Size(108, 37);
+            btResetProgress.TabIndex = 23;
+            btResetProgress.TabStop = false;
+            btResetProgress.Text = "Reset úspěchů";
+            btResetProgress.UseVisualStyleBackColor = false;
+            btResetProgress.Click += btResetProgress_Click;
+            // 
             // label31
             // 
             label31.AutoSize = true;
@@ -988,27 +1001,14 @@
             JumpCooldown.Interval = 500;
             JumpCooldown.Tick += JumpCooldown_Tick;
             // 
-            // btResetProgress
-            // 
-            btResetProgress.BackColor = Color.RosyBrown;
-            btResetProgress.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            btResetProgress.Location = new Point(12, 779);
-            btResetProgress.Name = "btResetProgress";
-            btResetProgress.Size = new Size(108, 37);
-            btResetProgress.TabIndex = 23;
-            btResetProgress.TabStop = false;
-            btResetProgress.Text = "Reset úspěchů";
-            btResetProgress.UseVisualStyleBackColor = false;
-            btResetProgress.Click += btResetProgress_Click;
-            // 
             // MainWindow
             // 
             AutoScaleMode = AutoScaleMode.Inherit;
             ClientSize = new Size(1520, 825);
             Controls.Add(lbPress);
             Controls.Add(lbGameOver);
-            Controls.Add(Pause);
             Controls.Add(Menu);
+            Controls.Add(Pause);
             Controls.Add(GameScene);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;

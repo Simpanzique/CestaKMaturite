@@ -1,4 +1,9 @@
+using NAudio.Wave;
 using Petr_RP_CestaKMaturite.Properties;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Media;
 
 namespace Petr_RP_CestaKMaturite;
 public partial class MainWindow : Form
@@ -6,9 +11,20 @@ public partial class MainWindow : Form
     public MainWindow()
     {
         InitializeComponent();
-    }
 
+        // Sysalova
+        ComponentResourceManager rm = new(typeof(Resources));
+        Stream stream = (Stream)rm.GetObject("Sysalova_Basnicka");
+        reader = new WaveFileReader(stream);
+        basnicka = new();
+        basnicka.Init(reader);
+        basnicka.Play();
+        basnicka.Pause();
+        stopwatch = new();
+    }
+    
     #region Zvuky
+    // nAudio
     readonly SoundManager soundBaseball = new("baseball", 0.5f);
     readonly SoundManager soundSpring = new("spring", 0.5f);
     readonly SoundManager soundDash = new("dash", 0f);
@@ -27,6 +43,11 @@ public partial class MainWindow : Form
     readonly SoundManager soundSelect = new("select", 0.5f);
     readonly SoundManager soundWin = new("win", 0.5f);
     readonly SoundManager soundDestroy = new("destroy", 0.5f);
+
+    //Sysalova
+    Stopwatch stopwatch;
+    WaveOut basnicka;
+    WaveFileReader reader;
     #endregion
 
     //Globální promìnné
@@ -39,8 +60,8 @@ public partial class MainWindow : Form
     bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false, soundDeathOnce, won; string difficulty; //managment
     bool lemkaCooldown, lemkaRight; int lemkaIndex; //enemy
     int OberhofnerovaHP = 6, LemkaHP = 12, HacekHP = 10, SysalovaHP = 12, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
-    int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft; //bossfight
-    bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear; //fixy timerù
+    int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft, bookLeftDestroyed,bookRightDestroyed; //bossfight
+    bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear, basnickaPlaying; //fixy timerù
     string info, info1; //bullshit
     bool continueGame, completedGame, hardestDifficulty;
     int savedHealth, savedLevel;
@@ -75,12 +96,14 @@ public partial class MainWindow : Form
 
     Enemy stark;
     PictureBox baseballka;
-
     Enemy bossEnemy1;
     Enemy bossEnemy2;
     Terrain spring;
+    Terrain bookLeft;
+    Terrain bookRight;
     PictureBox hacek;
     PictureBox hacekPlatforma;
+    Enemy hacekOnBook;
 
 
     private void UpdateMethod_Tick(object sender, EventArgs e)
@@ -933,6 +956,14 @@ public partial class MainWindow : Form
                 if (enemy.pb.Bounds.IntersectsWith(Player.Bounds) && canGetHit && (enemy != stark || (enemy == stark && bossPhase == 3)))
                     Hit(enemy.pb);
 
+                //Sysalova smrt
+                if(enemy.type == "Sysalova" && enemy.dead)
+                {
+                    stopwatch.Reset();
+                    basnicka.Pause();
+                }
+
+
                 #region Projektily
                 //let projektilù
                 if (enemy.projectile != null)
@@ -951,6 +982,15 @@ public partial class MainWindow : Form
                             //Stark nièí knížky
                             if (enemy.type == "Stark" && enemy.projectile.Bounds.IntersectsWith(terrain.Bounds) && terrain.Tag.ToString().Contains("Book"))
                             {
+                                if (terrain == bookLeft.pb)
+                                    bookLeftDestroyed = true;
+                                if (terrain == bookRight.pb)
+                                    bookRightDestroyed = true;
+                                if (hacekOnBook != null && hacekOnBook.pb.Left == terrain.Left)
+                                {
+                                    hacekOnBook.health = 0;
+                                    hacekOnBook.CheckHealth(hacekOnBook, GameScene);
+                                }
                                 DestroyAll(terrain, GameScene);
                                 DestroyAll(enemy.projectile, GameScene);
                                 enemy.projectileStop = true;
@@ -1143,7 +1183,25 @@ public partial class MainWindow : Form
             }
         }
         #endregion
+        // Sysalova
+        if (stopwatch.ElapsedMilliseconds > 15000)
+        {
+            stopwatch.Restart();
+            soundHit.PlaySound();
+            if (!cheatHealth || unHitable)
+                playerHealth--;
+            if (playerHealth <= 0)
+                continueGame = false;
+            SaveFileWrite();
+            HealthUI();
+        }
+        if (reader.Position == reader.Length)
+        {
+            reader.Position = 0;
+            basnicka.Play();
+        }
 
+        // Odhozeni od nepratel
         if (knockback)
         {
             if (Player.Right < enMiddle && moveLeft)
@@ -1158,6 +1216,7 @@ public partial class MainWindow : Form
             }
         }
 
+        // Smrt
         if (playerHealth <= 0)
         {
             if (!soundDeathOnce)
@@ -1174,10 +1233,11 @@ public partial class MainWindow : Form
             lbPress.Top = 401;
             disableallInputs = true;
         }
-
+        info1 = baseballCooldown.ToString();
+        if (stopwatch != null)
+            info1 = stopwatch.ElapsedMilliseconds.ToString();
         if (stark != null)
             info = Convert.ToString(stark.health);
-        info1 = baseballCooldown.ToString();
         lbStats.Text =
                 "OnGround: " + onGround +
                 "\nisJumping: " + isJumping +
@@ -1551,26 +1611,59 @@ public partial class MainWindow : Form
         else
             playerSideLeft = true;
 
-        int random1 = Random.Shared.Next(1, 5);
-        int random2 = Random.Shared.Next(1, 5);
-        while (random1 == random2)
+        int random1 = 0, random2 = 0, LemkaMove = 0;
+        if (playerSideLeft && bookLeftDestroyed)
+        {
+            random1 = Random.Shared.Next(1, 4);
+            random2 = Random.Shared.Next(1, 4);
+            while (random1 == random2)
+                random1 = Random.Shared.Next(1, 4);
+
+            LemkaMove = 925;
+        }
+        else if (playerSideLeft && !bookLeftDestroyed)
+        {
             random1 = Random.Shared.Next(1, 5);
+            random2 = Random.Shared.Next(1, 5);
+            while (random1 == random2)
+                random1 = Random.Shared.Next(1, 5);
+
+            LemkaMove = 1393;
+        }
+        if (!playerSideLeft && bookRightDestroyed)
+        {
+            random1 = Random.Shared.Next(1, 4);
+            random2 = Random.Shared.Next(1, 4);
+            while (random1 == random2)
+                random1 = Random.Shared.Next(1, 4);
+
+            LemkaMove = 595;
+        }
+        else if (!playerSideLeft && !bookRightDestroyed)
+        {
+            random1 = Random.Shared.Next(1, 5);
+            random2 = Random.Shared.Next(1, 5);
+            while (random1 == random2)
+                random1 = Random.Shared.Next(1, 5);
+
+            LemkaMove = 18;
+        }
 
         if (playerSideLeft)
         {
             switch (random1)
             {
                 case 1: bossEnemy1 = new(1296, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
-                case 2: bossEnemy1 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); break;
-                case 3: bossEnemy1 = new(1420, 616, 110, 180, Color.Red, LemkaHP, true, 1393, 1420, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
-                case 4: bossEnemy1 = new(1282, 418, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); break;
+                case 2: bossEnemy1 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
+                case 3: bossEnemy1 = new(1420, 616, 110, 180, Color.Red, LemkaHP, true, LemkaMove, 1420, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
+                case 4: bossEnemy1 = new(1282, 418, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy1; break;
             }
             switch (random2)
             {
                 case 1: bossEnemy2 = new(1296, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
-                case 2: bossEnemy2 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); break;
-                case 3: bossEnemy2 = new(1420, 616, 110, 180, Color.Red, LemkaHP, true, 1393, 1420, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
-                case 4: bossEnemy2 = new(1282, 418, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); break;
+                case 2: bossEnemy2 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
+                case 3: bossEnemy2 = new(1420, 616, 110, 180, Color.Red, LemkaHP, true, LemkaMove, 1420, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
+                case 4: bossEnemy2 = new(1282, 418, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy2; break;
             }
         }
         else
@@ -1578,16 +1671,16 @@ public partial class MainWindow : Form
             switch (random1)
             {
                 case 1: bossEnemy1 = new(100, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
-                case 2: bossEnemy1 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); break;
-                case 3: bossEnemy1 = new(0, 616, 110, 180, Color.Red, LemkaHP, true, 0, 18, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
-                case 4: bossEnemy1 = new(122, 419, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); break;
+                case 2: bossEnemy1 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
+                case 3: bossEnemy1 = new(0, 616, 110, 180, Color.Red, LemkaHP, true, 0, LemkaMove, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
+                case 4: bossEnemy1 = new(122, 419, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy1; break;
             }
             switch (random2)
             {
                 case 1: bossEnemy2 = new(100, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
-                case 2: bossEnemy2 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); break;
-                case 3: bossEnemy2 = new(0, 616, 110, 180, Color.Red, LemkaHP, true, 0, 18, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
-                case 4: bossEnemy2 = new(122, 419, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); break;
+                case 2: bossEnemy2 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
+                case 3: bossEnemy2 = new(0, 616, 110, 180, Color.Red, LemkaHP, true, 0, LemkaMove, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
+                case 4: bossEnemy2 = new(122, 419, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy2; break;
             }
         }
         enemyArray = new Enemy[] { stark, bossEnemy1, bossEnemy2 };
@@ -1607,10 +1700,7 @@ public partial class MainWindow : Form
         DMGcooldown.Interval = 100;
         DMGcooldown.Start();
         if (!cheatHealth || unHitable)
-        {
             playerHealth--;
-            info = "hit s " + pb.Name;
-        }
         if (playerHealth <= 0)
             continueGame = false;
         SaveFileWrite();
@@ -1624,6 +1714,9 @@ public partial class MainWindow : Form
     }
     void Reset()
     {
+        stopwatch.Reset();
+        basnicka.Pause();
+
         nuggetSpawn = false;
 
         //fix na Q
@@ -1792,6 +1885,12 @@ public partial class MainWindow : Form
             JumpCooldown.Stop();
             DMGcooldown.Stop();
             NuggetDisappear.Stop();
+
+            if (basnicka.PlaybackState == PlaybackState.Playing)
+                basnickaPlaying = true;
+
+            stopwatch.Stop();
+            basnicka.Pause();
         }
         if (action == "Play")
         {
@@ -1810,6 +1909,12 @@ public partial class MainWindow : Form
             tJumpCooldown = false;
             tDMGCooldown = false;
             tNuggetDisappear = false;
+
+            if(basnickaPlaying)
+                basnicka.Resume();
+
+            basnickaPlaying = false;
+            stopwatch.Start();
         }
     }
 
@@ -1963,6 +2068,9 @@ public partial class MainWindow : Form
         Absence1.Interval = 1;
         Absence1.Start();
 
+        basnicka.Resume();
+        stopwatch.Restart();
+
         lbLevel.Text = "2 / 5";
         currentLevel = 2;
         SaveFileWrite();
@@ -2006,6 +2114,9 @@ public partial class MainWindow : Form
 
         Hacek.Interval = enemy2.projectileCooldown;
         Hacek.Start();
+
+        basnicka.Resume();
+        stopwatch.Restart();
 
         lbLevel.Text = "3 / 5";
         currentLevel = 3;
@@ -2051,6 +2162,9 @@ public partial class MainWindow : Form
         Oberhofnerova.Interval = enemy3.projectileCooldown;
         Oberhofnerova.Start();
 
+        basnicka.Resume();
+        stopwatch.Restart();
+
         lbLevel.Text = "4 / 5";
         currentLevel = 4;
         SaveFileWrite();
@@ -2062,15 +2176,15 @@ public partial class MainWindow : Form
         Player.Top = 477;
 
         spring = new(734, 609, 60, 50, "Terrain Spring", Resources.Pruzina, GameScene);
-        Terrain terrain2 = new(121, 598, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
+        bookLeft = new(122, 598, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
         Terrain terrain3 = new(402, 381, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
         Terrain terrain4 = new(977, 381, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
-        Terrain terrain5 = new(1281, 598, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
+        bookRight = new(1282, 598, 112, 35, "Terrain Book", Resources.Knizka, GameScene);
         Terrain terrain6 = new(0, 795, 600, 30, "Terrain", Resources.Tuzka, GameScene);
         Terrain terrain7 = new(920, 795, 600, 30, "Terrain", Resources.Tuzka_reversed, GameScene);
         Terrain terrain8 = new(714, 658, 100, 167, "Terrain", Resources.Skrinka, GameScene);
 
-        terrainArray = new Terrain[] { spring, terrain2, terrain3, terrain4, terrain5, terrain6, terrain7, terrain8 };
+        terrainArray = new Terrain[] { spring, bookLeft, terrain3, terrain4, bookRight, terrain6, terrain7, terrain8 };
 
         stark = new(1185, 175, 335, 650, Color.Red, StarkHP, true, 0, 1185, StarkMovementSpeed, "Stark", 5000, GameScene);
 
@@ -2126,7 +2240,7 @@ public partial class MainWindow : Form
                     TimerHandler("Pause");
                     Focus();
                 }
-                else
+                else if (lbNazev.Text == "Pauza")
                 {
                     Pause.Visible = false;
                     Pause.Enabled = false;
@@ -2217,7 +2331,7 @@ public partial class MainWindow : Form
         Pause.Enabled = true;
         Pause.Visible = true;
         panelPauza.Visible = false;
-        lbNazev.Text = "Možnosti";
+        lbNazev.Text = "Ovládání";
         lbNazev.Left = 600;
         Focus();
         soundSelect.PlaySound();
