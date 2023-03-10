@@ -2,8 +2,6 @@ using NAudio.Wave;
 using Petr_RP_CestaKMaturite.Properties;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Media;
 
 namespace Petr_RP_CestaKMaturite;
 public partial class MainWindow : Form
@@ -66,8 +64,168 @@ public partial class MainWindow : Form
     bool continueGame, completedGame, hardestDifficulty;
     int savedHealth, savedLevel;
 
+    int tutorialPhase = 0;
+    bool doSomething = false;
+    string[] poleInstrukci = new string[] { "Vítejte na škole SPŠ Ostrov!", "Pohybujte se pomocí kláves A a D" };
+
     string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
     string fileName = "CestaKMaturite_SaveFile.txt";
+
+    private void TutorialUpdateMethod_Tick(object sender, EventArgs e)
+    {
+        if (!doSomething)
+        {
+            doSomething = true;
+            foreach (char a in poleInstrukci[tutorialPhase])
+            {
+                lbTutorial.Text += a;
+                Application.DoEvents();
+                Thread.Sleep(10);
+            }
+        }
+
+        //reset promìnných
+        moveLeft = true;
+        moveRight = true;
+        onTop = false;
+        underTerrain = false;
+
+        //Hitboxy
+        HitboxLeft = new Rectangle(playerTutorial.Left - 3, playerTutorial.Top, 3, playerTutorial.Height - 2);
+        HitboxRight = new Rectangle(playerTutorial.Right, playerTutorial.Top, 3, playerTutorial.Height - 2);
+        HitboxUp = new Rectangle(playerTutorial.Left, playerTutorial.Top - 4, playerTutorial.Width, 2);
+        HitboxDown = new Rectangle(playerTutorial.Left + 2, playerTutorial.Bottom - 2, playerTutorial.Width - 4, 2);
+
+        HitboxDashLeft = new Rectangle(playerTutorial.Left - 15, playerTutorial.Top, playerTutorial.Width, playerTutorial.Height - 2);
+        HitboxDashRight = new Rectangle(playerTutorial.Left + 15, playerTutorial.Top, playerTutorial.Width, playerTutorial.Height - 2);
+
+        //platformy
+        foreach (PictureBox terrain in Tutorial.Controls.OfType<PictureBox>().Where(x => x.Tag != null))
+        {
+            if (terrain.Tag.ToString().Contains("Terrain"))
+            {
+                if (terrain.Bounds.IntersectsWith(HitboxLeft))
+                    moveLeft = false;
+                if (terrain.Bounds.IntersectsWith(HitboxRight))
+                    moveRight = false;
+                if (terrain.Bounds.IntersectsWith(HitboxDown) && playerTutorial.Bottom - 20 <= terrain.Top && jumpSpeed < 0)
+                {
+                    playerTutorial.Top = terrain.Top - playerTutorial.Height + 1;
+                    onTop = true;
+                    jumpSpeed = 0;
+                    isJumping = false;
+
+                    //setup na pohoupnutí knížek
+                    if (terrain.Tag.ToString().Contains("Book"))
+                    {
+                        if (!touchedGround)
+                            landed = true;
+                        touchedGround = true;
+
+                        landedBlock = terrain as PictureBox;
+                    }
+                }
+                if (terrain.Bounds.IntersectsWith(HitboxUp))
+                {
+                    playerTutorial.Top = terrain.Bottom + 3;
+                    jumpSpeed = -2;
+                    isJumping = false;
+                    underTerrain = true;
+                }
+            }
+        }
+
+        //pohoupnutí knížek
+        if (landedBlock != null && landed)
+        {
+            switch (hupIndex)
+            {
+                case 0: landedBlock.Top += 1; playerTutorial.Top += 1; break;
+                case 2: landedBlock.Top += 2; playerTutorial.Top += 2; break;
+                case 4: landedBlock.Top += 3; playerTutorial.Top += 3; break;
+                case 6: landedBlock.Top += 2; playerTutorial.Top += 2; break;
+                case 8: landedBlock.Top += 1; playerTutorial.Top += 1; break;
+                case 12: landedBlock.Top -= 1; playerTutorial.Top -= 1; break;
+                case 14: landedBlock.Top -= 2; playerTutorial.Top -= 2; break;
+                case 16: landedBlock.Top -= 3; playerTutorial.Top -= 3; break;
+                case 18: landedBlock.Top -= 2; playerTutorial.Top -= 2; break;
+                case 20: landedBlock.Top -= 1; playerTutorial.Top -= 1; landed = false; hupIndex = 0; break;
+            }
+            hupIndex++;
+        }
+        if (!onGround)
+            touchedGround = false;
+
+        //Doleva a Doprava
+        if (!(A && D))
+        {
+            if (D && moveRight && !(playerTutorial.Right >= Tutorial.Width) && !banInput)
+            {
+                playerTutorial.Left += 8; //movementSpeed
+                lastInputLeft = false;
+            }
+            if (A && moveLeft && !(playerTutorial.Left <= 0) && !banInput)
+            {
+                playerTutorial.Left -= 8; //movementSpeed
+                lastInputLeft = true;
+            }
+        }
+
+        //leva a prava strana sceny
+        if (playerTutorial.Right >= Tutorial.Width)
+            playerTutorial.Left = Tutorial.Width - playerTutorial.Width;
+        if (playerTutorial.Left <= 0)
+            playerTutorial.Left = 0;
+
+        //Smìr koukání
+        if (lastInputLeft)
+            facingRight = false;
+        else
+            facingRight = true;
+
+        //Skakani
+        if (Tutorial.Height - playerTutorial.Bottom <= 0 || onTop == true)
+            onGround = true;
+        else
+            onGround = false;
+
+        if (Space && onGround && !jumpCooldown)
+        {
+            isJumping = true;
+            jumpSpeed = 24;
+            jumpCooldown = true;
+            JumpCooldown.Start();
+            soundJump.PlaySound();
+        }
+
+        //vrsek sceny
+        if (playerTutorial.Top <= 0)
+        {
+            jumpSpeed = -2;
+            isJumping = false;
+            underTerrain = true;
+        }
+
+        //gravitace
+        if (isJumping || (!isJumping && (Tutorial.Height - playerTutorial.Bottom >= 0)))
+        {
+            playerTutorial.Top -= jumpSpeed;
+
+            if (jumpSpeed > -20)
+                jumpSpeed -= 1;
+        }
+
+        //spodek sceny
+        if (playerTutorial.Bottom >= Tutorial.Height)
+        {
+            isJumping = false;
+            jumpSpeed = 0;
+        }
+
+        //nezaboreni do zeme
+        if (Tutorial.Height - playerTutorial.Bottom < 0)
+            playerTutorial.Top = Tutorial.Height - playerTutorial.Height;
+    }
 
     Rectangle HitboxLeft;
     Rectangle HitboxRight;
@@ -2419,5 +2577,15 @@ public partial class MainWindow : Form
             writer.Write("false\n0\n0\nfalse\nfalse");
         }
         UpdateProgress();
+    }
+    private void btTutorial_Click(object sender, EventArgs e)
+    {
+        Menu.Visible = false;
+        Menu.Enabled = false;
+        Tutorial.Visible = true;
+        Tutorial.Enabled = true;
+        Focus();
+        soundSelect.PlaySound();
+        TutorialUpdateMethod.Start();
     }
 }
