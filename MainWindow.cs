@@ -55,7 +55,7 @@ public partial class MainWindow : Form
     bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain; //utok
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
     int levelCount = 1, playerHealth, dmgIndex, enMiddle, absence1Index, absence2Index, currentLevel;
-    bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, paused, cheatHealth, nuggetSpawn = false, soundDeathOnce, won; string difficulty; //managment
+    bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, cheatHealth, nuggetSpawn = false, soundDeathOnce, won; string difficulty; //managment
     bool lemkaCooldown, lemkaRight; int lemkaIndex; //enemy
     int OberhofnerovaHP = 6, LemkaHP = 12, HacekHP = 10, SysalovaHP = 12, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft, bookLeftDestroyed, bookRightDestroyed; //bossfight
@@ -117,97 +117,6 @@ public partial class MainWindow : Form
     Enemy tutorialLemka;
     Enemy tutorialSysalova;
     Enemy tutorialhidden;
-
-    private async void InstrukceTimer_Tick(object sender, EventArgs e)
-    {
-        if (writeInstructions)
-        {
-            if (tutorialPhase < poleInstrukci.Length)
-            {
-                writeInstructions = false;
-                typing = true;
-                lbTutorial.Text = string.Empty;
-                foreach (char a in poleInstrukci[tutorialPhase])
-                {
-                    lbTutorial.Text += a;
-                    Application.DoEvents();
-                    await Task.Delay(20);
-                }
-                await Task.Delay(2000);
-                tutorialPhase++;
-                typing = false;
-
-                switch (tutorialPhase)
-                {
-                    case 2 or 3 or 6 or 11 or 13 or 16 or 21 or 24:
-                        break;
-                    default:
-                        writeInstructions = true;
-                        break;
-                }
-                if (tutorialPhase == 2)
-                    tutBanMovement = false;
-                else if (tutorialPhase == 3)
-                    tutBanJump = false;
-                else if (tutorialPhase == 6)
-                    tutBanLMB = false;
-                else if (tutorialPhase == 9)
-                {
-                    tutorialLemka.moving = true;
-                    tutorialLemka.pb.Left = 1100;
-                    tutorialLemka.pb.Top = 137;
-                }
-                else if (tutorialPhase == 13)
-                    tutBanDash = false;
-                else if (tutorialPhase == 14)
-                {
-                    tutorialSysalova.pb.Left = 1200;
-                    tutorialSysalova.pb.Top = 157;
-                    basnicka.Resume();
-                    stopwatch.Restart();
-                }
-                else if (tutorialPhase == 19)
-                {
-                    tutorialHacek.pb.Left = 1300;
-                    tutorialHacek.pb.Top = GameScene.Height-tutorialHacek.pb.Height;
-                    Hacek.Start();
-                    tutBanQ = false;
-                }
-                else if (tutorialPhase == 22)
-                {
-                    tutorialOberhofnerova.pb.Left = 800;
-                    tutorialOberhofnerova.pb.Top = 112;
-                    tutorialOberhofnerova.moving = true;
-                    Oberhofnerova.Start();
-                }
-            }
-            else
-            {
-                //konec tutorialu
-                FullReset();
-                GameScene.Enabled = false;
-                GameScene.Visible = false;
-                Menu.Visible = true;
-                Menu.Enabled = true;
-                Focus();
-                soundWin.PlaySound();
-                cheatHealth = false;
-                tutorial = false;
-                tutorialPhase = 0;
-                lbTutorial.Text = string.Empty;
-                UpdateMethod.Stop();
-                InstrukceTimer.Stop();
-            }
-        }
-        if (tutorialLemka.dead && !typing && tutorialPhase == 11)
-            writeInstructions = true;
-        if (tutorialSysalova.dead & !typing && tutorialPhase == 16)
-            writeInstructions = true;
-        if (tutorialHacek.dead && !typing && tutorialPhase == 21)
-            writeInstructions = true;
-        if (tutorialOberhofnerova.dead && !typing && tutorialPhase == 24)
-            writeInstructions = true;
-    }
     private void UpdateMethod_Tick(object sender, EventArgs e)
     {
         //reset promìnných
@@ -274,7 +183,7 @@ public partial class MainWindow : Form
         //Hitboxy
         HitboxLeft = new Rectangle(Player.Left - 3, Player.Top, 3, Player.Height - 2);
         HitboxRight = new Rectangle(Player.Right, Player.Top, 3, Player.Height - 2);
-        HitboxUp = new Rectangle(Player.Left, Player.Top - 4, Player.Width, 2);
+        HitboxUp = new Rectangle(Player.Left + 10, Player.Top - 4, Player.Width - 10, 2);
         HitboxDown = new Rectangle(Player.Left + 2, Player.Bottom - 2, Player.Width - 4, 2);
 
         HitboxDashLeft = new Rectangle(Player.Left - 15, Player.Top, Player.Width, Player.Height - 2);
@@ -286,9 +195,19 @@ public partial class MainWindow : Form
             if (terrain.Tag.ToString().Contains("Terrain"))
             {
                 if (terrain.Bounds.IntersectsWith(HitboxLeft))
+                {
                     moveLeft = false;
+                    if (onGround)
+                        Player.Left = terrain.Right;
+                }
+
                 if (terrain.Bounds.IntersectsWith(HitboxRight))
+                {
                     moveRight = false;
+                    if (onGround)
+                        Player.Left = terrain.Left - Player.Width;
+                }
+
                 if (terrain.Bounds.IntersectsWith(HitboxDown) && Player.Bottom - 20 <= terrain.Top && jumpSpeed < 0)
                 {
                     Player.Top = terrain.Top - Player.Height + 1;
@@ -488,26 +407,11 @@ public partial class MainWindow : Form
             //žádný enemy = ukonèit level
             switch (levelCount)
             {
-                case 1:
-                    Level1();
-                    //Pauza();
-                    break;
-                case 2:
-                    Level2();
-                    //Pauza();
-                    break;
-                case 3:
-                    Level3();
-                    //Pauza();
-                    break;
-                case 4:
-                    Level4();
-                    //Pauza();
-                    break;
-                case 5:
-                    Level5();
-                    //Pauza();
-                    break;
+                case 1: Level1(); break;
+                case 2: Level2(); break;
+                case 3: Level3(); break;
+                case 4: Level4(); break;
+                case 5: Level5(); break;
                 case 6:
                     //VICTORY
                     if (!won)
@@ -568,7 +472,7 @@ public partial class MainWindow : Form
 
 
             //Ability Q na target myši
-            if (Q && !onGround && !attackQcooldown && enemyObjectArray[closestIndex].Top - Player.Bottom > 40  && !tutBanQ)
+            if (Q && !onGround && !attackQcooldown && enemyObjectArray[closestIndex].Top - Player.Bottom > 40 && !tutBanQ)
             {
                 foreach (Enemy enemy in enemyArray)
                 {
@@ -624,9 +528,9 @@ public partial class MainWindow : Form
                 banInput = true;
 
                 //pøedèasný ukonèení
-                if ((Math.Abs(Player.Left + Player.Width/2) - (closestEnemy.Left + closestEnemy.Width/2)) < 40 && closestEnemy.Top - Player.Bottom <  40)
+                if ((Math.Abs(Player.Left + Player.Width / 2) - (closestEnemy.Left + closestEnemy.Width / 2)) < 40 && closestEnemy.Top - Player.Bottom < 40)
                     AbilityQ.Interval = 1;
-                    
+
             }
             if (attackQphase2 && !fixQ)
             {
@@ -1322,7 +1226,7 @@ public partial class MainWindow : Form
             SaveFileWrite();
             HealthUI();
         }
-        if (reader.Position == reader.Length)
+        if (reader.Position >= reader.Length)
         {
             reader.Position = 0;
             basnicka.Play();
@@ -1342,7 +1246,6 @@ public partial class MainWindow : Form
                 Dash.Interval = 1;
             }
         }
-
         // Smrt
         if (playerHealth <= 0)
         {
@@ -1384,6 +1287,100 @@ public partial class MainWindow : Form
                 "\nStarkIdle: " + starkIdle +
                 "\niEnemy: " + iEnemy.ToString();
     }
+
+    #region tutorial
+    private async void InstrukceTimer_Tick(object sender, EventArgs e)
+    {
+        if (writeInstructions)
+        {
+            if (tutorialPhase < poleInstrukci.Length)
+            {
+                writeInstructions = false;
+                typing = true;
+                lbTutorial.Text = string.Empty;
+                foreach (char a in poleInstrukci[tutorialPhase])
+                {
+                    lbTutorial.Text += a;
+                    Application.DoEvents();
+                    await Task.Delay(20);
+                }
+                await Task.Delay(2000);
+                tutorialPhase++;
+                typing = false;
+
+                switch (tutorialPhase)
+                {
+                    case 2 or 3 or 6 or 11 or 13 or 16 or 21 or 24:
+                        break;
+                    default:
+                        writeInstructions = true;
+                        break;
+                }
+                if (tutorialPhase == 2)
+                    tutBanMovement = false;
+                else if (tutorialPhase == 3)
+                    tutBanJump = false;
+                else if (tutorialPhase == 6)
+                    tutBanLMB = false;
+                else if (tutorialPhase == 9)
+                {
+                    tutorialLemka.moving = true;
+                    tutorialLemka.pb.Left = 1100;
+                    tutorialLemka.pb.Top = 137;
+                }
+                else if (tutorialPhase == 13)
+                    tutBanDash = false;
+                else if (tutorialPhase == 14)
+                {
+                    tutorialSysalova.pb.Left = 1200;
+                    tutorialSysalova.pb.Top = 157;
+                    basnicka.Resume();
+                    stopwatch.Restart();
+                }
+                else if (tutorialPhase == 19)
+                {
+                    tutorialHacek.pb.Left = 1300;
+                    tutorialHacek.pb.Top = GameScene.Height - tutorialHacek.pb.Height;
+                    Hacek.Start();
+                    tutBanQ = false;
+                }
+                else if (tutorialPhase == 22)
+                {
+                    tutorialOberhofnerova.pb.Left = 800;
+                    tutorialOberhofnerova.pb.Top = 112;
+                    tutorialOberhofnerova.moving = true;
+                    Oberhofnerova.Start();
+                }
+            }
+            else
+            {
+                //konec tutorialu
+                FullReset();
+                GameScene.Enabled = false;
+                GameScene.Visible = false;
+                Menu.Visible = true;
+                Menu.Enabled = true;
+                Focus();
+                soundWin.PlaySound();
+                cheatHealth = false;
+                tutorial = false;
+                tutorialPhase = 0;
+                lbTutorial.Text = string.Empty;
+                UpdateMethod.Stop();
+                InstrukceTimer.Stop();
+            }
+        }
+        if (tutorialLemka.dead && !typing && tutorialPhase == 11)
+            writeInstructions = true;
+        if (tutorialSysalova.dead & !typing && tutorialPhase == 16)
+            writeInstructions = true;
+        if (tutorialHacek.dead && !typing && tutorialPhase == 21)
+            writeInstructions = true;
+        if (tutorialOberhofnerova.dead && !typing && tutorialPhase == 24)
+            writeInstructions = true;
+    }
+
+    #endregion
 
     #region playerTimers
     private void abilityLMB_Tick(object sender, EventArgs e)
@@ -2128,13 +2125,6 @@ public partial class MainWindow : Form
         soundNextLevel.PlaySound();
         continueGame = true;
     }
-
-    void Pauza()
-    {
-        UpdateMethod.Stop();
-        lbPozastaveno.Top = 318;
-        paused = true;
-    }
     void TutorialLevel()
     {
         FullReset();
@@ -2371,10 +2361,10 @@ public partial class MainWindow : Form
                 E = true;
             if (e.KeyCode == Keys.F3)
             {
-                if (lbStats.Visible)
-                    lbStats.Visible = false;
-                else
-                    lbStats.Visible = true;
+                //if (lbStats.Visible)
+                //    lbStats.Visible = false;
+                //else
+                //    lbStats.Visible = true;
             }
             if (e.KeyCode == Keys.Escape)
             {
@@ -2402,13 +2392,7 @@ public partial class MainWindow : Form
                     Focus();
                 }
             }
-            if (e.KeyCode == Keys.F && paused)
-            {
-                lbPozastaveno.Top = -200;
-                UpdateMethod.Start();
-                paused = false;
-            }
-            if (e.KeyCode == Keys.K)
+            if (e.KeyCode == Keys.K && !tutorial)
             {
                 foreach (Enemy enemy in enemyArray)
                 {
@@ -2447,11 +2431,8 @@ public partial class MainWindow : Form
                 }
             }
         }
-        else
-        {
-            if (e.KeyCode == Keys.R)
-                FullReset();
-        }
+        else if (e.KeyCode == Keys.R)
+            FullReset();
     }
 
     private void MainWindow_KeyUp(object sender, KeyEventArgs e)
@@ -2578,6 +2559,9 @@ public partial class MainWindow : Form
     private void MainWindow_Load(object sender, EventArgs e)
     {
         UpdateProgress();
+        basnicka.Play();
+        basnicka.Pause();
+        stopwatch.Reset();
     }
 
     private void btResetProgress_Click(object sender, EventArgs e)

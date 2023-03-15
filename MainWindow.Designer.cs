@@ -111,6 +111,7 @@
             Stark = new System.Windows.Forms.Timer(components);
             JumpCooldown = new System.Windows.Forms.Timer(components);
             InstrukceTimer = new System.Windows.Forms.Timer(components);
+            label32 = new Label();
             GameScene.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)StarkHealth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StarkHealthBackground).BeginInit();
@@ -637,6 +638,7 @@
             // 
             Menu.BackColor = SystemColors.ActiveCaption;
             Menu.BackgroundImageLayout = ImageLayout.Stretch;
+            Menu.Controls.Add(label32);
             Menu.Controls.Add(btTutorial);
             Menu.Controls.Add(pbHardestDifficulty);
             Menu.Controls.Add(pbCompletedGame);
@@ -1032,14 +1034,23 @@
             InstrukceTimer.Interval = 1;
             InstrukceTimer.Tick += InstrukceTimer_Tick;
             // 
+            // label32
+            // 
+            label32.AutoSize = true;
+            label32.Location = new Point(1468, 12);
+            label32.Name = "label32";
+            label32.Size = new Size(37, 15);
+            label32.TabIndex = 11;
+            label32.Text = "v0.1.0";
+            // 
             // MainWindow
             // 
             AutoScaleMode = AutoScaleMode.Inherit;
             ClientSize = new Size(1520, 825);
             Controls.Add(lbPress);
             Controls.Add(lbGameOver);
-            Controls.Add(GameScene);
             Controls.Add(Menu);
+            Controls.Add(GameScene);
             Controls.Add(Pause);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -1160,5 +1171,6 @@
         private Button btTutorial;
         private System.Windows.Forms.Timer InstrukceTimer;
         private Label lbTutorial;
+        private Label label32;
     }
 }
