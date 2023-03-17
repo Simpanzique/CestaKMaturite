@@ -106,11 +106,22 @@ namespace Petr_RP_CestaKMaturite.Properties {
         }
         
         /// <summary>
-        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ground {
+        internal static System.Drawing.Bitmap Gurl_left {
             get {
-                return ResourceManager.GetStream("ground", resourceCulture);
+                object obj = ResourceManager.GetObject("Gurl_left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Gurl_right {
+            get {
+                object obj = ResourceManager.GetObject("Gurl_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -271,15 +282,6 @@ namespace Petr_RP_CestaKMaturite.Properties {
         internal static System.IO.UnmanagedMemoryStream ruler {
             get {
                 return ResourceManager.GetStream("ruler", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream run {
-            get {
-                return ResourceManager.GetStream("run", resourceCulture);
             }
         }
         

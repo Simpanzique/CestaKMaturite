@@ -70,6 +70,7 @@
             label3 = new Label();
             lbNazev = new Label();
             Menu = new Panel();
+            label32 = new Label();
             btTutorial = new Button();
             pbHardestDifficulty = new PictureBox();
             pbCompletedGame = new PictureBox();
@@ -111,7 +112,6 @@
             Stark = new System.Windows.Forms.Timer(components);
             JumpCooldown = new System.Windows.Forms.Timer(components);
             InstrukceTimer = new System.Windows.Forms.Timer(components);
-            label32 = new Label();
             GameScene.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)StarkHealth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StarkHealthBackground).BeginInit();
@@ -290,10 +290,12 @@
             // Player
             // 
             Player.Anchor = AnchorStyles.None;
-            Player.BackColor = Color.Chocolate;
+            Player.BackColor = Color.Orange;
+            Player.BackgroundImageLayout = ImageLayout.None;
             Player.Location = new Point(731, 377);
             Player.Name = "Player";
             Player.Size = new Size(75, 115);
+            Player.SizeMode = PictureBoxSizeMode.StretchImage;
             Player.TabIndex = 1;
             Player.TabStop = false;
             Player.Tag = "Player";
@@ -654,6 +656,15 @@
             Menu.Name = "Menu";
             Menu.Size = new Size(1520, 825);
             Menu.TabIndex = 14;
+            // 
+            // label32
+            // 
+            label32.AutoSize = true;
+            label32.Location = new Point(1468, 12);
+            label32.Name = "label32";
+            label32.Size = new Size(37, 15);
+            label32.TabIndex = 11;
+            label32.Text = "v0.2.0";
             // 
             // btTutorial
             // 
@@ -1033,15 +1044,6 @@
             // 
             InstrukceTimer.Interval = 1;
             InstrukceTimer.Tick += InstrukceTimer_Tick;
-            // 
-            // label32
-            // 
-            label32.AutoSize = true;
-            label32.Location = new Point(1468, 12);
-            label32.Name = "label32";
-            label32.Size = new Size(37, 15);
-            label32.TabIndex = 11;
-            label32.Text = "v0.1.0";
             // 
             // MainWindow
             // 

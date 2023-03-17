@@ -26,11 +26,11 @@
     <None Remove="Resources\projectileDestroy.wav" />
     <None Remove="Resources\q.wav" />
     <None Remove="Resources\ruler.wav" />
-    <None Remove="Resources\run.wav" />
     <None Remove="Resources\SaveFile.txt" />
     <None Remove="Resources\select.wav" />
     <None Remove="Resources\spring.wav" />
     <None Remove="Resources\Sysalova_Basnicka.wav" />
+    <None Remove="Resources\win.wav" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,7 +39,6 @@
     <EmbeddedResource Include="Resources\dash.wav" />
     <EmbeddedResource Include="Resources\death.wav" />
     <EmbeddedResource Include="Resources\destroy.wav" />
-    <EmbeddedResource Include="Resources\ground.wav" />
     <EmbeddedResource Include="Resources\hit.wav" />
     <EmbeddedResource Include="Resources\hitEnemy.wav" />
     <EmbeddedResource Include="Resources\jump.wav" />
@@ -50,11 +49,10 @@
     <EmbeddedResource Include="Resources\projectileDestroy.wav" />
     <EmbeddedResource Include="Resources\q.wav" />
     <EmbeddedResource Include="Resources\ruler.wav" />
-    <EmbeddedResource Include="Resources\run.wav" />
-    <EmbeddedResource Include="Resources\SaveFile.txt" />
     <EmbeddedResource Include="Resources\select.wav" />
     <EmbeddedResource Include="Resources\spring.wav" />
     <EmbeddedResource Include="Resources\Sysalova_Basnicka.wav" />
+    <EmbeddedResource Include="Resources\win.wav" />
   </ItemGroup>
 
   <ItemGroup>

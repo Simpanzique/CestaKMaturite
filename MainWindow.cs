@@ -23,24 +23,24 @@ public partial class MainWindow : Form
 
     #region Zvuky
     // nAudio
-    readonly SoundManager soundBaseball = new("baseball", 0.5f);
-    readonly SoundManager soundSpring = new("spring", 0.5f);
-    readonly SoundManager soundDash = new("dash", 0f);
-    readonly SoundManager soundDeath = new("death", 0.5f);
-    readonly SoundManager soundhitSomeone = new("hitSomeone", 0.5f);
-    readonly SoundManager soundHit = new("hit", 0.5f);
-    readonly SoundManager soundChalk = new("chalk", 0.5f);
-    readonly SoundManager soundJump = new("jump", 0.05f);
-    readonly SoundManager soundLemka = new("lemka", 0.5f);
-    readonly SoundManager soundNextLevel = new("nextLevel", 0.5f);
-    readonly SoundManager soundNugget = new("nugget", 0.5f);
-    readonly SoundManager soundProjectile = new("projectile", 0.2f);
-    readonly SoundManager soundProjectileDestroy = new("projectileDestroy", 0.2f);
-    readonly SoundManager soundQ = new("q", 0.5f);
-    readonly SoundManager soundRuler = new("ruler", 0.5f);
-    readonly SoundManager soundSelect = new("select", 0.5f);
-    readonly SoundManager soundWin = new("win", 0.5f);
-    readonly SoundManager soundDestroy = new("destroy", 0.5f);
+    readonly SoundManager soundBaseball = new("baseball");
+    readonly SoundManager soundSpring = new("spring");
+    readonly SoundManager soundDash = new("dash");
+    readonly SoundManager soundDeath = new("death");
+    readonly SoundManager soundhitSomeone = new("hitSomeone");
+    readonly SoundManager soundHit = new("hit");
+    readonly SoundManager soundChalk = new("chalk");
+    readonly SoundManager soundJump = new("jump");
+    readonly SoundManager soundLemka = new("lemka");
+    readonly SoundManager soundNextLevel = new("nextLevel");
+    readonly SoundManager soundNugget = new("nugget");
+    readonly SoundManager soundProjectile = new("projectile");
+    readonly SoundManager soundProjectileDestroy = new("projectileDestroy");
+    readonly SoundManager soundQ = new("q");
+    readonly SoundManager soundRuler = new("ruler");
+    readonly SoundManager soundSelect = new("select");
+    readonly SoundManager soundWin = new("win");
+    readonly SoundManager soundDestroy = new("destroy");
 
     //Sysalova
     Stopwatch stopwatch;
@@ -52,7 +52,7 @@ public partial class MainWindow : Form
     bool A, D, Space, Q, E, LMB; //hr·Ëovo inputy
     bool moveLeft, moveRight, onTop, isJumping, onGround, lastInputLeft, facingRight, dashLeft, dashRight, banInput, canDash = true, landed, touchedGround, jumpCooldown, fixQ; //pohyb
     int jumpSpeed, dashX, dashIndex, hupIndex; //pohyb
-    bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain; //utok
+    bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain, soundFixQ; //utok
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
     int levelCount = 1, playerHealth, dmgIndex, enMiddle, absence1Index, absence2Index, currentLevel;
     bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, cheatHealth, nuggetSpawn = false, soundDeathOnce, won; string difficulty; //managment
@@ -181,8 +181,8 @@ public partial class MainWindow : Form
         #endregion
 
         //Hitboxy
-        HitboxLeft = new Rectangle(Player.Left - 3, Player.Top, 3, Player.Height - 2);
-        HitboxRight = new Rectangle(Player.Right, Player.Top, 3, Player.Height - 2);
+        HitboxLeft = new Rectangle(Player.Left - 3, Player.Top + 20, 3, Player.Height - 40);
+        HitboxRight = new Rectangle(Player.Right, Player.Top + 20, 3, Player.Height - 40);
         HitboxUp = new Rectangle(Player.Left + 10, Player.Top - 4, Player.Width - 10, 2);
         HitboxDown = new Rectangle(Player.Left + 2, Player.Bottom - 2, Player.Width - 4, 2);
 
@@ -417,6 +417,7 @@ public partial class MainWindow : Form
                     if (!won)
                     {
                         won = true;
+                        soundWin.PlaySound();
                         continueGame = false;
                         completedGame = true;
                         if (difficulty == "Insane")
@@ -502,6 +503,7 @@ public partial class MainWindow : Form
                             hitQ = false;
                             unHitable = true;
                             attackQcooldown = true;
+                            soundFixQ = true;
                             abilityQIndex = 0;
                             AbilityQ.Interval = 5;
                             AbilityQ.Start();
@@ -512,7 +514,11 @@ public partial class MainWindow : Form
 
             if (attackQphase1)
             {
-                soundQ.PlaySound();
+                if (soundFixQ)
+                {
+                    soundQ.PlaySound();
+                    soundFixQ = false;
+                }
 
                 if (QOnLeft && Player.Right - (closestEnemy.Right / 2) < 10)
                     Player.Left += 15;
@@ -1246,6 +1252,7 @@ public partial class MainWindow : Form
                 Dash.Interval = 1;
             }
         }
+
         // Smrt
         if (playerHealth <= 0)
         {
@@ -1263,6 +1270,15 @@ public partial class MainWindow : Form
             lbPress.Top = 401;
             disableallInputs = true;
         }
+
+        //Animace
+        //if (facingRight)
+        //    Player.Image = Resources.Gurl_right;
+        //else
+        //    Player.Image = Resources.Gurl_left;
+
+
+        //MESS
         info1 = baseballCooldown.ToString();
         if (stopwatch != null)
             info1 = stopwatch.ElapsedMilliseconds.ToString();
@@ -1288,7 +1304,7 @@ public partial class MainWindow : Form
                 "\niEnemy: " + iEnemy.ToString();
     }
 
-    #region tutorial
+    #region Tutorial
     private async void InstrukceTimer_Tick(object sender, EventArgs e)
     {
         if (writeInstructions)
@@ -1304,6 +1320,16 @@ public partial class MainWindow : Form
                     Application.DoEvents();
                     await Task.Delay(20);
                 }
+
+                if (tutorialPhase == 1)
+                    tutBanMovement = false;
+                else if (tutorialPhase == 2)
+                    tutBanJump = false;
+                else if (tutorialPhase == 5)
+                    tutBanLMB = false;
+                else if (tutorialPhase == 12)
+                    tutBanDash = false;
+
                 await Task.Delay(2000);
                 tutorialPhase++;
                 typing = false;
@@ -1316,20 +1342,13 @@ public partial class MainWindow : Form
                         writeInstructions = true;
                         break;
                 }
-                if (tutorialPhase == 2)
-                    tutBanMovement = false;
-                else if (tutorialPhase == 3)
-                    tutBanJump = false;
-                else if (tutorialPhase == 6)
-                    tutBanLMB = false;
-                else if (tutorialPhase == 9)
+
+                if (tutorialPhase == 9)
                 {
                     tutorialLemka.moving = true;
                     tutorialLemka.pb.Left = 1100;
                     tutorialLemka.pb.Top = 137;
                 }
-                else if (tutorialPhase == 13)
-                    tutBanDash = false;
                 else if (tutorialPhase == 14)
                 {
                     tutorialSysalova.pb.Left = 1200;
@@ -2011,10 +2030,11 @@ public partial class MainWindow : Form
             NuggetDisappear.Stop();
 
             if (basnicka.PlaybackState == PlaybackState.Playing)
+            {
                 basnickaPlaying = true;
-
-            stopwatch.Stop();
-            basnicka.Pause();
+                stopwatch.Stop();
+                basnicka.Pause();
+            }
         }
         if (action == "Play")
         {
@@ -2035,10 +2055,11 @@ public partial class MainWindow : Form
             tNuggetDisappear = false;
 
             if (basnickaPlaying)
+            {
                 basnicka.Resume();
-
+                stopwatch.Start();
+            }
             basnickaPlaying = false;
-            stopwatch.Start();
         }
     }
 
@@ -2361,10 +2382,10 @@ public partial class MainWindow : Form
                 E = true;
             if (e.KeyCode == Keys.F3)
             {
-                //if (lbStats.Visible)
-                //    lbStats.Visible = false;
-                //else
-                //    lbStats.Visible = true;
+                if (lbStats.Visible)
+                    lbStats.Visible = false;
+                else
+                    lbStats.Visible = true;
             }
             if (e.KeyCode == Keys.Escape)
             {

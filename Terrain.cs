@@ -13,8 +13,8 @@ internal class Terrain
             Top = positionY,
             Width = width,
             Height = height,
-            BackgroundImage = image,
-            BackgroundImageLayout = ImageLayout.Stretch,
+            Image = image,
+            SizeMode = PictureBoxSizeMode.StretchImage,
             Tag = Tag,
             Name = "terrain" + Count,
         };
