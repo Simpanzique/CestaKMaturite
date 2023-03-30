@@ -61,7 +61,7 @@ public partial class MainWindow : Form
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft, bookLeftDestroyed, bookRightDestroyed; //bossfight
     bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear, basnickaPlaying; //fixy timerù
     string info, info1; //bullshit
-    bool continueGame, completedGame, hardestDifficulty;
+    bool continueGame, completedGame, hardestDifficulty, versionForRelease = true;
     int savedHealth, savedLevel;
 
     bool tutorial, writeInstructions, typing, tutBanJump, tutBanDash, tutBanQ, tutBanLMB, tutBanMovement;
@@ -153,7 +153,7 @@ public partial class MainWindow : Form
                         intersects = true;
                 }
             }
-            Nugget nugget = new(positionX, positionY, 1, GameScene);
+            Nugget nugget = new(positionX, positionY, 1, Resources.nugeta_normal, GameScene);
             nuggetList.Add(nugget);
             nuggetPB = nugget.pb as PictureBox;
             NuggetDisappear.Interval = Random.Shared.Next(3000, 5000);
@@ -181,8 +181,8 @@ public partial class MainWindow : Form
         #endregion
 
         //Hitboxy
-        HitboxLeft = new Rectangle(Player.Left - 3, Player.Top + 20, 3, Player.Height - 40);
-        HitboxRight = new Rectangle(Player.Right, Player.Top + 20, 3, Player.Height - 40);
+        HitboxLeft = new Rectangle(Player.Left - 3, Player.Top, 3, Player.Height - 10);
+        HitboxRight = new Rectangle(Player.Right, Player.Top, 3, Player.Height - 10);
         HitboxUp = new Rectangle(Player.Left + 10, Player.Top - 4, Player.Width - 10, 2);
         HitboxDown = new Rectangle(Player.Left + 2, Player.Bottom - 2, Player.Width - 4, 2);
 
@@ -194,17 +194,23 @@ public partial class MainWindow : Form
         {
             if (terrain.Tag.ToString().Contains("Terrain"))
             {
+                if (terrain.Bounds.IntersectsWith(HitboxUp))
+                {
+                    Player.Top = terrain.Bottom + 3;
+                    jumpSpeed = -2;
+                    isJumping = false;
+                    underTerrain = true;
+                }
                 if (terrain.Bounds.IntersectsWith(HitboxLeft))
                 {
                     moveLeft = false;
-                    if (onGround)
+                    if (GameScene.Height - Player.Bottom <= 0 || onTop == true)
                         Player.Left = terrain.Right;
                 }
-
                 if (terrain.Bounds.IntersectsWith(HitboxRight))
                 {
                     moveRight = false;
-                    if (onGround)
+                    if (GameScene.Height - Player.Bottom <= 0 || onTop == true)
                         Player.Left = terrain.Left - Player.Width;
                 }
 
@@ -224,13 +230,6 @@ public partial class MainWindow : Form
 
                         landedBlock = terrain as PictureBox;
                     }
-                }
-                if (terrain.Bounds.IntersectsWith(HitboxUp))
-                {
-                    Player.Top = terrain.Bottom + 3;
-                    jumpSpeed = -2;
-                    isJumping = false;
-                    underTerrain = true;
                 }
             }
         }
@@ -883,7 +882,7 @@ public partial class MainWindow : Form
                                 Width = 110,
                                 Height = 180,
                                 BackColor = Color.Red,
-                                BackgroundImageLayout = ImageLayout.Stretch,
+                                SizeMode = PictureBoxSizeMode.StretchImage,
                             };
                             hacekPlatforma = new PictureBox
                             {
@@ -891,8 +890,8 @@ public partial class MainWindow : Form
                                 Top = 284,
                                 Width = 110,
                                 Height = 27,
-                                BackgroundImage = Resources.Knizka,
-                                BackgroundImageLayout = ImageLayout.Stretch,
+                                Image = Resources.Knizka,
+                                SizeMode = PictureBoxSizeMode.StretchImage,
                             };
                             lbRozvrh1.Visible = true;
                         }
@@ -907,7 +906,7 @@ public partial class MainWindow : Form
                                 Width = 110,
                                 Height = 180,
                                 BackColor = Color.Red,
-                                BackgroundImageLayout = ImageLayout.Stretch,
+                                SizeMode = PictureBoxSizeMode.StretchImage,
                             };
                             hacekPlatforma = new PictureBox
                             {
@@ -915,8 +914,8 @@ public partial class MainWindow : Form
                                 Top = 284,
                                 Width = 110,
                                 Height = 27,
-                                BackgroundImage = Resources.Knizka,
-                                BackgroundImageLayout = ImageLayout.Stretch,
+                                Image = Resources.Knizka,
+                                SizeMode = PictureBoxSizeMode.StretchImage,
                             };
                             lbRozvrh2.Visible = true;
                         }
@@ -1958,54 +1957,38 @@ public partial class MainWindow : Form
     {
         if (difficulty != "Insane")
         {
-            switch (playerHealth)
-            {
-                case 1:
-                    health1.BackgroundImage = Resources.heart_full;
-                    health2.BackgroundImage = Resources.heart_empty;
-                    health3.BackgroundImage = Resources.heart_empty;
-                    health4.BackgroundImage = Resources.heart_empty;
-                    health5.BackgroundImage = Resources.heart_empty;
-                    break;
-                case 2:
-                    health1.BackgroundImage = Resources.heart_full;
-                    health2.BackgroundImage = Resources.heart_full;
-                    health3.BackgroundImage = Resources.heart_empty;
-                    health4.BackgroundImage = Resources.heart_empty;
-                    health5.BackgroundImage = Resources.heart_empty;
-                    break;
-                case 3:
-                    health1.BackgroundImage = Resources.heart_full;
-                    health2.BackgroundImage = Resources.heart_full;
-                    health3.BackgroundImage = Resources.heart_full;
-                    health4.BackgroundImage = Resources.heart_empty;
-                    health5.BackgroundImage = Resources.heart_empty;
-                    break;
-                case 4:
-                    health1.BackgroundImage = Resources.heart_full;
-                    health2.BackgroundImage = Resources.heart_full;
-                    health3.BackgroundImage = Resources.heart_full;
-                    health4.BackgroundImage = Resources.heart_full;
-                    health5.BackgroundImage = Resources.heart_empty;
-                    break;
-                case 5:
-                    health1.BackgroundImage = Resources.heart_full;
-                    health2.BackgroundImage = Resources.heart_full;
-                    health3.BackgroundImage = Resources.heart_full;
-                    health4.BackgroundImage = Resources.heart_full;
-                    health5.BackgroundImage = Resources.heart_full;
-                    break;
-            }
+            if (playerHealth > 0)
+                health1.Image = Resources.nugeta1;
+            else
+                health1.Image = Resources.nugeta_drobky;
+            if (playerHealth > 1)
+                health2.Image = Resources.nugeta2;
+            else
+                health2.Image = Resources.nugeta_drobky;
+            if (playerHealth > 2)
+                health3.Image = Resources.nugeta3;
+            else
+                health3.Image = Resources.nugeta_drobky;
+            if (playerHealth > 3)
+                health4.Image = Resources.nugeta4;
+            else
+                health4.Image = Resources.nugeta_drobky;
+            if (playerHealth > 4)
+                health5.Image = Resources.nugeta5;
+            else
+                health5.Image = Resources.nugeta_drobky;
         }
         else
         {
-            health1.BackgroundImage = Resources.heart_full;
-            health2.BackgroundImage = Resources.heart_empty;
-            health3.BackgroundImage = Resources.heart_empty;
-            health4.BackgroundImage = Resources.heart_empty;
-            health5.BackgroundImage = Resources.heart_empty;
+            if (playerHealth == 1)
+                health1.Image = Resources.nugeta1_insane;
+            else
+                health1.Image = Resources.nugeta_drobky;
+            health2.Image = null;
+            health3.Image = null;
+            health4.Image = null;
+            health5.Image = null;
         }
-
     }
 
     void TimerHandler(string action)
@@ -2190,7 +2173,7 @@ public partial class MainWindow : Form
 
         enemyArray = new Enemy[] { enemy1, enemy2 };
 
-        enemy1.pb.BackgroundImage = Resources.Milanka;
+        enemy1.pb.Image = Resources.Milanka;
         enemy1.pb.BackColor = Color.Transparent;
         Oberhofnerova.Interval = enemy1.projectileCooldown;
         Oberhofnerova.Start();
@@ -2262,7 +2245,7 @@ public partial class MainWindow : Form
 
         if (difficulty == "Easy" || difficulty == "Normal")
         {
-            Nugget nugget1 = new(714, 73, 2, GameScene);
+            Nugget nugget1 = new(714, 73, 2, Resources.nugeta_double, GameScene);
             nuggetList.Add(nugget1);
         }
 
@@ -2380,7 +2363,7 @@ public partial class MainWindow : Form
                 Q = true;
             if (e.KeyCode == Keys.E)
                 E = true;
-            if (e.KeyCode == Keys.F3)
+            if (e.KeyCode == Keys.F3 && !versionForRelease)
             {
                 if (lbStats.Visible)
                     lbStats.Visible = false;
@@ -2413,7 +2396,7 @@ public partial class MainWindow : Form
                     Focus();
                 }
             }
-            if (e.KeyCode == Keys.K && !tutorial)
+            if (e.KeyCode == Keys.K && !tutorial && !versionForRelease)
             {
                 foreach (Enemy enemy in enemyArray)
                 {
@@ -2424,26 +2407,26 @@ public partial class MainWindow : Form
                     }
                 }
             }
-            if (e.KeyCode == Keys.L)
+            if (e.KeyCode == Keys.L && !versionForRelease)
             {
                 if (cheatHealth)
                     cheatHealth = false;
                 else
                     cheatHealth = true;
             }
-            if (e.KeyCode == Keys.P)
+            if (e.KeyCode == Keys.P && !versionForRelease)
             {
                 if (stark != null)
                     stark.health = 40;
                 changedPhase = false;
             }
-            if (e.KeyCode == Keys.O)
+            if (e.KeyCode == Keys.O && !versionForRelease)
             {
                 if (stark != null)
                     stark.health = 20;
                 changedPhase = false;
             }
-            if (e.KeyCode == Keys.I)
+            if (e.KeyCode == Keys.I && !versionForRelease)
             {
                 if (stark != null)
                 {
@@ -2572,9 +2555,9 @@ public partial class MainWindow : Form
     {
         SoundManager.bannedSound = !SoundManager.bannedSound;
         if (SoundManager.bannedSound)
-            Sound.BackgroundImage = Resources.sound_muted;
+            Sound.Image = Resources.sound_muted;
         else
-            Sound.BackgroundImage = Resources.sound;
+            Sound.Image = Resources.sound;
     }
 
     private void MainWindow_Load(object sender, EventArgs e)

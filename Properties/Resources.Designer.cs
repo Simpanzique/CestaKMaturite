@@ -106,46 +106,6 @@ namespace Petr_RP_CestaKMaturite.Properties {
         }
         
         /// <summary>
-        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Gurl_left {
-            get {
-                object obj = ResourceManager.GetObject("Gurl_left", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Gurl_right {
-            get {
-                object obj = ResourceManager.GetObject("Gurl_right", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap heart_empty {
-            get {
-                object obj = ResourceManager.GetObject("heart_empty", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap heart_full {
-            get {
-                object obj = ResourceManager.GetObject("heart_full", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream hit {
@@ -211,21 +171,101 @@ namespace Petr_RP_CestaKMaturite.Properties {
         }
         
         /// <summary>
-        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream nugget {
+        internal static System.Drawing.Bitmap nugeta_double {
             get {
-                return ResourceManager.GetStream("nugget", resourceCulture);
+                object obj = ResourceManager.GetObject("nugeta_double", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap nuggetka {
+        internal static System.Drawing.Bitmap nugeta_drobky {
             get {
-                object obj = ResourceManager.GetObject("nuggetka", resourceCulture);
+                object obj = ResourceManager.GetObject("nugeta_drobky", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nugeta_normal {
+            get {
+                object obj = ResourceManager.GetObject("nugeta_normal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nugeta1 {
+            get {
+                object obj = ResourceManager.GetObject("nugeta1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nugeta1_insane {
+            get {
+                object obj = ResourceManager.GetObject("nugeta1_insane", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nugeta2 {
+            get {
+                object obj = ResourceManager.GetObject("nugeta2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nugeta3 {
+            get {
+                object obj = ResourceManager.GetObject("nugeta3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nugeta4 {
+            get {
+                object obj = ResourceManager.GetObject("nugeta4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap nugeta5 {
+            get {
+                object obj = ResourceManager.GetObject("nugeta5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream nugget {
+            get {
+                return ResourceManager.GetStream("nugget", resourceCulture);
             }
         }
         

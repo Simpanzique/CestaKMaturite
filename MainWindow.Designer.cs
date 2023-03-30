@@ -209,7 +209,6 @@
             // 
             // health5
             // 
-            health5.BackgroundImageLayout = ImageLayout.Stretch;
             health5.Location = new Point(399, 12);
             health5.Name = "health5";
             health5.Size = new Size(65, 70);
@@ -218,7 +217,6 @@
             // 
             // health4
             // 
-            health4.BackgroundImageLayout = ImageLayout.Stretch;
             health4.Location = new Point(328, 12);
             health4.Name = "health4";
             health4.Size = new Size(65, 70);
@@ -227,7 +225,6 @@
             // 
             // health3
             // 
-            health3.BackgroundImageLayout = ImageLayout.Stretch;
             health3.Location = new Point(257, 12);
             health3.Name = "health3";
             health3.Size = new Size(65, 70);
@@ -236,7 +233,6 @@
             // 
             // health2
             // 
-            health2.BackgroundImageLayout = ImageLayout.Stretch;
             health2.Location = new Point(186, 12);
             health2.Name = "health2";
             health2.Size = new Size(65, 70);
@@ -255,7 +251,6 @@
             // 
             // health1
             // 
-            health1.BackgroundImageLayout = ImageLayout.Stretch;
             health1.Location = new Point(116, 12);
             health1.Name = "health1";
             health1.Size = new Size(65, 70);
@@ -290,12 +285,10 @@
             // Player
             // 
             Player.Anchor = AnchorStyles.None;
-            Player.BackColor = Color.Orange;
-            Player.BackgroundImageLayout = ImageLayout.None;
+            Player.BackColor = Color.DarkOrange;
             Player.Location = new Point(731, 377);
             Player.Name = "Player";
             Player.Size = new Size(75, 115);
-            Player.SizeMode = PictureBoxSizeMode.StretchImage;
             Player.TabIndex = 1;
             Player.TabStop = false;
             Player.Tag = "Player";
@@ -356,11 +349,11 @@
             // Sound
             // 
             Sound.BackColor = Color.Transparent;
-            Sound.BackgroundImage = Properties.Resources.sound_muted;
-            Sound.BackgroundImageLayout = ImageLayout.Stretch;
+            Sound.Image = Properties.Resources.sound_muted;
             Sound.Location = new Point(1435, 15);
             Sound.Name = "Sound";
             Sound.Size = new Size(70, 70);
+            Sound.SizeMode = PictureBoxSizeMode.StretchImage;
             Sound.TabIndex = 8;
             Sound.TabStop = false;
             Sound.Click += Sound_Click;
@@ -664,7 +657,7 @@
             label32.Name = "label32";
             label32.Size = new Size(37, 15);
             label32.TabIndex = 11;
-            label32.Text = "v0.2.0";
+            label32.Text = "v0.3.0";
             // 
             // btTutorial
             // 

@@ -6,7 +6,7 @@ internal class Nugget
     public PictureBox pb;
     public int healthAdd;
     static int Count = 1;
-    public Nugget(int positionX, int positionY, int _healthAdd, Panel panel)
+    public Nugget(int positionX, int positionY, int _healthAdd, Bitmap nugeta, Panel panel)
     {
         healthAdd = _healthAdd;
         pb = new PictureBox
@@ -15,7 +15,7 @@ internal class Nugget
             Top = positionY,
             Width = 65,
             Height = 70,
-            BackgroundImage = Resources.nuggetka,
+            Image = nugeta,
             Tag = "Nugget",
             Name = "nugget" + Count
         };

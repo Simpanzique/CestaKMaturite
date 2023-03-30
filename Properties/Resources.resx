@@ -133,18 +133,6 @@
   <data name="destroy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\destroy.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Gurl_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shaped Gurl-3.png.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Gurl_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Shaped Gurl-2.png.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="heart_empty" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\heart_empty.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="heart_full" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\heart_full.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="hit" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\hitEnemy.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -166,11 +154,35 @@
   <data name="nextLevel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\nextLevel.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="nugeta1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nugeta1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nugeta1_insane" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nugeta1_insane.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nugeta2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nugeta2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nugeta3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nugeta3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nugeta4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nugeta4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nugeta5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nugeta5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nugeta_double" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nugeta_double.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nugeta_drobky" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nugeta_drobky.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nugeta_normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nugeta_normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="nugget" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\nugget.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="nuggetka" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\nuggetka.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PC" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
