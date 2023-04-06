@@ -145,6 +145,15 @@ namespace Petr_RP_CestaKMaturite.Properties {
         /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream land {
+            get {
+                return ResourceManager.GetStream("land", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream lemka {
             get {
                 return ResourceManager.GetStream("lemka", resourceCulture);
@@ -272,6 +281,86 @@ namespace Petr_RP_CestaKMaturite.Properties {
         /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap OProjektil_5 {
+            get {
+                object obj = ResourceManager.GetObject("OProjektil_5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OProjektil_binder {
+            get {
+                object obj = ResourceManager.GetObject("OProjektil_binder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OProjektil_centropen {
+            get {
+                object obj = ResourceManager.GetObject("OProjektil_centropen", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OProjektil_cos {
+            get {
+                object obj = ResourceManager.GetObject("OProjektil_cos", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OProjektil_guma {
+            get {
+                object obj = ResourceManager.GetObject("OProjektil_guma", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OProjektil_minus {
+            get {
+                object obj = ResourceManager.GetObject("OProjektil_minus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OProjektil_plus {
+            get {
+                object obj = ResourceManager.GetObject("OProjektil_plus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OProjektil_sin {
+            get {
+                object obj = ResourceManager.GetObject("OProjektil_sin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap PC {
             get {
                 object obj = ResourceManager.GetObject("PC", resourceCulture);
@@ -376,6 +465,15 @@ namespace Petr_RP_CestaKMaturite.Properties {
         /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream Sysalova {
+            get {
+                return ResourceManager.GetStream("Sysalova", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream Sysalova_Basnicka {
             get {
                 return ResourceManager.GetStream("Sysalova_Basnicka", resourceCulture);
@@ -398,6 +496,46 @@ namespace Petr_RP_CestaKMaturite.Properties {
         internal static System.Drawing.Bitmap Tuzka_reversed {
             get {
                 object obj = ResourceManager.GetObject("Tuzka_reversed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap twitter_left {
+            get {
+                object obj = ResourceManager.GetObject("twitter_left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap twitter_left_move {
+            get {
+                object obj = ResourceManager.GetObject("twitter_left_move", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap twitter_right {
+            get {
+                object obj = ResourceManager.GetObject("twitter_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap twitter_right_move {
+            get {
+                object obj = ResourceManager.GetObject("twitter_right_move", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

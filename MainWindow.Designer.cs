@@ -45,8 +45,11 @@
             lbStats = new Label();
             Player = new PictureBox();
             Pause = new Panel();
+            panelCheat = new Panel();
+            btCheat = new Button();
+            lbCheat = new Label();
+            tbCheat = new TextBox();
             btResetProgress = new Button();
-            label31 = new Label();
             Sound = new PictureBox();
             panelPauza = new Panel();
             label17 = new Label();
@@ -112,6 +115,7 @@
             Stark = new System.Windows.Forms.Timer(components);
             JumpCooldown = new System.Windows.Forms.Timer(components);
             InstrukceTimer = new System.Windows.Forms.Timer(components);
+            Controller = new System.Windows.Forms.Timer(components);
             GameScene.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)StarkHealth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StarkHealthBackground).BeginInit();
@@ -122,6 +126,7 @@
             ((System.ComponentModel.ISupportInitialize)health1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
             Pause.SuspendLayout();
+            panelCheat.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Sound).BeginInit();
             panelPauza.SuspendLayout();
             Menu.SuspendLayout();
@@ -296,8 +301,8 @@
             // Pause
             // 
             Pause.BackColor = SystemColors.ActiveCaption;
+            Pause.Controls.Add(panelCheat);
             Pause.Controls.Add(btResetProgress);
-            Pause.Controls.Add(label31);
             Pause.Controls.Add(Sound);
             Pause.Controls.Add(panelPauza);
             Pause.Controls.Add(label18);
@@ -324,6 +329,45 @@
             Pause.TabIndex = 4;
             Pause.Visible = false;
             // 
+            // panelCheat
+            // 
+            panelCheat.Controls.Add(btCheat);
+            panelCheat.Controls.Add(lbCheat);
+            panelCheat.Controls.Add(tbCheat);
+            panelCheat.Enabled = false;
+            panelCheat.Location = new Point(1175, 781);
+            panelCheat.Name = "panelCheat";
+            panelCheat.Size = new Size(342, 35);
+            panelCheat.TabIndex = 27;
+            panelCheat.Visible = false;
+            // 
+            // btCheat
+            // 
+            btCheat.Location = new Point(288, 8);
+            btCheat.Name = "btCheat";
+            btCheat.Size = new Size(42, 23);
+            btCheat.TabIndex = 26;
+            btCheat.TabStop = false;
+            btCheat.Text = "OK";
+            btCheat.UseVisualStyleBackColor = true;
+            btCheat.Click += btCheat_Click;
+            // 
+            // lbCheat
+            // 
+            lbCheat.AutoSize = true;
+            lbCheat.Location = new Point(6, 12);
+            lbCheat.Name = "lbCheat";
+            lbCheat.Size = new Size(111, 15);
+            lbCheat.TabIndex = 25;
+            lbCheat.Text = "Zadejte CheatCode:";
+            // 
+            // tbCheat
+            // 
+            tbCheat.Location = new Point(123, 9);
+            tbCheat.Name = "tbCheat";
+            tbCheat.Size = new Size(159, 23);
+            tbCheat.TabIndex = 24;
+            // 
             // btResetProgress
             // 
             btResetProgress.BackColor = Color.RosyBrown;
@@ -337,19 +381,10 @@
             btResetProgress.UseVisualStyleBackColor = false;
             btResetProgress.Click += btResetProgress_Click;
             // 
-            // label31
-            // 
-            label31.AutoSize = true;
-            label31.Location = new Point(1370, 97);
-            label31.Name = "label31";
-            label31.Size = new Size(138, 45);
-            label31.TabIndex = 22;
-            label31.Text = "Doporučuji nezapínat,\r\notravný a zpomaluje hru.\r\n                                      <3";
-            // 
             // Sound
             // 
             Sound.BackColor = Color.Transparent;
-            Sound.Image = Properties.Resources.sound_muted;
+            Sound.Image = Properties.Resources.sound;
             Sound.Location = new Point(1435, 15);
             Sound.Name = "Sound";
             Sound.Size = new Size(70, 70);
@@ -623,7 +658,7 @@
             lbNazev.BackColor = Color.Transparent;
             lbNazev.Font = new Font("Segoe UI", 40F, FontStyle.Bold, GraphicsUnit.Point);
             lbNazev.ForeColor = Color.White;
-            lbNazev.Location = new Point(600, 73);
+            lbNazev.Location = new Point(642, 73);
             lbNazev.Name = "lbNazev";
             lbNazev.Size = new Size(179, 72);
             lbNazev.TabIndex = 0;
@@ -666,7 +701,7 @@
             btTutorial.Location = new Point(980, 318);
             btTutorial.Name = "btTutorial";
             btTutorial.Size = new Size(248, 65);
-            btTutorial.TabIndex = 10;
+            btTutorial.TabIndex = 2;
             btTutorial.TabStop = false;
             btTutorial.Text = "Tutoriál";
             btTutorial.UseVisualStyleBackColor = false;
@@ -764,7 +799,7 @@
             btInsane.Location = new Point(29, 458);
             btInsane.Name = "btInsane";
             btInsane.Size = new Size(138, 40);
-            btInsane.TabIndex = 12;
+            btInsane.TabIndex = 9;
             btInsane.Text = "Záškolák";
             btInsane.UseVisualStyleBackColor = false;
             btInsane.Click += btDifficulty;
@@ -795,7 +830,7 @@
             btHard.Location = new Point(29, 335);
             btHard.Name = "btHard";
             btHard.Size = new Size(138, 40);
-            btHard.TabIndex = 9;
+            btHard.TabIndex = 8;
             btHard.Text = "Flákač";
             btHard.UseVisualStyleBackColor = false;
             btHard.Click += btDifficulty;
@@ -836,7 +871,7 @@
             btNormal.Location = new Point(29, 212);
             btNormal.Name = "btNormal";
             btNormal.Size = new Size(138, 40);
-            btNormal.TabIndex = 5;
+            btNormal.TabIndex = 7;
             btNormal.Text = "Průměrný student";
             btNormal.UseVisualStyleBackColor = false;
             btNormal.Click += btDifficulty;
@@ -857,7 +892,7 @@
             btEasy.Location = new Point(29, 89);
             btEasy.Name = "btEasy";
             btEasy.Size = new Size(138, 40);
-            btEasy.TabIndex = 3;
+            btEasy.TabIndex = 6;
             btEasy.Text = "Učitelů miláček";
             btEasy.UseVisualStyleBackColor = false;
             btEasy.Click += btDifficulty;
@@ -882,7 +917,7 @@
             btContinue.Location = new Point(980, 246);
             btContinue.Name = "btContinue";
             btContinue.Size = new Size(248, 65);
-            btContinue.TabIndex = 5;
+            btContinue.TabIndex = 1;
             btContinue.TabStop = false;
             btContinue.Text = "Pokračovat";
             btContinue.UseVisualStyleBackColor = false;
@@ -907,7 +942,7 @@
             btExit.Location = new Point(980, 619);
             btExit.Name = "btExit";
             btExit.Size = new Size(248, 65);
-            btExit.TabIndex = 3;
+            btExit.TabIndex = 5;
             btExit.TabStop = false;
             btExit.Text = "Opustit hru";
             btExit.UseVisualStyleBackColor = false;
@@ -920,7 +955,7 @@
             btOptions.Location = new Point(980, 523);
             btOptions.Name = "btOptions";
             btOptions.Size = new Size(248, 65);
-            btOptions.TabIndex = 2;
+            btOptions.TabIndex = 4;
             btOptions.TabStop = false;
             btOptions.Text = "Ovládání";
             btOptions.UseVisualStyleBackColor = false;
@@ -945,7 +980,7 @@
             btPlay.Location = new Point(980, 427);
             btPlay.Name = "btPlay";
             btPlay.Size = new Size(248, 65);
-            btPlay.TabIndex = 0;
+            btPlay.TabIndex = 3;
             btPlay.TabStop = false;
             btPlay.Text = "Nová hra";
             btPlay.UseVisualStyleBackColor = false;
@@ -959,9 +994,9 @@
             lbPress.ForeColor = Color.Red;
             lbPress.Location = new Point(586, -200);
             lbPress.Name = "lbPress";
-            lbPress.Size = new Size(397, 108);
+            lbPress.Size = new Size(580, 108);
             lbPress.TabIndex = 16;
-            lbPress.Text = "Zkus to za rok\r\n       nebo zmáčkni R";
+            lbPress.Text = "Zkus to za rok\r\n       nebo zmáčkni R (options)";
             // 
             // lbGameOver
             // 
@@ -1038,6 +1073,12 @@
             InstrukceTimer.Interval = 1;
             InstrukceTimer.Tick += InstrukceTimer_Tick;
             // 
+            // Controller
+            // 
+            Controller.Enabled = true;
+            Controller.Interval = 1;
+            Controller.Tick += Controller_Tick;
+            // 
             // MainWindow
             // 
             AutoScaleMode = AutoScaleMode.Inherit;
@@ -1045,8 +1086,8 @@
             Controls.Add(lbPress);
             Controls.Add(lbGameOver);
             Controls.Add(Menu);
-            Controls.Add(GameScene);
             Controls.Add(Pause);
+            Controls.Add(GameScene);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -1069,6 +1110,8 @@
             ((System.ComponentModel.ISupportInitialize)Player).EndInit();
             Pause.ResumeLayout(false);
             Pause.PerformLayout();
+            panelCheat.ResumeLayout(false);
+            panelCheat.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)Sound).EndInit();
             panelPauza.ResumeLayout(false);
             panelPauza.PerformLayout();
@@ -1161,11 +1204,15 @@
         private Label lbRozvrh2;
         private PictureBox pbHardestDifficulty;
         private PictureBox pbCompletedGame;
-        private Label label31;
         private Button btResetProgress;
         private Button btTutorial;
         private System.Windows.Forms.Timer InstrukceTimer;
         private Label lbTutorial;
         private Label label32;
+        private Panel panelCheat;
+        private Button btCheat;
+        private Label lbCheat;
+        private TextBox tbCheat;
+        private System.Windows.Forms.Timer Controller;
     }
 }

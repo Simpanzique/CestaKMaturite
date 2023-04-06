@@ -145,6 +145,9 @@
   <data name="Knizka" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Knizka.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="land" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\land.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="lemka" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\lemka.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -184,6 +187,30 @@
   <data name="nugget" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\nugget.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="OProjektil_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OProjektil_5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OProjektil_binder" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OProjektil_binder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OProjektil_centropen" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OProjektil_centropen.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OProjektil_cos" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OProjektil_cos.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OProjektil_guma" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OProjektil_guma.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OProjektil_minus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OProjektil_minus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OProjektil_plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OProjektil_plus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OProjektil_sin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OProjektil_sin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="PC" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -217,6 +244,9 @@
   <data name="spring" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\spring.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Sysalova" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sysalova.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="Sysalova_Basnicka" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Sysalova_Basnicka.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -225,6 +255,18 @@
   </data>
   <data name="Tuzka_reversed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Tuzka_reversed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="twitter_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\twitter_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="twitter_left_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\twitter_left_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="twitter_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\twitter_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="twitter_right_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\twitter_right_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="win" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\win.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

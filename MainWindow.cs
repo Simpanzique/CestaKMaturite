@@ -2,6 +2,8 @@ using NAudio.Wave;
 using Petr_RP_CestaKMaturite.Properties;
 using System.ComponentModel;
 using System.Diagnostics;
+using XInputDotNetPure;
+using ButtonState = XInputDotNetPure.ButtonState;
 
 namespace Petr_RP_CestaKMaturite;
 public partial class MainWindow : Form
@@ -21,9 +23,68 @@ public partial class MainWindow : Form
         stopwatch = new();
     }
 
+    private void btExit_Click(object sender, EventArgs e)
+    {
+        Application.Exit();
+    }
+
+ 
+
+    
+
+    private void Controller_Tick(object sender, EventArgs e)
+    {
+        // XBOX
+        GamePadState xboxState = GamePad.GetState(PlayerIndex.One);
+        if (xboxState.IsConnected)
+        {
+            if (!disableAllInputs)
+            {
+                xboxA = xboxState.Buttons.A == ButtonState.Pressed;
+                xboxX = xboxState.Buttons.X == ButtonState.Pressed && previousXboxState.Buttons.X == ButtonState.Released;
+                xboxB = xboxState.Buttons.B == ButtonState.Pressed && previousXboxState.Buttons.B == ButtonState.Released;
+                xboxTrigger = xboxState.Triggers.Right > 0;
+                xboxLeft = xboxState.ThumbSticks.Left.X > 0.3;
+                xboxRight = xboxState.ThumbSticks.Left.X < -0.3;
+                xboxUp = xboxState.ThumbSticks.Left.Y > 0.5;
+            }
+
+            xboxOptions = xboxState.Buttons.Start == ButtonState.Pressed && previousXboxState.Buttons.Start == ButtonState.Released;
+
+            previousXboxState = xboxState;
+        }
+
+        //PlayStation
+
+
+        // pøemìnit PS a XBOX vstupy na jeden
+        cA = xboxA || psA;
+        cX = xboxX || psX;
+        cB = xboxB || psB;
+        cLeft = xboxLeft || psLeft;
+        cRight = xboxRight || psRight;
+        cUp = xboxUp || psUp;
+        cTrigger = xboxTrigger || psTrigger;
+        cOptions = xboxOptions || psOptions;
+
+        // Reset hry pomocí OPTIONS
+        if (cOptions && disableAllInputs)
+            FullReset();
+        else if (cOptions)
+            Pauza();
+    }
+
+    private void MainWindow_Load(object sender, EventArgs e)
+    {
+        UpdateProgress();
+        basnicka.Play();
+        basnicka.Pause();
+        stopwatch.Reset();
+    }
+
     #region Zvuky
-    // nAudio
-    readonly SoundManager soundBaseball = new("baseball");
+        // nAudio
+        readonly SoundManager soundBaseball = new("baseball");
     readonly SoundManager soundSpring = new("spring");
     readonly SoundManager soundDash = new("dash");
     readonly SoundManager soundDeath = new("death");
@@ -41,6 +102,8 @@ public partial class MainWindow : Form
     readonly SoundManager soundSelect = new("select");
     readonly SoundManager soundWin = new("win");
     readonly SoundManager soundDestroy = new("destroy");
+    readonly SoundManager soundLand = new("land");
+    readonly SoundManager soundSysalova = new("Sysalova");
 
     //Sysalova
     Stopwatch stopwatch;
@@ -49,19 +112,21 @@ public partial class MainWindow : Form
     #endregion
 
     //Globální promìnné
-    bool A, D, Space, Q, E, LMB; //hráèovo inputy
-    bool moveLeft, moveRight, onTop, isJumping, onGround, lastInputLeft, facingRight, dashLeft, dashRight, banInput, canDash = true, landed, touchedGround, jumpCooldown, fixQ; //pohyb
+    bool A, D, Space, Q, E, LMB, cX, cA, cLeft, cRight, cUp, cTrigger, cOptions, cB; //hráèovo inputy
+    bool xboxA = false, xboxX = false, xboxB = false, xboxLeft = false, xboxRight = false, xboxUp = false, xboxTrigger = false, xboxOptions = false; //Xbox
+    bool psA = false, psX = false, psB = false, psLeft = false, psRight = false, psUp = false, psTrigger = false, psOptions = false; //PlayStation
+    bool moveLeft, moveRight, onTop, isJumping, onGround, lastInputLeft, facingRight, dashLeft, dashRight, banInput, canDash = true, landed, touchedGround, jumpCooldown, fixQ, landSound; //pohyb
     int jumpSpeed, dashX, dashIndex, hupIndex; //pohyb
     bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain, soundFixQ; //utok
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
-    int levelCount = 1, playerHealth, dmgIndex, enMiddle, absence1Index, absence2Index, currentLevel;
-    bool canGetHit = true, disableallInputs = false, unHitable = false, knockback, cheatHealth, nuggetSpawn = false, soundDeathOnce, won; string difficulty; //managment
+    int levelCount = 1, playerHealth, dmgIndex, enMiddle, absence1Index, absence2Index, currentLevel, animationTick = 0;
+    bool canGetHit = true, disableAllInputs = false, unHitable = false, knockback, cheatHealth, nuggetSpawn = false, soundDeathOnce, won, basnickaHit; string difficulty; //managment
     bool lemkaCooldown, lemkaRight; int lemkaIndex; //enemy
     int OberhofnerovaHP = 6, LemkaHP = 12, HacekHP = 10, SysalovaHP = 12, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft, bookLeftDestroyed, bookRightDestroyed; //bossfight
     bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear, basnickaPlaying; //fixy timerù
     string info, info1; //bullshit
-    bool continueGame, completedGame, hardestDifficulty, versionForRelease = true;
+    bool continueGame, completedGame, hardestDifficulty, versionForRelease = false;
     int savedHealth, savedLevel;
 
     bool tutorial, writeInstructions, typing, tutBanJump, tutBanDash, tutBanQ, tutBanLMB, tutBanMovement;
@@ -75,6 +140,12 @@ public partial class MainWindow : Form
     string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
     string fileName = "CestaKMaturite_SaveFile.txt";
 
+    // Xbox
+    private GamePadState previousXboxState;
+
+    // PlayStation
+
+    
 
     Rectangle HitboxLeft;
     Rectangle HitboxRight;
@@ -125,10 +196,15 @@ public partial class MainWindow : Form
         onTop = false;
         underTerrain = false;
 
+        //tick promìnná pro animace
+        animationTick++;
+        if (animationTick == 1001)
+            animationTick = 0;
+
         //kurzor
         Point cursor = this.PointToClient(Cursor.Position);
 
-        if (((Control.MouseButtons & MouseButtons.Left) != 0) && !disableallInputs)
+        if (((Control.MouseButtons & MouseButtons.Left) != 0) && !disableAllInputs)
             LMB = true;
         else
             LMB = false;
@@ -258,7 +334,7 @@ public partial class MainWindow : Form
         //Doleva a Doprava
         if (!(A && D))
         {
-            if (D && moveRight == true && !(Player.Right >= GameScene.Width) && !banInput && !tutBanMovement)
+            if ((D || cLeft) && moveRight == true && !(Player.Right >= GameScene.Width) && !banInput && !tutBanMovement)
             {
                 Player.Left += 8; //movementSpeed
                 lastInputLeft = false;
@@ -266,7 +342,7 @@ public partial class MainWindow : Form
                 if (tutorialPhase == 2 && !typing)
                     writeInstructions = true;
             }
-            if (A && moveLeft == true && !(Player.Left <= 0) && !banInput && !tutBanMovement)
+            if ((A || cRight) && moveLeft == true && !(Player.Left <= 0) && !banInput && !tutBanMovement)
             {
                 Player.Left -= 8; //movementSpeed
                 lastInputLeft = true;
@@ -290,11 +366,21 @@ public partial class MainWindow : Form
 
         //Skakani
         if (GameScene.Height - Player.Bottom <= 0 || onTop == true)
+        {
             onGround = true;
+            if (!landSound)
+            {
+                soundLand.PlaySound();
+                landSound = true;
+            }
+        }
         else
+        {
             onGround = false;
+            landSound = false;
+        }
 
-        if (Space && onGround && !jumpCooldown && !tutBanJump)
+        if ((Space || cA) && onGround && !jumpCooldown && !tutBanJump)
         {
             isJumping = true;
             jumpSpeed = 24;
@@ -346,7 +432,7 @@ public partial class MainWindow : Form
         }
 
         //Dash
-        if (E && facingRight && !dashRight && !dashLeft && canDash && !tutBanDash)
+        if ((E || cTrigger) && facingRight && !dashRight && !dashLeft && canDash && !tutBanDash)
         {
             dashRight = true;
             dashX = Player.Left;
@@ -360,7 +446,7 @@ public partial class MainWindow : Form
                 writeInstructions = true;
         }
 
-        if (E && !facingRight && !dashRight && !dashLeft && canDash && !tutBanDash)
+        if ((E || cTrigger) && !facingRight && !dashRight && !dashLeft && canDash && !tutBanDash)
         {
             dashLeft = true;
             dashX = Player.Left;
@@ -470,9 +556,16 @@ public partial class MainWindow : Form
                 iEnemy++;
             }
 
+            if (cB)
+            {
+                foreach (Enemy enemy in enemyArray)
+                {
+
+                }
+            }
 
             //Ability Q na target myši
-            if (Q && !onGround && !attackQcooldown && enemyObjectArray[closestIndex].Top - Player.Bottom > 40 && !tutBanQ)
+            if ((Q || cB) && !onGround && !attackQcooldown && enemyObjectArray[closestIndex].Top - Player.Bottom > 40 && !tutBanQ)
             {
                 foreach (Enemy enemy in enemyArray)
                 {
@@ -571,7 +664,7 @@ public partial class MainWindow : Form
 
             #region Attack
             //Útok LMB
-            if (LMB && cursor.Y < Player.Top && !attackLMBcooldown && !tutBanLMB)
+            if (((LMB && cursor.Y < Player.Top) || cUp && cX) && !attackLMBcooldown && !tutBanLMB)
             {
                 //utok nahoru
                 HitboxAttackTop = new PictureBox
@@ -593,11 +686,10 @@ public partial class MainWindow : Form
 
                 if (tutorialPhase == 6 && !typing)
                     writeInstructions = true;
-
             }
             else
             {
-                if (LMB && !attackLMBcooldown && cursor.X > Player.Left + (Player.Width / 2) && !tutBanLMB)
+                if (((LMB && cursor.X > Player.Left + (Player.Width / 2)) || cX && facingRight) && !attackLMBcooldown && !tutBanLMB)
                 {
                     //utok doprava
                     HitboxAttackRight = new PictureBox
@@ -620,7 +712,7 @@ public partial class MainWindow : Form
                     if (tutorialPhase == 6 && !typing)
                         writeInstructions = true;
                 }
-                if (LMB && !attackLMBcooldown && cursor.X < Player.Left + (Player.Width / 2) && !tutBanLMB)
+                if (((LMB && cursor.X < Player.Left + (Player.Width / 2)) || cX && !facingRight) && !attackLMBcooldown && !tutBanLMB)
                 {
                     //utok doleva
                     HitboxAttackLeft = new PictureBox
@@ -649,6 +741,13 @@ public partial class MainWindow : Form
 
             foreach (Enemy enemy in enemyArray)
             {
+                //Sysalova smrt
+                if (enemy.type == "Sysalova" && enemy.dead)
+                {
+                    stopwatch.Reset();
+                    basnicka.Pause();
+                }
+
                 #region Lemka
                 if (enemy.type == "Lemka" && enemy.health > 0)
                 {
@@ -795,6 +894,7 @@ public partial class MainWindow : Form
                             }
                         }
                         SpawnEnemyBoss();
+                        return;
                     }
                     else if (!changedPhase && (stark.health == 40)) //finalni zniceni baseballky
                     {
@@ -845,6 +945,7 @@ public partial class MainWindow : Form
                             }
                         }
                         SpawnEnemyBoss();
+                        return;
                     }
                     else if (!changedPhase && (stark.health == 20))
                     {
@@ -882,7 +983,6 @@ public partial class MainWindow : Form
                                 Width = 110,
                                 Height = 180,
                                 BackColor = Color.Red,
-                                SizeMode = PictureBoxSizeMode.StretchImage,
                             };
                             hacekPlatforma = new PictureBox
                             {
@@ -891,7 +991,6 @@ public partial class MainWindow : Form
                                 Width = 110,
                                 Height = 27,
                                 Image = Resources.Knizka,
-                                SizeMode = PictureBoxSizeMode.StretchImage,
                             };
                             lbRozvrh1.Visible = true;
                         }
@@ -906,7 +1005,6 @@ public partial class MainWindow : Form
                                 Width = 110,
                                 Height = 180,
                                 BackColor = Color.Red,
-                                SizeMode = PictureBoxSizeMode.StretchImage,
                             };
                             hacekPlatforma = new PictureBox
                             {
@@ -915,7 +1013,6 @@ public partial class MainWindow : Form
                                 Width = 110,
                                 Height = 27,
                                 Image = Resources.Knizka,
-                                SizeMode = PictureBoxSizeMode.StretchImage,
                             };
                             lbRozvrh2.Visible = true;
                         }
@@ -991,13 +1088,6 @@ public partial class MainWindow : Form
                 //naražení do enemy -HP
                 if (enemy.pb.Bounds.IntersectsWith(Player.Bounds) && canGetHit && (enemy != stark || (enemy == stark && bossPhase == 3)))
                     Hit(enemy.pb);
-
-                //Sysalova smrt
-                if (enemy.type == "Sysalova" && enemy.dead)
-                {
-                    stopwatch.Reset();
-                    basnicka.Pause();
-                }
 
                 #region Projektily
                 //let projektilù
@@ -1091,9 +1181,16 @@ public partial class MainWindow : Form
                             }
 
                             if (enemy.projectile.Left + 15 > Player.Left + Player.Width / 2)
+                            {
                                 enemy.projectile.Left -= enemy.projectileSpeedX;
+                                enemy.projectileBirdFacingRight = false;
+                            }
                             if (enemy.projectile.Left + 15 < Player.Left + Player.Width / 2)
+                            {
                                 enemy.projectile.Left += enemy.projectileSpeedX;
+                                enemy.projectileBirdFacingRight = true;
+                            }
+
                             if (enemy.projectile.Top + 15 > Player.Top + Player.Height / 2)
                                 enemy.projectile.Top -= enemy.projectileSpeedY;
                             if (enemy.projectile.Top + 15 < Player.Top + Player.Height / 2)
@@ -1106,6 +1203,23 @@ public partial class MainWindow : Form
                         }
                         if (enemy.projectileStop)
                             Hacek.Start();
+
+                        //ptáèek
+                        if (enemy.projectileBirdFacingRight)
+                        {
+                            if (animationTick % 10 == 0)
+                                enemy.projectile.Image = Resources.twitter_right;
+                            if (animationTick % 20 == 0)
+                                enemy.projectile.Image = Resources.twitter_right_move;
+                        }
+                        else
+                        {
+                            if (animationTick % 10 == 0)
+                                enemy.projectile.Image = Resources.twitter_left;
+                            if (animationTick % 20 == 0)
+                                enemy.projectile.Image = Resources.twitter_left_move;
+                        }
+
                     }
                     if (enemy.type == "Stark")
                     {
@@ -1220,16 +1334,24 @@ public partial class MainWindow : Form
         #endregion
 
         // Sysalova
-        if (stopwatch.ElapsedMilliseconds > 15000)
+        if (stopwatch.ElapsedMilliseconds > 15000 && !basnickaHit)
         {
-            stopwatch.Restart();
+            basnickaHit = true;
+            basnicka.Pause();
             soundHit.PlaySound();
+            soundSysalova.PlaySound();
             if (!cheatHealth || unHitable)
                 playerHealth--;
             if (playerHealth <= 0)
                 continueGame = false;
             SaveFileWrite();
             HealthUI();
+        }
+        else if (stopwatch.ElapsedMilliseconds > 18000)
+        {
+            stopwatch.Restart();
+            basnicka.Resume();
+            basnickaHit = false;
         }
         if (reader.Position >= reader.Length)
         {
@@ -1267,7 +1389,7 @@ public partial class MainWindow : Form
             lbGameOver.Top = 195;
             lbPress.Left = 586;
             lbPress.Top = 401;
-            disableallInputs = true;
+            disableAllInputs = true;
         }
 
         //Animace
@@ -1878,6 +2000,8 @@ public partial class MainWindow : Form
         Space = false;
         Q = false;
         LMB = false;
+        cA = false;
+        cX = false;
 
         Absence1.Stop();
         Absence2.Stop();
@@ -1937,7 +2061,7 @@ public partial class MainWindow : Form
         else
             playerHealth = 1;
         canGetHit = true;
-        disableallInputs = false;
+        disableAllInputs = false;
         unHitable = false;
         nuggetSpawn = false;
         bossPhase = 0;
@@ -2113,6 +2237,33 @@ public partial class MainWindow : Form
             pbHardestDifficulty.Visible = false;
     }
 
+    void Pauza()
+    {
+        if (!Pause.Visible)
+        {
+            Pause.Visible = true;
+            Pause.Enabled = true;
+            GameScene.Enabled = false;
+            GameScene.Visible = false;
+            panelPauza.Visible = true;
+            lbNazev.Text = "Pauza";
+            lbNazev.Left = 650;
+            UpdateMethod.Stop();
+            TimerHandler("Pause");
+            Focus();
+        }
+        else if (lbNazev.Text == "Pauza")
+        {
+            Pause.Visible = false;
+            Pause.Enabled = false;
+            GameScene.Enabled = true;
+            GameScene.Visible = true;
+            UpdateMethod.Start();
+            TimerHandler("Play");
+            Focus();
+        }
+    }
+
     #endregion
 
     #region LevelDesign
@@ -2133,8 +2284,8 @@ public partial class MainWindow : Form
     {
         FullReset();
         continueGame = false;
-        Terrain terrain1 = new(486, 563, 130, 34, "Terrain", Resources.Knizka, GameScene);
-        Terrain terrain2 = new(730, 427, 130, 34, "Terrain", Resources.Knizka, GameScene);
+        Terrain terrain1 = new(486, 563, 130, 34, "Terrain Book", Resources.Knizka, GameScene);
+        Terrain terrain2 = new(730, 427, 130, 34, "Terrain Book", Resources.Knizka, GameScene);
         Terrain terrain3 = new(997, 317, 511, 34, "Terrain", Resources.Tuzka, GameScene);
 
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3 };
@@ -2351,7 +2502,7 @@ public partial class MainWindow : Form
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
     {
         //Input - zmacknuti
-        if (!disableallInputs)
+        if (!disableAllInputs)
         {
             if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
                 A = true;
@@ -2371,31 +2522,7 @@ public partial class MainWindow : Form
                     lbStats.Visible = true;
             }
             if (e.KeyCode == Keys.Escape)
-            {
-                if (!Pause.Visible)
-                {
-                    Pause.Visible = true;
-                    Pause.Enabled = true;
-                    GameScene.Enabled = false;
-                    GameScene.Visible = false;
-                    panelPauza.Visible = true;
-                    lbNazev.Text = "Pauza";
-                    lbNazev.Left = 650;
-                    UpdateMethod.Stop();
-                    TimerHandler("Pause");
-                    Focus();
-                }
-                else if (lbNazev.Text == "Pauza")
-                {
-                    Pause.Visible = false;
-                    Pause.Enabled = false;
-                    GameScene.Enabled = true;
-                    GameScene.Visible = true;
-                    UpdateMethod.Start();
-                    TimerHandler("Play");
-                    Focus();
-                }
-            }
+                Pauza();
             if (e.KeyCode == Keys.K && !tutorial && !versionForRelease)
             {
                 foreach (Enemy enemy in enemyArray)
@@ -2433,6 +2560,11 @@ public partial class MainWindow : Form
                     stark.health -= 2;
                     stark.CheckHealth(stark, GameScene);
                 }
+            }
+            if (e.KeyCode == Keys.Oemtilde && Pause.Enabled && lbNazev.Text == "Pauza")
+            {
+                panelCheat.Enabled = !panelCheat.Enabled;
+                panelCheat.Visible = !panelCheat.Visible;
             }
         }
         else if (e.KeyCode == Keys.R)
@@ -2497,10 +2629,6 @@ public partial class MainWindow : Form
         }
 
     }
-    private void btExit_Click(object sender, EventArgs e)
-    {
-        Application.Exit();
-    }
 
     private void btDifficulty(object sender, EventArgs e)
     {
@@ -2557,16 +2685,15 @@ public partial class MainWindow : Form
         if (SoundManager.bannedSound)
             Sound.Image = Resources.sound_muted;
         else
+        {
             Sound.Image = Resources.sound;
+            soundSelect.PlaySound();
+        }
+
     }
 
-    private void MainWindow_Load(object sender, EventArgs e)
-    {
-        UpdateProgress();
-        basnicka.Play();
-        basnicka.Pause();
-        stopwatch.Reset();
-    }
+    
+    
 
     private void btResetProgress_Click(object sender, EventArgs e)
     {
@@ -2598,5 +2725,22 @@ public partial class MainWindow : Form
         btContinue.Enabled = false;
         InstrukceTimer.Start();
         soundSelect.PlaySound();
+    }
+
+    private void btCheat_Click(object sender, EventArgs e)
+    {
+        string code = tbCheat.Text;
+
+        switch (code)
+        {
+            case "jsemnoob":
+                cheatHealth = true;
+                tbCheat.Text = "Kód aktivován!";
+                break;
+            default:
+                tbCheat.Text = "Neplatný kód!";
+                break;
+        }
+        this.Focus();
     }
 }

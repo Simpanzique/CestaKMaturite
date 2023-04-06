@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Petr-RP-CestaKMaturite", "Petr-RP-CestaKMaturite.csproj", "{F00B3C50-06A5-45E7-AF4A-1B77030FA75E}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CestaKMaturite_Setup", "..\CestaKMaturite_Setup\CestaKMaturite_Setup.vdproj", "{5CD45C1B-DC83-46CC-A0D2-27FCCD03521C}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Cesta K Maturitě", "..\CestaKMaturite_Setup\CestaKMaturite_Setup.vdproj", "{5CD45C1B-DC83-46CC-A0D2-27FCCD03521C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

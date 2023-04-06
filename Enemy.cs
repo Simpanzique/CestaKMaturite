@@ -1,4 +1,6 @@
-﻿namespace Petr_RP_CestaKMaturite;
+﻿using Petr_RP_CestaKMaturite.Properties;
+
+namespace Petr_RP_CestaKMaturite;
 
 internal class Enemy
 {
@@ -29,6 +31,7 @@ internal class Enemy
     public bool projectileLeft;
     public bool projectileRight;
     public bool projectileUp;
+    public bool projectileBirdFacingRight;
     public Point player;
 
     public Enemy(int positionX, int positionY, int width, int height, Color color,
@@ -80,7 +83,18 @@ internal class Enemy
             if(enemy.type == "Oberhofnerova")
             {
                 //random co hodi
-                enemy.projectile.BackColor = Color.Yellow;
+                switch (Random.Shared.Next(0,8))
+                {
+                    case 0: enemy.projectile.Image = Resources.OProjektil_5; break;
+                    case 1: enemy.projectile.Image = Resources.OProjektil_binder; break;
+                    case 2: enemy.projectile.Image = Resources.OProjektil_centropen; break;
+                    case 3: enemy.projectile.Image = Resources.OProjektil_cos; break;
+                    case 4: enemy.projectile.Image = Resources.OProjektil_guma; break;
+                    case 5: enemy.projectile.Image = Resources.OProjektil_minus; break;
+                    case 6: enemy.projectile.Image = Resources.OProjektil_plus; break;
+                    case 7: enemy.projectile.Image = Resources.OProjektil_sin; break;
+                }
+
                 enemy.projectile.Name = "projectileO" + ProjectileCountO;
                 enemy.projectile.Left = enemy.pb.Left + 45;
                 enemy.projectile.Top = enemy.pb.Top + 45;
@@ -123,8 +137,6 @@ internal class Enemy
         }
         if (enemy.type == "Hacek")
         {
-            enemy.projectile.BackColor = Color.Yellow;
-
             enemy.projectile.Name = "projectileH" + ProjectileCountH;
             enemy.projectile.Left = enemy.pb.Left + 40;
             enemy.projectile.Top = enemy.pb.Top + 75;

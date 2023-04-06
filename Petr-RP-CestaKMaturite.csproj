@@ -19,6 +19,7 @@
     <None Remove="Resources\hit.wav" />
     <None Remove="Resources\hitEnemy.wav" />
     <None Remove="Resources\jump.wav" />
+    <None Remove="Resources\land.wav" />
     <None Remove="Resources\lemka.wav" />
     <None Remove="Resources\nextLevel.wav" />
     <None Remove="Resources\nugget.wav" />
@@ -29,6 +30,7 @@
     <None Remove="Resources\SaveFile.txt" />
     <None Remove="Resources\select.wav" />
     <None Remove="Resources\spring.wav" />
+    <None Remove="Resources\Sysalova.wav" />
     <None Remove="Resources\Sysalova_Basnicka.wav" />
     <None Remove="Resources\win.wav" />
   </ItemGroup>
@@ -42,6 +44,7 @@
     <EmbeddedResource Include="Resources\hit.wav" />
     <EmbeddedResource Include="Resources\hitEnemy.wav" />
     <EmbeddedResource Include="Resources\jump.wav" />
+    <EmbeddedResource Include="Resources\land.wav" />
     <EmbeddedResource Include="Resources\lemka.wav" />
     <EmbeddedResource Include="Resources\nextLevel.wav" />
     <EmbeddedResource Include="Resources\nugget.wav" />
@@ -51,12 +54,21 @@
     <EmbeddedResource Include="Resources\ruler.wav" />
     <EmbeddedResource Include="Resources\select.wav" />
     <EmbeddedResource Include="Resources\spring.wav" />
+    <EmbeddedResource Include="Resources\Sysalova.wav" />
     <EmbeddedResource Include="Resources\Sysalova_Basnicka.wav" />
     <EmbeddedResource Include="Resources\win.wav" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.1.0" />
+    <PackageReference Include="SharpDX" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="XInputDotNetPure">
+      <HintPath>bin\Debug\net6.0-windows\XInputDotNetPure.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
