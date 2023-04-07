@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             GameScene = new Panel();
             lbTutorial = new Label();
             lbRozvrh2 = new Label();
@@ -692,7 +693,7 @@
             label32.Name = "label32";
             label32.Size = new Size(37, 15);
             label32.TabIndex = 11;
-            label32.Text = "v0.3.0";
+            label32.Text = "v0.4.0";
             // 
             // btTutorial
             // 
@@ -1090,6 +1091,7 @@
             Controls.Add(GameScene);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "MainWindow";

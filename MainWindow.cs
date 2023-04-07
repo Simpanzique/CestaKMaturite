@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using XInputDotNetPure;
 using ButtonState = XInputDotNetPure.ButtonState;
+using SharpDX.DirectInput;
 
 namespace Petr_RP_CestaKMaturite;
 public partial class MainWindow : Form
@@ -23,68 +24,9 @@ public partial class MainWindow : Form
         stopwatch = new();
     }
 
-    private void btExit_Click(object sender, EventArgs e)
-    {
-        Application.Exit();
-    }
-
- 
-
-    
-
-    private void Controller_Tick(object sender, EventArgs e)
-    {
-        // XBOX
-        GamePadState xboxState = GamePad.GetState(PlayerIndex.One);
-        if (xboxState.IsConnected)
-        {
-            if (!disableAllInputs)
-            {
-                xboxA = xboxState.Buttons.A == ButtonState.Pressed;
-                xboxX = xboxState.Buttons.X == ButtonState.Pressed && previousXboxState.Buttons.X == ButtonState.Released;
-                xboxB = xboxState.Buttons.B == ButtonState.Pressed && previousXboxState.Buttons.B == ButtonState.Released;
-                xboxTrigger = xboxState.Triggers.Right > 0;
-                xboxLeft = xboxState.ThumbSticks.Left.X > 0.3;
-                xboxRight = xboxState.ThumbSticks.Left.X < -0.3;
-                xboxUp = xboxState.ThumbSticks.Left.Y > 0.5;
-            }
-
-            xboxOptions = xboxState.Buttons.Start == ButtonState.Pressed && previousXboxState.Buttons.Start == ButtonState.Released;
-
-            previousXboxState = xboxState;
-        }
-
-        //PlayStation
-
-
-        // pøemìnit PS a XBOX vstupy na jeden
-        cA = xboxA || psA;
-        cX = xboxX || psX;
-        cB = xboxB || psB;
-        cLeft = xboxLeft || psLeft;
-        cRight = xboxRight || psRight;
-        cUp = xboxUp || psUp;
-        cTrigger = xboxTrigger || psTrigger;
-        cOptions = xboxOptions || psOptions;
-
-        // Reset hry pomocí OPTIONS
-        if (cOptions && disableAllInputs)
-            FullReset();
-        else if (cOptions)
-            Pauza();
-    }
-
-    private void MainWindow_Load(object sender, EventArgs e)
-    {
-        UpdateProgress();
-        basnicka.Play();
-        basnicka.Pause();
-        stopwatch.Reset();
-    }
-
     #region Zvuky
-        // nAudio
-        readonly SoundManager soundBaseball = new("baseball");
+    // nAudio
+    readonly SoundManager soundBaseball = new("baseball");
     readonly SoundManager soundSpring = new("spring");
     readonly SoundManager soundDash = new("dash");
     readonly SoundManager soundDeath = new("death");
@@ -114,7 +56,7 @@ public partial class MainWindow : Form
     //Globální promìnné
     bool A, D, Space, Q, E, LMB, cX, cA, cLeft, cRight, cUp, cTrigger, cOptions, cB; //hráèovo inputy
     bool xboxA = false, xboxX = false, xboxB = false, xboxLeft = false, xboxRight = false, xboxUp = false, xboxTrigger = false, xboxOptions = false; //Xbox
-    bool psA = false, psX = false, psB = false, psLeft = false, psRight = false, psUp = false, psTrigger = false, psOptions = false; //PlayStation
+    bool psA = false, psX = false, psB = false, psLeft = false, psRight = false, psUp = false, psTrigger = false, psOptions = false, psController; //PlayStation
     bool moveLeft, moveRight, onTop, isJumping, onGround, lastInputLeft, facingRight, dashLeft, dashRight, banInput, canDash = true, landed, touchedGround, jumpCooldown, fixQ, landSound; //pohyb
     int jumpSpeed, dashX, dashIndex, hupIndex; //pohyb
     bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain, soundFixQ; //utok
@@ -126,7 +68,7 @@ public partial class MainWindow : Form
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft, bookLeftDestroyed, bookRightDestroyed; //bossfight
     bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear, basnickaPlaying; //fixy timerù
     string info, info1; //bullshit
-    bool continueGame, completedGame, hardestDifficulty, versionForRelease = false;
+    bool continueGame, completedGame, hardestDifficulty, versionForRelease = true;
     int savedHealth, savedLevel;
 
     bool tutorial, writeInstructions, typing, tutBanJump, tutBanDash, tutBanQ, tutBanLMB, tutBanMovement;
@@ -140,12 +82,11 @@ public partial class MainWindow : Form
     string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
     string fileName = "CestaKMaturite_SaveFile.txt";
 
-    // Xbox
-    private GamePadState previousXboxState;
+    private GamePadState previousXboxState; // Xbox
 
     // PlayStation
-
-    
+    Joystick joystick;
+    bool[]? previousButtons;
 
     Rectangle HitboxLeft;
     Rectangle HitboxRight;
@@ -334,7 +275,7 @@ public partial class MainWindow : Form
         //Doleva a Doprava
         if (!(A && D))
         {
-            if ((D || cLeft) && moveRight == true && !(Player.Right >= GameScene.Width) && !banInput && !tutBanMovement)
+            if ((D || cRight) && moveRight == true && !(Player.Right >= GameScene.Width) && !banInput && !tutBanMovement)
             {
                 Player.Left += 8; //movementSpeed
                 lastInputLeft = false;
@@ -342,7 +283,7 @@ public partial class MainWindow : Form
                 if (tutorialPhase == 2 && !typing)
                     writeInstructions = true;
             }
-            if ((A || cRight) && moveLeft == true && !(Player.Left <= 0) && !banInput && !tutBanMovement)
+            if ((A || cLeft) && moveLeft == true && !(Player.Left <= 0) && !banInput && !tutBanMovement)
             {
                 Player.Left -= 8; //movementSpeed
                 lastInputLeft = true;
@@ -530,13 +471,27 @@ public partial class MainWindow : Form
             #region AttackQ
             //porovnání vzdáleností a hledání nejbližšího Enemy na kurzor (enemyObjectArray[closestIndex])
             //pomocí tagù
+
+            //PC x Controller
+            int X, Y;
+            if (Q)
+            {
+                X = cursor.X;
+                Y = cursor.Y;
+            }
+            else
+            {
+                X = Player.Left + Player.Width / 2;
+                Y = Player.Top + Player.Height / 2;
+            }
+
             int[] enemyDistanceArray = new int[iEnemy];
             PictureBox[] enemyObjectArray = new PictureBox[iEnemy];
             iEnemy = 0;
             int? sumDistance;
             foreach (PictureBox enemy in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag == "Enemy"))
             {
-                sumDistance = Math.Abs(cursor.X - enemy.Left) + Math.Abs(cursor.Y - enemy.Top);
+                sumDistance = Math.Abs(X - enemy.Left) + Math.Abs(Y - enemy.Top);
                 enemyDistanceArray[iEnemy] = Convert.ToInt32(sumDistance);
                 enemyObjectArray[iEnemy] = enemy;
 
@@ -554,14 +509,6 @@ public partial class MainWindow : Form
                 }
 
                 iEnemy++;
-            }
-
-            if (cB)
-            {
-                foreach (Enemy enemy in enemyArray)
-                {
-
-                }
             }
 
             //Ability Q na target myši
@@ -664,7 +611,7 @@ public partial class MainWindow : Form
 
             #region Attack
             //Útok LMB
-            if (((LMB && cursor.Y < Player.Top) || cUp && cX) && !attackLMBcooldown && !tutBanLMB)
+            if (((LMB && cursor.Y < Player.Top - 50) || cUp && cX) && !attackLMBcooldown && !tutBanLMB)
             {
                 //utok nahoru
                 HitboxAttackTop = new PictureBox
@@ -942,6 +889,11 @@ public partial class MainWindow : Form
                             {
                                 bossEnemy.health = 0;
                                 bossEnemy.CheckHealth(bossEnemy, GameScene);
+                                if (bossEnemy.type == "Sysalova")
+                                {
+                                    basnicka.Pause();
+                                    stopwatch.Reset();
+                                }
                             }
                         }
                         SpawnEnemyBoss();
@@ -955,6 +907,11 @@ public partial class MainWindow : Form
                             {
                                 bossEnemy.health = 0;
                                 bossEnemy.CheckHealth(bossEnemy, GameScene);
+                                if (bossEnemy.type == "Sysalova")
+                                {
+                                    basnicka.Pause();
+                                    stopwatch.Reset();
+                                }
                             }
                         }
                         Stark.Stop();
@@ -1357,6 +1314,8 @@ public partial class MainWindow : Form
         {
             reader.Position = 0;
             basnicka.Play();
+            basnicka.Pause();
+            basnicka.Resume();
         }
 
         // Odhozeni od nepratel
@@ -1795,7 +1754,8 @@ public partial class MainWindow : Form
             }
             else if (starkIndex == 1)
             {
-                DestroyAll(baseballka, GameScene);
+                if (baseballka != null)
+                    DestroyAll(baseballka, GameScene);
                 stark.moving = true;
                 Stark.Interval = 3000;
             }
@@ -1868,6 +1828,27 @@ public partial class MainWindow : Form
 
     #region Voidy
 
+    private void CheckPS()
+    {
+        var input = new DirectInput();
+        var joystickGuid = Guid.Empty;
+
+        foreach (var deviceInstance in input.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AllDevices))
+        {
+            if (!(deviceInstance.Type == DeviceType.Gamepad)) // nepøidá xbox
+                joystickGuid = deviceInstance.InstanceGuid;
+        }
+
+        if (joystickGuid == Guid.Empty)
+            psController = false;
+        else
+        {
+            joystick = new Joystick(input, joystickGuid);
+            joystick.Properties.BufferSize = 128;
+            joystick.Acquire();
+            psController = true;
+        }
+    }
     private void SpawnEnemyBoss()
     {
         if (Player.Left > GameScene.Width / 2)
@@ -1876,7 +1857,7 @@ public partial class MainWindow : Form
             playerSideLeft = true;
 
         int random1 = 0, random2 = 0, LemkaMove = 0;
-        if (playerSideLeft && bookLeftDestroyed)
+        if (playerSideLeft && bookRightDestroyed)
         {
             random1 = Random.Shared.Next(1, 4);
             random2 = Random.Shared.Next(1, 4);
@@ -1885,7 +1866,7 @@ public partial class MainWindow : Form
 
             LemkaMove = 925;
         }
-        else if (playerSideLeft && !bookLeftDestroyed)
+        else if (playerSideLeft && !bookRightDestroyed)
         {
             random1 = Random.Shared.Next(1, 5);
             random2 = Random.Shared.Next(1, 5);
@@ -1894,16 +1875,16 @@ public partial class MainWindow : Form
 
             LemkaMove = 1393;
         }
-        if (!playerSideLeft && bookRightDestroyed)
+        if (!playerSideLeft && bookLeftDestroyed)
         {
             random1 = Random.Shared.Next(1, 4);
             random2 = Random.Shared.Next(1, 4);
             while (random1 == random2)
                 random1 = Random.Shared.Next(1, 4);
 
-            LemkaMove = 595;
+            LemkaMove = 485;
         }
-        else if (!playerSideLeft && !bookRightDestroyed)
+        else if (!playerSideLeft && !bookLeftDestroyed)
         {
             random1 = Random.Shared.Next(1, 5);
             random2 = Random.Shared.Next(1, 5);
@@ -1995,13 +1976,9 @@ public partial class MainWindow : Form
         }
 
         //inputy
-        A = false;
-        D = false;
-        Space = false;
-        Q = false;
-        LMB = false;
-        cA = false;
-        cX = false;
+        A = false; D = false; Space = false; Q = false; LMB = false;
+        xboxA = false; xboxX = false; xboxB = false; xboxOptions = false; xboxRight = false; xboxLeft = false; xboxUp = false; xboxTrigger = false;
+        psA = false; psB = false; psX = false; psOptions = false; psRight = false; psLeft = false; psUp = false; psTrigger = false;
 
         Absence1.Stop();
         Absence2.Stop();
@@ -2499,6 +2476,76 @@ public partial class MainWindow : Form
 
     #endregion
 
+    private void Controller_Tick(object sender, EventArgs e)
+    {
+        // XBOX
+        GamePadState xboxState = GamePad.GetState(PlayerIndex.One);
+        if (xboxState.IsConnected)
+        {
+            if (!disableAllInputs)
+            {
+                xboxA = xboxState.Buttons.A == ButtonState.Pressed;
+                xboxX = xboxState.Buttons.X == ButtonState.Pressed && previousXboxState.Buttons.X == ButtonState.Released;
+                xboxB = xboxState.Buttons.B == ButtonState.Pressed && previousXboxState.Buttons.B == ButtonState.Released;
+                xboxTrigger = xboxState.Triggers.Right > 0;
+                xboxLeft = xboxState.ThumbSticks.Left.X < -0.3;
+                xboxRight = xboxState.ThumbSticks.Left.X > 0.3;
+                xboxUp = xboxState.ThumbSticks.Left.Y > 0.5;
+            }
+
+            xboxOptions = xboxState.Buttons.Start == ButtonState.Pressed && previousXboxState.Buttons.Start == ButtonState.Released;
+
+            previousXboxState = xboxState;
+        }
+
+        // PlayStation
+        try
+        {
+            if (psController)
+            {
+                joystick.Poll();
+
+                var state = joystick.GetCurrentState();
+                var buttons = state.Buttons;
+
+                if (!disableAllInputs)
+                {
+                    psA = buttons[1];
+                    psX = buttons[0] && !previousButtons[0];
+                    psB = buttons[2] && !previousButtons[2];
+                    psTrigger = buttons[7];
+                    psLeft = (state.X / 32768.0f) - 1 < -0.5f;
+                    psRight = (state.X / 32768.0f) - 1 > 0.5f;
+                    psUp = (state.Y / 32768.0f) - 1 < -0.3f;
+                }
+                psOptions = buttons[9] && !previousButtons[9];
+
+                previousButtons = buttons;
+            }
+        }
+        catch
+        {
+            psController = false;
+            return;
+        }
+
+        // pøemìnit PS a XBOX vstupy na jeden
+        cA = xboxA || psA;
+        cX = xboxX || psX;
+        cB = xboxB || psB;
+        cLeft = xboxLeft || psLeft;
+        cRight = xboxRight || psRight;
+        cUp = xboxUp || psUp;
+        cTrigger = xboxTrigger || psTrigger;
+        cOptions = xboxOptions || psOptions;
+
+        // Reset hry pomocí OPTIONS
+        if (cOptions && disableAllInputs)
+            FullReset();
+        else if (cOptions)
+            Pauza();
+    }
+
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
     {
         //Input - zmacknuti
@@ -2521,7 +2568,7 @@ public partial class MainWindow : Form
                 else
                     lbStats.Visible = true;
             }
-            if (e.KeyCode == Keys.Escape)
+            if (e.KeyCode == Keys.Escape && !Menu.Enabled)
                 Pauza();
             if (e.KeyCode == Keys.K && !tutorial && !versionForRelease)
             {
@@ -2627,9 +2674,7 @@ public partial class MainWindow : Form
             tutorialPhase = 0;
             lbTutorial.Text = string.Empty;
         }
-
     }
-
     private void btDifficulty(object sender, EventArgs e)
     {
         soundSelect.PlaySound();
@@ -2691,9 +2736,19 @@ public partial class MainWindow : Form
         }
 
     }
+    private void btExit_Click(object sender, EventArgs e)
+    {
+        Application.Exit();
+    }
 
-    
-    
+    private void MainWindow_Load(object sender, EventArgs e)
+    {
+        UpdateProgress();
+        basnicka.Play();
+        basnicka.Pause();
+        stopwatch.Reset();
+        CheckPS();
+    }
 
     private void btResetProgress_Click(object sender, EventArgs e)
     {
