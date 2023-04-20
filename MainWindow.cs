@@ -68,7 +68,7 @@ public partial class MainWindow : Form
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft, bookLeftDestroyed, bookRightDestroyed; //bossfight
     bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear, basnickaPlaying; //fixy timerù
     string info, info1; //bullshit
-    bool continueGame, completedGame, hardestDifficulty, versionForRelease = true;
+    bool continueGame, completedGame, hardestDifficulty, versionForRelease = false;
     int savedHealth, savedLevel;
 
     bool tutorial, writeInstructions, typing, tutBanJump, tutBanDash, tutBanQ, tutBanLMB, tutBanMovement;
@@ -598,7 +598,7 @@ public partial class MainWindow : Form
                     {
                         enemy.health -= 4;
                         hitQ = true;
-                        enemy.CheckHealth(enemy, GameScene);
+                        enemy.CheckHealth(GameScene);
                         if (enemy.dead)
                             fixQ = true;
 
@@ -807,7 +807,7 @@ public partial class MainWindow : Form
                     {
                         stark.health -= 2;
                         alreadyHit = true;
-                        stark.CheckHealth(stark, GameScene);
+                        stark.CheckHealth(GameScene);
                         soundhitSomeone.PlaySound();
                     }
 
@@ -837,7 +837,7 @@ public partial class MainWindow : Form
                             if (bossEnemy != stark)
                             {
                                 bossEnemy.health = 0;
-                                bossEnemy.CheckHealth(bossEnemy, GameScene);
+                                bossEnemy.CheckHealth(GameScene);
                             }
                         }
                         SpawnEnemyBoss();
@@ -862,7 +862,7 @@ public partial class MainWindow : Form
                             if (bossEnemy != stark)
                             {
                                 bossEnemy.health = 0;
-                                bossEnemy.CheckHealth(bossEnemy, GameScene);
+                                bossEnemy.CheckHealth(GameScene);
                             }
                         }
                     }
@@ -888,7 +888,7 @@ public partial class MainWindow : Form
                             if (bossEnemy != stark)
                             {
                                 bossEnemy.health = 0;
-                                bossEnemy.CheckHealth(bossEnemy, GameScene);
+                                bossEnemy.CheckHealth(GameScene);
                                 if (bossEnemy.type == "Sysalova")
                                 {
                                     basnicka.Pause();
@@ -906,7 +906,7 @@ public partial class MainWindow : Form
                             if (bossEnemy != stark)
                             {
                                 bossEnemy.health = 0;
-                                bossEnemy.CheckHealth(bossEnemy, GameScene);
+                                bossEnemy.CheckHealth(GameScene);
                                 if (bossEnemy.type == "Sysalova")
                                 {
                                     basnicka.Pause();
@@ -1036,7 +1036,7 @@ public partial class MainWindow : Form
                         {
                             enemy.health -= 2;
                             alreadyHit = true;
-                            enemy.CheckHealth(enemy, GameScene);
+                            enemy.CheckHealth(GameScene);
                             soundhitSomeone.PlaySound();
                         }
                     }
@@ -1071,7 +1071,7 @@ public partial class MainWindow : Form
                                 if (hacekOnBook != null && hacekOnBook.pb.Left == terrain.Left)
                                 {
                                     hacekOnBook.health = 0;
-                                    hacekOnBook.CheckHealth(hacekOnBook, GameScene);
+                                    hacekOnBook.CheckHealth(GameScene);
                                 }
                                 DestroyAll(terrain, GameScene);
                                 DestroyAll(enemy.projectile, GameScene);
@@ -1207,7 +1207,7 @@ public partial class MainWindow : Form
                         {
                             enemy.projectileStop = true;
                             alreadyHit = true;
-                            enemy.CheckHealth(enemy, GameScene);
+                            enemy.CheckHealth(GameScene);
                             soundhitSomeone.PlaySound();
                             enemy.health -= 2;
                             DestroyAll(enemy.projectile, GameScene);
@@ -1698,7 +1698,7 @@ public partial class MainWindow : Form
         {
             if (enemy.type == "Oberhofnerova" && enemy.health > 0)
             {
-                enemy.ShootProjectile(enemy, Player, GameScene);
+                enemy.ShootProjectile(Player, GameScene);
                 soundProjectile.PlaySound();
             }
         }
@@ -1710,7 +1710,7 @@ public partial class MainWindow : Form
         {
             if (enemy.type == "Hacek" && enemy.health > 0)
             {
-                enemy.ShootProjectile(enemy, Player, GameScene);
+                enemy.ShootProjectile(Player, GameScene);
                 soundProjectile.PlaySound();
             }
         }
@@ -1767,7 +1767,7 @@ public partial class MainWindow : Form
         else if (bossPhase == 2 && !starkIdle)
         {
             //spawn enemy a strileni kridy
-            stark.ShootProjectile(stark, Player, GameScene);
+            stark.ShootProjectile(Player, GameScene);
             stark.projectileParry = false;
             stark.projectileLeft = false;
             stark.projectileRight = false;
@@ -1990,7 +1990,7 @@ public partial class MainWindow : Form
             foreach (Enemy enemy in enemyArray)
             {
                 enemy.health = 0;
-                enemy.CheckHealth(enemy, GameScene);
+                enemy.CheckHealth(GameScene);
             }
         }
         if (terrainArray != null)
@@ -2577,7 +2577,7 @@ public partial class MainWindow : Form
                     if (enemy != stark)
                     {
                         enemy.health = 0;
-                        enemy.CheckHealth(enemy, GameScene);
+                        enemy.CheckHealth(GameScene);
                     }
                 }
             }
@@ -2605,7 +2605,7 @@ public partial class MainWindow : Form
                 if (stark != null)
                 {
                     stark.health -= 2;
-                    stark.CheckHealth(stark, GameScene);
+                    stark.CheckHealth(GameScene);
                 }
             }
             if (e.KeyCode == Keys.Oemtilde && Pause.Enabled && lbNazev.Text == "Pauza")

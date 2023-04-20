@@ -63,111 +63,111 @@ internal class Enemy
         Count++;
     }
 
-    public void ShootProjectile(Enemy enemy, PictureBox player, Panel panel)
+    public void ShootProjectile(PictureBox Player, Panel panel)
     {
-        if (enemy.projectile != null)
+        if (projectile != null)
         {
-            enemy.projectile.Bounds = Rectangle.Empty;
-            panel.Controls.Remove(enemy.projectile);
-            enemy.projectile.Dispose();
+            projectile.Bounds = Rectangle.Empty;
+            panel.Controls.Remove(projectile);
+            projectile.Dispose();
         }
 
-        enemy.projectile = new()
+        projectile = new()
         {
             Width = 30,
             Height = 30
         };
 
-        if (enemy.type == "Oberhofnerova" || enemy.type == "Stark")
+        if (type == "Oberhofnerova" || type == "Stark")
         {
-            if(enemy.type == "Oberhofnerova")
+            if(type == "Oberhofnerova")
             {
                 //random co hodi
                 switch (Random.Shared.Next(0,8))
                 {
-                    case 0: enemy.projectile.Image = Resources.OProjektil_5; break;
-                    case 1: enemy.projectile.Image = Resources.OProjektil_binder; break;
-                    case 2: enemy.projectile.Image = Resources.OProjektil_centropen; break;
-                    case 3: enemy.projectile.Image = Resources.OProjektil_cos; break;
-                    case 4: enemy.projectile.Image = Resources.OProjektil_guma; break;
-                    case 5: enemy.projectile.Image = Resources.OProjektil_minus; break;
-                    case 6: enemy.projectile.Image = Resources.OProjektil_plus; break;
-                    case 7: enemy.projectile.Image = Resources.OProjektil_sin; break;
+                    case 0: projectile.Image = Resources.OProjektil_5; break;
+                    case 1: projectile.Image = Resources.OProjektil_binder; break;
+                    case 2: projectile.Image = Resources.OProjektil_centropen; break;
+                    case 3: projectile.Image = Resources.OProjektil_cos; break;
+                    case 4: projectile.Image = Resources.OProjektil_guma; break;
+                    case 5: projectile.Image = Resources.OProjektil_minus; break;
+                    case 6: projectile.Image = Resources.OProjektil_plus; break;
+                    case 7: projectile.Image = Resources.OProjektil_sin; break;
                 }
 
-                enemy.projectile.Name = "projectileO" + ProjectileCountO;
-                enemy.projectile.Left = enemy.pb.Left + 45;
-                enemy.projectile.Top = enemy.pb.Top + 45;
-                enemy.projectile.SetBounds(enemy.pb.Left + 45, enemy.pb.Top + 45, 30, 30);
+                projectile.Name = "projectileO" + ProjectileCountO;
+                projectile.Left = pb.Left + 45;
+                projectile.Top = pb.Top + 45;
+                projectile.SetBounds(pb.Left + 45, pb.Top + 45, 30, 30);
                 ProjectileCountO++;
             }
             else //Stark
             {
-                enemy.projectile.BackColor = Color.Yellow;
-                enemy.projectile.Name = "projectileS" + ProjectileCountS;
-                enemy.projectile.Left = enemy.pb.Left + 40;
-                enemy.projectile.Top = enemy.pb.Top + 60;
-                enemy.projectile.Width = 60;
-                enemy.projectile.Height = 80;
-                enemy.projectile.SetBounds(enemy.pb.Left + 40, enemy.pb.Top + 60, 60, 80);
+                projectile.BackColor = Color.Yellow;
+                projectile.Name = "projectileS" + ProjectileCountS;
+                projectile.Left = pb.Left + 40;
+                projectile.Top = pb.Top + 60;
+                projectile.Width = 60;
+                projectile.Height = 80;
+                projectile.SetBounds(pb.Left + 40, pb.Top + 60, 60, 80);
                 ProjectileCountS++;
             }
                
-            enemy.player = new Point(player.Left + player.Width / 2, player.Top + player.Height / 2);
-            if (enemy.player.Y - projectile.Bottom > 300)
+            player = new Point(Player.Left + Player.Width / 2, Player.Top + Player.Height / 2);
+            if (player.Y - projectile.Bottom > 300)
             {
-                enemy.projectileSpeedX = Math.Abs(enemy.player.X - enemy.projectile.Left) / 100;
-                enemy.projectileSpeedY = (enemy.player.Y - enemy.projectile.Bottom) / 100;
+                projectileSpeedX = Math.Abs(player.X - projectile.Left) / 100;
+                projectileSpeedY = (player.Y - projectile.Bottom) / 100;
             }
             else
             {
-                enemy.projectileSpeedX = Math.Abs(enemy.player.X - enemy.projectile.Left) / 50;
-                enemy.projectileSpeedY = (enemy.player.Y - enemy.projectile.Bottom) / 50;
+                projectileSpeedX = Math.Abs(player.X - projectile.Left) / 50;
+                projectileSpeedY = (player.Y - projectile.Bottom) / 50;
             }
-            enemy.projectileStop = false;
-            if (enemy.projectile.Bottom > enemy.player.Y)
+            projectileStop = false;
+            if (projectile.Bottom > player.Y)
                 projectileGoDown = false;
             else
                 projectileGoDown = true;
 
-            if (enemy.projectile.Left > enemy.player.X)
+            if (projectile.Left > player.X)
                 projectileGoRight = false;
             else
                 projectileGoRight = true;
         }
-        if (enemy.type == "Hacek")
+        if (type == "Hacek")
         {
-            enemy.projectile.Name = "projectileH" + ProjectileCountH;
-            enemy.projectile.Left = enemy.pb.Left + 40;
-            enemy.projectile.Top = enemy.pb.Top + 75;
-            enemy.projectile.SetBounds(enemy.pb.Left + 40, enemy.pb.Top + 75, 30, 30);
-            enemy.projectileStop = false;
+            projectile.Name = "projectileH" + ProjectileCountH;
+            projectile.Left = pb.Left + 40;
+            projectile.Top = pb.Top + 75;
+            projectile.SetBounds(pb.Left + 40, pb.Top + 75, 30, 30);
+            projectileStop = false;
 
             ProjectileCountH++;
         }
 
-        panel.Controls.Add(enemy.projectile);
-        enemy.projectile.BringToFront();
+        panel.Controls.Add(projectile);
+        projectile.BringToFront();
     }
 
-    public void CheckHealth(Enemy enemy, Panel panel)
+    public void CheckHealth(Panel panel)
     {
-        if (enemy.health <= 0)
+        if (health <= 0)
         {
-            if (enemy.projectile != null)
+            if (projectile != null)
             {
-                enemy.projectile.Bounds = Rectangle.Empty;
-                panel.Controls.Remove(enemy.projectile);
-                enemy.projectile.Dispose();
+                projectile.Bounds = Rectangle.Empty;
+                panel.Controls.Remove(projectile);
+                projectile.Dispose();
             }
 
-            enemy.moving = false;
-            enemy.projectileStop = true;
-            enemy.dead = true;
+            moving = false;
+            projectileStop = true;
+            dead = true;
 
-            enemy.pb.Bounds = Rectangle.Empty;
-            panel.Controls.Remove(enemy.pb);
-            enemy.pb.Dispose();
+            pb.Bounds = Rectangle.Empty;
+            panel.Controls.Remove(pb);
+            pb.Dispose();
         }
     }
 }
