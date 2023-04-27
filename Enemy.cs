@@ -2,8 +2,8 @@
 
 namespace Petr_RP_CestaKMaturite;
 
-internal class Enemy
-{
+internal class Enemy {
+
     public static int Count = 1;
     public static int ProjectileCountO = 1;
     public static int ProjectileCountH = 1;
@@ -36,8 +36,7 @@ internal class Enemy
 
     public Enemy(int positionX, int positionY, int width, int height, Color color,
         int _health, bool _moving, int _xLeft, int _xRight, int _movementSpeed,
-        string _type, int _projectileCooldown, Panel scene)
-    {
+        string _type, int _projectileCooldown, Panel scene) {
         //X,Y,Width,Height,Color,HP,Gravitation,Moving
         //color premenit na img
         projectileCooldown = _projectileCooldown;
@@ -47,8 +46,7 @@ internal class Enemy
         xLeft = _xLeft;
         xRight = _xRight;
         movementSpeed = _movementSpeed;
-        pb = new PictureBox
-        {
+        pb = new PictureBox {
             Left = positionX,
             Top = positionY,
             Width = width,
@@ -61,30 +59,29 @@ internal class Enemy
         if (type == "Oberhofnerova")
             pb.BringToFront();
         Count++;
+
+        if (type == "Stark") {
+            pb.Image = Resources.Stark_Baseball_Idle;
+            pb.BackColor = Color.Transparent;
+        }
     }
 
-    public void ShootProjectile(PictureBox Player, Panel panel)
-    {
-        if (projectile != null)
-        {
+    public void ShootProjectile(PictureBox Player, Panel panel) {
+        if (projectile != null) {
             projectile.Bounds = Rectangle.Empty;
             panel.Controls.Remove(projectile);
             projectile.Dispose();
         }
 
-        projectile = new()
-        {
+        projectile = new() {
             Width = 30,
             Height = 30
         };
 
-        if (type == "Oberhofnerova" || type == "Stark")
-        {
-            if(type == "Oberhofnerova")
-            {
+        if (type == "Oberhofnerova" || type == "Stark") {
+            if (type == "Oberhofnerova") {
                 //random co hodi
-                switch (Random.Shared.Next(0,8))
-                {
+                switch (Random.Shared.Next(0, 8)) {
                     case 0: projectile.Image = Resources.OProjektil_5; break;
                     case 1: projectile.Image = Resources.OProjektil_binder; break;
                     case 2: projectile.Image = Resources.OProjektil_centropen; break;
@@ -100,9 +97,8 @@ internal class Enemy
                 projectile.Top = pb.Top + 45;
                 projectile.SetBounds(pb.Left + 45, pb.Top + 45, 30, 30);
                 ProjectileCountO++;
-            }
-            else //Stark
-            {
+            } else //Stark
+              {
                 projectile.BackColor = Color.Yellow;
                 projectile.Name = "projectileS" + ProjectileCountS;
                 projectile.Left = pb.Left + 40;
@@ -112,15 +108,12 @@ internal class Enemy
                 projectile.SetBounds(pb.Left + 40, pb.Top + 60, 60, 80);
                 ProjectileCountS++;
             }
-               
+
             player = new Point(Player.Left + Player.Width / 2, Player.Top + Player.Height / 2);
-            if (player.Y - projectile.Bottom > 300)
-            {
+            if (player.Y - projectile.Bottom > 300) {
                 projectileSpeedX = Math.Abs(player.X - projectile.Left) / 100;
                 projectileSpeedY = (player.Y - projectile.Bottom) / 100;
-            }
-            else
-            {
+            } else {
                 projectileSpeedX = Math.Abs(player.X - projectile.Left) / 50;
                 projectileSpeedY = (player.Y - projectile.Bottom) / 50;
             }
@@ -135,8 +128,7 @@ internal class Enemy
             else
                 projectileGoRight = true;
         }
-        if (type == "Hacek")
-        {
+        if (type == "Hacek") {
             projectile.Name = "projectileH" + ProjectileCountH;
             projectile.Left = pb.Left + 40;
             projectile.Top = pb.Top + 75;
@@ -150,12 +142,9 @@ internal class Enemy
         projectile.BringToFront();
     }
 
-    public void CheckHealth(Panel panel)
-    {
-        if (health <= 0)
-        {
-            if (projectile != null)
-            {
+    public void CheckHealth(Panel panel) {
+        if (health <= 0) {
+            if (projectile != null) {
                 projectile.Bounds = Rectangle.Empty;
                 panel.Controls.Remove(projectile);
                 projectile.Dispose();

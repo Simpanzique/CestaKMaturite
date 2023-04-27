@@ -1,6 +1,6 @@
 ﻿namespace Petr_RP_CestaKMaturite;
-internal class Absence
-{
+internal class Absence {
+
     public PictureBox pb;
     public bool move = true;
     public int from;
@@ -22,8 +22,7 @@ internal class Absence
 
 
     public Absence(int _positionX, int _positionY, Color color, int _cooldown, string _type,
-        bool _plusCoordinates, bool _changeDirection, int _from, int _to, int _movementSpeed)
-    {
+        bool _plusCoordinates, bool _changeDirection, int _from, int _to, int _movementSpeed) {
         positionX = _positionX;
         positionY = _positionY;
         boundsX = positionX;
@@ -35,8 +34,7 @@ internal class Absence
         movementSpeed = _movementSpeed;
         from = _from;
         to = _to;
-        pb = new PictureBox
-        {
+        pb = new PictureBox {
             Left = _positionX,
             Top = _positionY,
             Width = 30,

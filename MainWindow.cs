@@ -1,16 +1,14 @@
 using NAudio.Wave;
 using Petr_RP_CestaKMaturite.Properties;
+using SharpDX.DirectInput;
 using System.ComponentModel;
 using System.Diagnostics;
 using XInputDotNetPure;
 using ButtonState = XInputDotNetPure.ButtonState;
-using SharpDX.DirectInput;
 
 namespace Petr_RP_CestaKMaturite;
-public partial class MainWindow : Form
-{
-    public MainWindow()
-    {
+public partial class MainWindow : Form {
+    public MainWindow() {
         InitializeComponent();
 
         // Sysalova
@@ -66,7 +64,7 @@ public partial class MainWindow : Form
     bool lemkaCooldown, lemkaRight; int lemkaIndex; //enemy
     int OberhofnerovaHP = 6, LemkaHP = 12, HacekHP = 10, SysalovaHP = 12, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft, bookLeftDestroyed, bookRightDestroyed; //bossfight
-    bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear, basnickaPlaying; //fixy timerù
+    bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear, tStark, basnickaPlaying; //fixy timerù
     string info, info1; //bullshit
     bool continueGame, completedGame, hardestDifficulty, versionForRelease = false;
     int savedHealth, savedLevel;
@@ -129,8 +127,7 @@ public partial class MainWindow : Form
     Enemy tutorialLemka;
     Enemy tutorialSysalova;
     Enemy tutorialhidden;
-    private void UpdateMethod_Tick(object sender, EventArgs e)
-    {
+    private void UpdateMethod_Tick(object sender, EventArgs e) {
         //reset promìnných
         moveLeft = true;
         moveRight = true;
@@ -153,19 +150,16 @@ public partial class MainWindow : Form
         #region Nuggetka
 
         //šance 1/10000 kazdou milisekundu (1/100s) ze se nekde nahodne spawne nuggetka
-        if (Random.Shared.Next(0, 10001) == 10000 && !nuggetSpawn && (difficulty == "Easy" || difficulty == "Normal"))
-        {
+        if (Random.Shared.Next(0, 10001) == 10000 && !nuggetSpawn && (difficulty == "Easy" || difficulty == "Normal")) {
             nuggetSpawn = true;
             bool intersects = true;
             int positionX = 0, positionY = 0;
-            while (intersects)
-            {
+            while (intersects) {
                 intersects = false;
                 positionX = Random.Shared.Next(50, 1404);
                 positionY = Random.Shared.Next(50, 706);
                 Rectangle spawnNugget = new(positionX, positionY, 65, 70);
-                foreach (PictureBox anything in GameScene.Controls.OfType<PictureBox>())
-                {
+                foreach (PictureBox anything in GameScene.Controls.OfType<PictureBox>()) {
                     if (anything.Bounds.IntersectsWith(spawnNugget))
                         intersects = true;
                 }
@@ -177,12 +171,9 @@ public partial class MainWindow : Form
             NuggetDisappear.Start();
         }
 
-        if (nuggetList != null)
-        {
-            foreach (Nugget nugget in nuggetList)
-            {
-                if (nugget.pb.Bounds.IntersectsWith(Player.Bounds) && playerHealth < 5)
-                {
+        if (nuggetList != null) {
+            foreach (Nugget nugget in nuggetList) {
+                if (nugget.pb.Bounds.IntersectsWith(Player.Bounds) && playerHealth < 5) {
                     if (playerHealth + nugget.healthAdd > 5)
                         playerHealth = 5;
                     else
@@ -207,40 +198,33 @@ public partial class MainWindow : Form
         HitboxDashRight = new Rectangle(Player.Left + 15, Player.Top, Player.Width, Player.Height - 2);
 
         //platformy
-        foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null))
-        {
-            if (terrain.Tag.ToString().Contains("Terrain"))
-            {
-                if (terrain.Bounds.IntersectsWith(HitboxUp))
-                {
+        foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null)) {
+            if (terrain.Tag.ToString().Contains("Terrain")) {
+                if (terrain.Bounds.IntersectsWith(HitboxUp)) {
                     Player.Top = terrain.Bottom + 3;
                     jumpSpeed = -2;
                     isJumping = false;
                     underTerrain = true;
                 }
-                if (terrain.Bounds.IntersectsWith(HitboxLeft))
-                {
+                if (terrain.Bounds.IntersectsWith(HitboxLeft)) {
                     moveLeft = false;
                     if (GameScene.Height - Player.Bottom <= 0 || onTop == true)
                         Player.Left = terrain.Right;
                 }
-                if (terrain.Bounds.IntersectsWith(HitboxRight))
-                {
+                if (terrain.Bounds.IntersectsWith(HitboxRight)) {
                     moveRight = false;
                     if (GameScene.Height - Player.Bottom <= 0 || onTop == true)
                         Player.Left = terrain.Left - Player.Width;
                 }
 
-                if (terrain.Bounds.IntersectsWith(HitboxDown) && Player.Bottom - 20 <= terrain.Top && jumpSpeed < 0)
-                {
+                if (terrain.Bounds.IntersectsWith(HitboxDown) && Player.Bottom - 20 <= terrain.Top && jumpSpeed < 0) {
                     Player.Top = terrain.Top - Player.Height + 1;
                     onTop = true;
                     jumpSpeed = 0;
                     isJumping = false;
 
                     //setup na pohoupnutí knížek
-                    if (terrain.Tag.ToString().Contains("Book"))
-                    {
+                    if (terrain.Tag.ToString().Contains("Book")) {
                         if (!touchedGround)
                             landed = true;
                         touchedGround = true;
@@ -252,10 +236,8 @@ public partial class MainWindow : Form
         }
 
         //pohoupnutí knížek
-        if (landedBlock != null && landed)
-        {
-            switch (hupIndex)
-            {
+        if (landedBlock != null && landed) {
+            switch (hupIndex) {
                 case 0: landedBlock.Top += 1; Player.Top += 1; break;
                 case 2: landedBlock.Top += 2; Player.Top += 2; break;
                 case 4: landedBlock.Top += 3; Player.Top += 3; break;
@@ -273,18 +255,15 @@ public partial class MainWindow : Form
             touchedGround = false;
 
         //Doleva a Doprava
-        if (!(A && D))
-        {
-            if ((D || cRight) && moveRight == true && !(Player.Right >= GameScene.Width) && !banInput && !tutBanMovement)
-            {
+        if (!(A && D)) {
+            if ((D || cRight) && moveRight == true && !(Player.Right >= GameScene.Width) && !banInput && !tutBanMovement) {
                 Player.Left += 8; //movementSpeed
                 lastInputLeft = false;
 
                 if (tutorialPhase == 2 && !typing)
                     writeInstructions = true;
             }
-            if ((A || cLeft) && moveLeft == true && !(Player.Left <= 0) && !banInput && !tutBanMovement)
-            {
+            if ((A || cLeft) && moveLeft == true && !(Player.Left <= 0) && !banInput && !tutBanMovement) {
                 Player.Left -= 8; //movementSpeed
                 lastInputLeft = true;
 
@@ -306,23 +285,18 @@ public partial class MainWindow : Form
             facingRight = true;
 
         //Skakani
-        if (GameScene.Height - Player.Bottom <= 0 || onTop == true)
-        {
+        if (GameScene.Height - Player.Bottom <= 0 || onTop == true) {
             onGround = true;
-            if (!landSound)
-            {
+            if (!landSound) {
                 soundLand.PlaySound();
                 landSound = true;
             }
-        }
-        else
-        {
+        } else {
             onGround = false;
             landSound = false;
         }
 
-        if ((Space || cA) && onGround && !jumpCooldown && !tutBanJump)
-        {
+        if ((Space || cA) && onGround && !jumpCooldown && !tutBanJump) {
             isJumping = true;
             jumpSpeed = 24;
             jumpCooldown = true;
@@ -334,16 +308,14 @@ public partial class MainWindow : Form
         }
 
         //vrsek sceny
-        if (Player.Top <= 0)
-        {
+        if (Player.Top <= 0) {
             jumpSpeed = -2;
             isJumping = false;
             underTerrain = true;
         }
 
         //gravitace
-        if (isJumping || (!isJumping && (GameScene.Height - Player.Bottom >= 0)))
-        {
+        if (isJumping || (!isJumping && (GameScene.Height - Player.Bottom >= 0))) {
             Player.Top -= jumpSpeed;
 
             if (jumpSpeed > -20)
@@ -351,8 +323,7 @@ public partial class MainWindow : Form
         }
 
         //spodek sceny
-        if (Player.Bottom >= GameScene.Height)
-        {
+        if (Player.Bottom >= GameScene.Height) {
             isJumping = false;
             jumpSpeed = 0;
         }
@@ -362,10 +333,8 @@ public partial class MainWindow : Form
             Player.Top = GameScene.Height - Player.Height;
 
         //pružina
-        foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null))
-        {
-            if (terrain.Tag.ToString().Contains("Spring") && Player.Bounds.IntersectsWith(terrain.Bounds))
-            {
+        foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null)) {
+            if (terrain.Tag.ToString().Contains("Spring") && Player.Bounds.IntersectsWith(terrain.Bounds)) {
                 isJumping = true;
                 jumpSpeed = 31;
                 soundSpring.PlaySound();
@@ -373,8 +342,7 @@ public partial class MainWindow : Form
         }
 
         //Dash
-        if ((E || cTrigger) && facingRight && !dashRight && !dashLeft && canDash && !tutBanDash)
-        {
+        if ((E || cTrigger) && facingRight && !dashRight && !dashLeft && canDash && !tutBanDash) {
             dashRight = true;
             dashX = Player.Left;
             banInput = true;
@@ -387,8 +355,7 @@ public partial class MainWindow : Form
                 writeInstructions = true;
         }
 
-        if ((E || cTrigger) && !facingRight && !dashRight && !dashLeft && canDash && !tutBanDash)
-        {
+        if ((E || cTrigger) && !facingRight && !dashRight && !dashLeft && canDash && !tutBanDash) {
             dashLeft = true;
             dashX = Player.Left;
             banInput = true;
@@ -400,10 +367,8 @@ public partial class MainWindow : Form
             if (tutorialPhase == 13 && !typing)
                 writeInstructions = true;
         }
-        foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null))
-        {
-            if (terrain.Tag.ToString().Contains("Terrain"))
-            {
+        foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null)) {
+            if (terrain.Tag.ToString().Contains("Terrain")) {
                 if (terrain.Bounds.IntersectsWith(HitboxDashLeft))
                     dashLeft = false;
                 if (terrain.Bounds.IntersectsWith(HitboxDashRight))
@@ -411,13 +376,11 @@ public partial class MainWindow : Form
             }
         }
 
-        if (dashLeft && dashX - Player.Left < 300)
-        {
+        if (dashLeft && dashX - Player.Left < 300) {
             Player.Left -= 15;
             jumpSpeed = 0;
         }
-        if (dashRight && Player.Left - dashX < 300)
-        {
+        if (dashRight && Player.Left - dashX < 300) {
             Player.Left += 15;
             jumpSpeed = 0;
         }
@@ -428,11 +391,9 @@ public partial class MainWindow : Form
         foreach (PictureBox enemy in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag == "Enemy"))
             iEnemy++;
 
-        if (iEnemy == 0)
-        {
+        if (iEnemy == 0) {
             //žádný enemy = ukonèit level
-            switch (levelCount)
-            {
+            switch (levelCount) {
                 case 1: Level1(); break;
                 case 2: Level2(); break;
                 case 3: Level3(); break;
@@ -440,8 +401,7 @@ public partial class MainWindow : Form
                 case 5: Level5(); break;
                 case 6:
                     //VICTORY
-                    if (!won)
-                    {
+                    if (!won) {
                         won = true;
                         soundWin.PlaySound();
                         continueGame = false;
@@ -463,9 +423,7 @@ public partial class MainWindow : Form
                     break;
             }
             levelCount++;
-        }
-        else
-        {
+        } else {
             //když existují enemy (mùže být kombat)
 
             #region AttackQ
@@ -474,13 +432,10 @@ public partial class MainWindow : Form
 
             //PC x Controller
             int X, Y;
-            if (Q)
-            {
+            if (Q) {
                 X = cursor.X;
                 Y = cursor.Y;
-            }
-            else
-            {
+            } else {
                 X = Player.Left + Player.Width / 2;
                 Y = Player.Top + Player.Height / 2;
             }
@@ -489,8 +444,7 @@ public partial class MainWindow : Form
             PictureBox[] enemyObjectArray = new PictureBox[iEnemy];
             iEnemy = 0;
             int? sumDistance;
-            foreach (PictureBox enemy in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag == "Enemy"))
-            {
+            foreach (PictureBox enemy in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag == "Enemy")) {
                 sumDistance = Math.Abs(X - enemy.Left) + Math.Abs(Y - enemy.Top);
                 enemyDistanceArray[iEnemy] = Convert.ToInt32(sumDistance);
                 enemyObjectArray[iEnemy] = enemy;
@@ -500,10 +454,8 @@ public partial class MainWindow : Form
             int enemyObjectClosest = enemyDistanceArray[0];
             int closestIndex = 0;
             iEnemy = 0;
-            foreach (int item in enemyDistanceArray)
-            {
-                if (item < enemyObjectClosest)
-                {
+            foreach (int item in enemyDistanceArray) {
+                if (item < enemyObjectClosest) {
                     enemyObjectClosest = item;
                     closestIndex = iEnemy;
                 }
@@ -512,27 +464,19 @@ public partial class MainWindow : Form
             }
 
             //Ability Q na target myši
-            if ((Q || cB) && !onGround && !attackQcooldown && enemyObjectArray[closestIndex].Top - Player.Bottom > 40 && !tutBanQ)
-            {
-                foreach (Enemy enemy in enemyArray)
-                {
-                    if (enemy == stark && starkQ || enemy != stark)
-                    {
+            if ((Q || cB) && !onGround && !attackQcooldown && enemyObjectArray[closestIndex].Top - Player.Bottom > 40 && !tutBanQ) {
+                foreach (Enemy enemy in enemyArray) {
+                    if (enemy == stark && starkQ || enemy != stark) {
                         if (enemyObjectArray[closestIndex].Top - Player.Top < 300 &&
                             enemyObjectArray[closestIndex].Left - Player.Left < 250 &&
-                            Player.Right - enemyObjectArray[closestIndex].Right < 250)
-                        {
+                            Player.Right - enemyObjectArray[closestIndex].Right < 250) {
                             closestEnemy = enemyObjectArray[closestIndex] as PictureBox;
 
-                            if (Player.Left < closestEnemy.Left)
-                            {
+                            if (Player.Left < closestEnemy.Left) {
                                 QOnLeft = true;
                                 lastInputLeft = false;
                                 facingRight = true;
-                            }
-
-                            else
-                            {
+                            } else {
                                 QOnLeft = false;
                                 lastInputLeft = true;
                                 facingRight = false;
@@ -551,10 +495,8 @@ public partial class MainWindow : Form
                 }
             }
 
-            if (attackQphase1)
-            {
-                if (soundFixQ)
-                {
+            if (attackQphase1) {
+                if (soundFixQ) {
                     soundQ.PlaySound();
                     soundFixQ = false;
                 }
@@ -577,8 +519,7 @@ public partial class MainWindow : Form
                     AbilityQ.Interval = 1;
 
             }
-            if (attackQphase2 && !fixQ)
-            {
+            if (attackQphase2 && !fixQ) {
                 if (QOnLeft)
                     Player.Left += 15;
                 else
@@ -592,10 +533,8 @@ public partial class MainWindow : Form
                 banInput = true;
 
                 //-HP
-                foreach (Enemy enemy in enemyArray)
-                {
-                    if (enemy.pb == closestEnemy && !hitQ)
-                    {
+                foreach (Enemy enemy in enemyArray) {
+                    if (enemy.pb == closestEnemy && !hitQ) {
                         enemy.health -= 4;
                         hitQ = true;
                         enemy.CheckHealth(GameScene);
@@ -611,11 +550,9 @@ public partial class MainWindow : Form
 
             #region Attack
             //Útok LMB
-            if (((LMB && cursor.Y < Player.Top - 50) || cUp && cX) && !attackLMBcooldown && !tutBanLMB)
-            {
+            if (((LMB && cursor.Y < Player.Top - 50) || cUp && cX) && !attackLMBcooldown && !tutBanLMB) {
                 //utok nahoru
-                HitboxAttackTop = new PictureBox
-                {
+                HitboxAttackTop = new PictureBox {
                     Left = Player.Left,
                     Top = Player.Top - rulerLength,
                     Width = Player.Width,
@@ -633,14 +570,10 @@ public partial class MainWindow : Form
 
                 if (tutorialPhase == 6 && !typing)
                     writeInstructions = true;
-            }
-            else
-            {
-                if (((LMB && cursor.X > Player.Left + (Player.Width / 2)) || cX && facingRight) && !attackLMBcooldown && !tutBanLMB)
-                {
+            } else {
+                if (((LMB && cursor.X > Player.Left + (Player.Width / 2)) || cX && facingRight) && !attackLMBcooldown && !tutBanLMB) {
                     //utok doprava
-                    HitboxAttackRight = new PictureBox
-                    {
+                    HitboxAttackRight = new PictureBox {
                         Left = Player.Right,
                         Top = Player.Top + 20,
                         Width = rulerLength,
@@ -659,11 +592,9 @@ public partial class MainWindow : Form
                     if (tutorialPhase == 6 && !typing)
                         writeInstructions = true;
                 }
-                if (((LMB && cursor.X < Player.Left + (Player.Width / 2)) || cX && !facingRight) && !attackLMBcooldown && !tutBanLMB)
-                {
+                if (((LMB && cursor.X < Player.Left + (Player.Width / 2)) || cX && !facingRight) && !attackLMBcooldown && !tutBanLMB) {
                     //utok doleva
-                    HitboxAttackLeft = new PictureBox
-                    {
+                    HitboxAttackLeft = new PictureBox {
                         Left = Player.Left - rulerLength,
                         Top = Player.Top + 20,
                         Width = rulerLength,
@@ -686,47 +617,35 @@ public partial class MainWindow : Form
 
             #endregion
 
-            foreach (Enemy enemy in enemyArray)
-            {
+            foreach (Enemy enemy in enemyArray) {
                 //Sysalova smrt
-                if (enemy.type == "Sysalova" && enemy.dead)
-                {
+                if (enemy.type == "Sysalova" && enemy.dead) {
                     stopwatch.Reset();
                     basnicka.Pause();
                 }
 
                 #region Lemka
-                if (enemy.type == "Lemka" && enemy.health > 0)
-                {
+                if (enemy.type == "Lemka" && enemy.health > 0) {
                     //Lemka movement
-                    if (enemy.pb.Top + enemy.pb.Height > Player.Top + Player.Height - 5)
-                    {
+                    if (enemy.pb.Top + enemy.pb.Height > Player.Top + Player.Height - 5) {
                         enemy.moveSwitch = false;
-                        if (Math.Abs(enemy.pb.Left - Player.Left) < 20)
-                        {
+                        if (Math.Abs(enemy.pb.Left - Player.Left) < 20) {
                             enemy.moveLeft = false;
                             enemy.moveRight = false;
-                        }
-                        else if (enemy.pb.Left < Player.Left)
-                        {
+                        } else if (enemy.pb.Left < Player.Left) {
                             enemy.moveRight = true;
                             enemy.moveLeft = false;
-                        }
-                        else
-                        {
+                        } else {
                             enemy.moveLeft = true;
                             enemy.moveRight = false;
                         }
-                    }
-                    else
+                    } else
                         enemy.moveSwitch = true;
 
                     //Lemka utok
                     if (((enemy.pb.Left - Player.Left - Player.Width) < 100 && enemy.pb.Left > Player.Right) ||
-                        (Player.Left - (enemy.pb.Right) < 100 && (enemy.pb.Right) < Player.Left))
-                    {
-                        if ((Player.Top + Player.Height) > enemy.pb.Top && Player.Top < (enemy.pb.Top + enemy.pb.Height) && !lemkaCooldown)
-                        {
+                        (Player.Left - (enemy.pb.Right) < 100 && (enemy.pb.Right) < Player.Left)) {
+                        if ((Player.Top + Player.Height) > enemy.pb.Top && Player.Top < (enemy.pb.Top + enemy.pb.Height) && !lemkaCooldown) {
                             if ((enemy.pb.Left - Player.Left - Player.Width) < 100 && enemy.pb.Left > Player.Right)
                                 lemkaRight = false;
                             if (Player.Left - enemy.pb.Right < 100 && enemy.pb.Right < Player.Left)
@@ -749,24 +668,17 @@ public partial class MainWindow : Form
                 #region BossFight
                 //BOSS FIGHT
 
-                if (stark != null)
-                {
+                if (stark != null) {
                     //stark movement phase 1
-                    if (enemy == stark && bossPhase == 1 && !starkIdle)
-                    {
+                    if (enemy == stark && bossPhase == 1 && !starkIdle) {
                         stark.moveSwitch = false;
-                        if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 20)
-                        {
+                        if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 20) {
                             stark.moveLeft = false;
                             stark.moveRight = false;
-                        }
-                        else if (stark.pb.Left + 135 > Player.Left)
-                        {
+                        } else if (stark.pb.Left + 135 > Player.Left) {
                             stark.moveLeft = true;
                             stark.moveRight = false;
-                        }
-                        else if (stark.pb.Left + 135 < Player.Left)
-                        {
+                        } else if (stark.pb.Left + 135 < Player.Left) {
                             stark.moveRight = true;
                             stark.moveLeft = false;
                         }
@@ -778,17 +690,15 @@ public partial class MainWindow : Form
                     //stark movement phase 3 (v timeru switchuje doleva/doprava)
 
                     //stark movement idle
-                    if (enemy == stark && starkIdle)
-                    {
+                    if (enemy == stark && starkIdle) {
                         stark.moveSwitch = false;
                         stark.moving = true;
                     }
 
                     //stark baseballka
-                    if (enemy == stark && bossPhase == 1 && !baseballCooldown && !starkIdle)
-                    {
-                        if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 40 && Player.Top + Player.Height > stark.pb.Top + 465)
-                        {
+                    if (enemy == stark && bossPhase == 1 && !baseballCooldown && !starkIdle) {
+                        if (Math.Abs(stark.pb.Left + 135 - Player.Left) < 40 && Player.Top + Player.Height > stark.pb.Top + 465) {
+                            stark.pb.Image = Resources.Stark_Baseball_Charge;
                             stark.moving = false;
                             starkIndex = 0;
                             Stark.Interval = 1000;
@@ -803,8 +713,7 @@ public partial class MainWindow : Form
                     //hrac dava dmg Starkovi
                     if (baseballGetDMG && !alreadyHit && baseballka != null && ((HitboxAttackLeft != null && baseballka.Bounds.IntersectsWith(HitboxAttackLeft.Bounds)) ||
                             (HitboxAttackRight != null && baseballka.Bounds.IntersectsWith(HitboxAttackRight.Bounds)) ||
-                            (HitboxAttackTop != null && baseballka.Bounds.IntersectsWith(HitboxAttackTop.Bounds))))
-                    {
+                            (HitboxAttackTop != null && baseballka.Bounds.IntersectsWith(HitboxAttackTop.Bounds)))) {
                         stark.health -= 2;
                         alreadyHit = true;
                         stark.CheckHealth(GameScene);
@@ -812,39 +721,31 @@ public partial class MainWindow : Form
                     }
 
                     //zjisteni Starkovo HP a zmìna bossPhase
-                    if (!changedPhase && (stark.health == 54 || stark.health == 48))
-                    {
+                    if (!changedPhase && (stark.health == 54 || stark.health == 48)) {
                         Stark.Interval = 1;
                         starkIndex = 1;
                         Stark.Start();
                         changedPhase = true;
-                        if (stark.health == 54)
-                        {
+                        if (stark.health == 54) {
                             starkIdle = true;
-                            if (Player.Left > GameScene.Width / 2)
-                            {
+                            if (Player.Left > GameScene.Width / 2) {
                                 stark.moveRight = true;
                                 stark.moveLeft = false;
-                            }
-                            else
-                            {
+                            } else {
                                 stark.moveLeft = true;
                                 stark.moveRight = false;
                             }
                         }
-                        foreach (Enemy bossEnemy in enemyArray)
-                        {
-                            if (bossEnemy != stark)
-                            {
+                        foreach (Enemy bossEnemy in enemyArray) {
+                            if (bossEnemy != stark) {
                                 bossEnemy.health = 0;
                                 bossEnemy.CheckHealth(GameScene);
                             }
                         }
                         SpawnEnemyBoss();
                         return;
-                    }
-                    else if (!changedPhase && (stark.health == 40)) //finalni zniceni baseballky
-                    {
+                    } else if (!changedPhase && (stark.health == 40)) //finalni zniceni baseballky
+                      {
                         if (baseballka != null)
                             DestroyAll(baseballka, GameScene);
                         stark.moving = true;
@@ -857,40 +758,29 @@ public partial class MainWindow : Form
                         changedPhase = true;
                         starkIdle = false;
 
-                        foreach (Enemy bossEnemy in enemyArray)
-                        {
-                            if (bossEnemy != stark)
-                            {
+                        foreach (Enemy bossEnemy in enemyArray) {
+                            if (bossEnemy != stark) {
                                 bossEnemy.health = 0;
                                 bossEnemy.CheckHealth(GameScene);
                             }
                         }
-                    }
-                    else if (!changedPhase && (stark.health == 34 || stark.health == 28))
-                    {
-                        if (!changedPhase && stark.health == 34)
-                        {
+                    } else if (!changedPhase && (stark.health == 34 || stark.health == 28)) {
+                        if (!changedPhase && stark.health == 34) {
                             starkIdle = true;
-                            if (Player.Left > GameScene.Width / 2)
-                            {
+                            if (Player.Left > GameScene.Width / 2) {
                                 stark.moveRight = true;
                                 stark.moveLeft = false;
-                            }
-                            else
-                            {
+                            } else {
                                 stark.moveLeft = true;
                                 stark.moveRight = false;
                             }
                         }
                         changedPhase = true;
-                        foreach (Enemy bossEnemy in enemyArray)
-                        {
-                            if (bossEnemy != stark)
-                            {
+                        foreach (Enemy bossEnemy in enemyArray) {
+                            if (bossEnemy != stark) {
                                 bossEnemy.health = 0;
                                 bossEnemy.CheckHealth(GameScene);
-                                if (bossEnemy.type == "Sysalova")
-                                {
+                                if (bossEnemy.type == "Sysalova") {
                                     basnicka.Pause();
                                     stopwatch.Reset();
                                 }
@@ -898,17 +788,12 @@ public partial class MainWindow : Form
                         }
                         SpawnEnemyBoss();
                         return;
-                    }
-                    else if (!changedPhase && (stark.health == 20))
-                    {
-                        foreach (Enemy bossEnemy in enemyArray)
-                        {
-                            if (bossEnemy != stark)
-                            {
+                    } else if (!changedPhase && (stark.health == 20)) {
+                        foreach (Enemy bossEnemy in enemyArray) {
+                            if (bossEnemy != stark) {
                                 bossEnemy.health = 0;
                                 bossEnemy.CheckHealth(GameScene);
-                                if (bossEnemy.type == "Sysalova")
-                                {
+                                if (bossEnemy.type == "Sysalova") {
                                     basnicka.Pause();
                                     stopwatch.Reset();
                                 }
@@ -919,30 +804,24 @@ public partial class MainWindow : Form
                         changedPhase = true;
                         starkQ = true;
                         starkIdle = true;
-                        if (Player.Left > stark.pb.Right)
-                        {
+                        if (Player.Left > stark.pb.Right) {
                             stark.moveRight = false;
                             stark.moveLeft = true;
-                        }
-                        else
-                        {
+                        } else {
                             stark.moveLeft = false;
                             stark.moveRight = true;
                         }
-                        if (stark.moveRight)
-                        {
+                        if (stark.moveRight) {
                             Player.Left = 170;
                             Player.Top = 680;
-                            hacek = new PictureBox
-                            {
+                            hacek = new PictureBox {
                                 Left = 15,
                                 Top = 105,
                                 Width = 110,
                                 Height = 180,
                                 BackColor = Color.Red,
                             };
-                            hacekPlatforma = new PictureBox
-                            {
+                            hacekPlatforma = new PictureBox {
                                 Left = 15,
                                 Top = 284,
                                 Width = 110,
@@ -950,21 +829,17 @@ public partial class MainWindow : Form
                                 Image = Resources.Knizka,
                             };
                             lbRozvrh1.Visible = true;
-                        }
-                        else
-                        {
+                        } else {
                             Player.Left = 1250;
                             Player.Top = 680;
-                            hacek = new PictureBox
-                            {
+                            hacek = new PictureBox {
                                 Left = 1395,
                                 Top = 105,
                                 Width = 110,
                                 Height = 180,
                                 BackColor = Color.Red,
                             };
-                            hacekPlatforma = new PictureBox
-                            {
+                            hacekPlatforma = new PictureBox {
                                 Left = 1395,
                                 Top = 284,
                                 Width = 110,
@@ -980,10 +855,8 @@ public partial class MainWindow : Form
                         starkIndex = 0;
                         Stark.Interval = 500;
                         Stark.Start();
-                    }
-                    else if (!(stark.health == 54) && !(stark.health == 48) && !(stark.health == 40) && !(stark.health == 34) &&
-                        !(stark.health == 28) && !(stark.health == 20) && stark.health > 20)
-                    {
+                    } else if (!(stark.health == 54) && !(stark.health == 48) && !(stark.health == 40) && !(stark.health == 34) &&
+                          !(stark.health == 28) && !(stark.health == 20) && stark.health > 20) {
                         changedPhase = false;
                     }
 
@@ -1000,24 +873,19 @@ public partial class MainWindow : Form
                 #endregion
 
                 //enemy doleva a doprava
-                if (enemy.moving)
-                {
-                    if (enemy.moveLeft)
-                    {
+                if (enemy.moving) {
+                    if (enemy.moveLeft) {
                         if (enemy.pb.Left > enemy.xLeft)
                             enemy.pb.Left -= enemy.movementSpeed;
-                        else if (enemy.moveSwitch)
-                        {
+                        else if (enemy.moveSwitch) {
                             enemy.moveLeft = false;
                             enemy.moveRight = true;
                         }
                     }
-                    if (enemy.moveRight)
-                    {
+                    if (enemy.moveRight) {
                         if (enemy.pb.Left < enemy.xRight)
                             enemy.pb.Left += enemy.movementSpeed;
-                        else if (enemy.moveSwitch)
-                        {
+                        else if (enemy.moveSwitch) {
                             enemy.moveLeft = true;
                             enemy.moveRight = false;
                         }
@@ -1026,14 +894,11 @@ public partial class MainWindow : Form
 
 
                 //bouchání LMB
-                if (enemy != stark)
-                {
+                if (enemy != stark) {
                     if ((HitboxAttackLeft != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackLeft.Bounds)) ||
                         (HitboxAttackRight != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackRight.Bounds)) ||
-                        (HitboxAttackTop != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackTop.Bounds)))
-                    {
-                        if (!alreadyHit)
-                        {
+                        (HitboxAttackTop != null && enemy.pb.Bounds.IntersectsWith(HitboxAttackTop.Bounds))) {
+                        if (!alreadyHit) {
                             enemy.health -= 2;
                             alreadyHit = true;
                             enemy.CheckHealth(GameScene);
@@ -1048,28 +913,22 @@ public partial class MainWindow : Form
 
                 #region Projektily
                 //let projektilù
-                if (enemy.projectile != null)
-                {
+                if (enemy.projectile != null) {
                     //mimo obrazovku znièení
-                    if (enemy.projectile.Left < 0 || enemy.projectile.Right < 0 || enemy.projectile.Top < 0 || enemy.projectile.Bottom < 0)
-                    {
+                    if (enemy.projectile.Left < 0 || enemy.projectile.Right < 0 || enemy.projectile.Top < 0 || enemy.projectile.Bottom < 0) {
                         DestroyAll(enemy.projectile, GameScene);
                         enemy.projectileStop = true;
                         soundProjectileDestroy.PlaySound();
                     }
-                    foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null))
-                    {
-                        if (terrain.Tag.ToString().Contains("Terrain"))
-                        {
+                    foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null)) {
+                        if (terrain.Tag.ToString().Contains("Terrain")) {
                             //Stark nièí knížky
-                            if (enemy.type == "Stark" && enemy.projectile.Bounds.IntersectsWith(terrain.Bounds) && terrain.Tag.ToString().Contains("Book"))
-                            {
+                            if (enemy.type == "Stark" && enemy.projectile.Bounds.IntersectsWith(terrain.Bounds) && terrain.Tag.ToString().Contains("Book")) {
                                 if (terrain == bookLeft.pb)
                                     bookLeftDestroyed = true;
                                 if (terrain == bookRight.pb)
                                     bookRightDestroyed = true;
-                                if (hacekOnBook != null && hacekOnBook.pb.Left == terrain.Left)
-                                {
+                                if (hacekOnBook != null && hacekOnBook.pb.Left == terrain.Left) {
                                     hacekOnBook.health = 0;
                                     hacekOnBook.CheckHealth(GameScene);
                                 }
@@ -1079,30 +938,25 @@ public partial class MainWindow : Form
                                 soundDestroy.PlaySound();
                             }
                             //když projektil narazí do terénu, znièí se
-                            if (enemy.projectile.Bounds.IntersectsWith(terrain.Bounds))
-                            {
+                            if (enemy.projectile.Bounds.IntersectsWith(terrain.Bounds)) {
                                 DestroyAll(enemy.projectile, GameScene);
                                 enemy.projectileStop = true;
                                 soundProjectileDestroy.PlaySound();
                             }
                         }
                     }
-                    if (enemy.projectile.Bounds.IntersectsWith(Player.Bounds) && canGetHit)
-                    {
+                    if (enemy.projectile.Bounds.IntersectsWith(Player.Bounds) && canGetHit) {
                         //hráè dostává dmg od projektilu
                         if (enemy.projectile.Name == "projectileO" + (Enemy.ProjectileCountO - 1) || enemy.projectile.Name == "projectileH" + (Enemy.ProjectileCountH - 1)
-                            || enemy.projectile.Name == "projectileS" + (Enemy.ProjectileCountS - 1))
-                        {
+                            || enemy.projectile.Name == "projectileS" + (Enemy.ProjectileCountS - 1)) {
                             Hit(enemy.projectile);
                             DestroyAll(enemy.projectile, GameScene);
                             enemy.projectileStop = true;
                         }
                     }
-                    if (enemy.type == "Oberhofnerova" || enemy.type == "Stark")
-                    {
+                    if (enemy.type == "Oberhofnerova" || enemy.type == "Stark") {
                         //Oberhofnerovy a Starkovo pohyb projektilù
-                        if (!enemy.projectileStop && !enemy.projectileParry)
-                        {
+                        if (!enemy.projectileStop && !enemy.projectileParry) {
                             if (enemy.projectileGoRight)
                                 enemy.projectile.Left += enemy.projectileSpeedX;
                             else
@@ -1114,36 +968,28 @@ public partial class MainWindow : Form
                                 enemy.projectile.Top -= enemy.projectileSpeedY;
                         }
                     }
-                    if (enemy.type == "Hacek")
-                    {
+                    if (enemy.type == "Hacek") {
                         //Háèkovo navádìný støely
                         if ((HitboxAttackLeft != null && HitboxAttackLeft.Bounds.IntersectsWith(enemy.projectile.Bounds))
                             || (HitboxAttackRight != null && HitboxAttackRight.Bounds.IntersectsWith(enemy.projectile.Bounds))
-                            || (HitboxAttackTop != null && HitboxAttackTop.Bounds.IntersectsWith(enemy.projectile.Bounds)))
-                        {
+                            || (HitboxAttackTop != null && HitboxAttackTop.Bounds.IntersectsWith(enemy.projectile.Bounds))) {
                             DestroyAll(enemy.projectile, GameScene);
                             enemy.projectileStop = true;
                         }
-                        if (!enemy.projectileStop)
-                        {
-                            if (Math.Abs(Player.Left - enemy.projectile.Left) > 400)
-                            {
+                        if (!enemy.projectileStop) {
+                            if (Math.Abs(Player.Left - enemy.projectile.Left) > 400) {
                                 enemy.projectileSpeedX = Math.Abs(Player.Left + Player.Width / 2 - enemy.projectile.Left + 15) / 80;
                                 enemy.projectileSpeedY = Math.Abs(Player.Top + Player.Height / 2 - enemy.projectile.Top + 15) / 50;
-                            }
-                            else
-                            {
+                            } else {
                                 enemy.projectileSpeedX = (Math.Abs(Player.Left + Player.Width / 2 - enemy.projectile.Left + 15) / 80) + 4;
                                 enemy.projectileSpeedY = (Math.Abs(Player.Top + Player.Height / 2 - enemy.projectile.Top + 15) / 50) + 4;
                             }
 
-                            if (enemy.projectile.Left + 15 > Player.Left + Player.Width / 2)
-                            {
+                            if (enemy.projectile.Left + 15 > Player.Left + Player.Width / 2) {
                                 enemy.projectile.Left -= enemy.projectileSpeedX;
                                 enemy.projectileBirdFacingRight = false;
                             }
-                            if (enemy.projectile.Left + 15 < Player.Left + Player.Width / 2)
-                            {
+                            if (enemy.projectile.Left + 15 < Player.Left + Player.Width / 2) {
                                 enemy.projectile.Left += enemy.projectileSpeedX;
                                 enemy.projectileBirdFacingRight = true;
                             }
@@ -1152,9 +998,7 @@ public partial class MainWindow : Form
                                 enemy.projectile.Top -= enemy.projectileSpeedY;
                             if (enemy.projectile.Top + 15 < Player.Top + Player.Height / 2)
                                 enemy.projectile.Top += enemy.projectileSpeedY;
-                        }
-                        else
-                        {
+                        } else {
                             DestroyAll(enemy.projectile, GameScene);
                             enemy.projectileStop = true;
                         }
@@ -1162,15 +1006,12 @@ public partial class MainWindow : Form
                             Hacek.Start();
 
                         //ptáèek
-                        if (enemy.projectileBirdFacingRight)
-                        {
+                        if (enemy.projectileBirdFacingRight) {
                             if (animationTick % 10 == 0)
                                 enemy.projectile.Image = Resources.twitter_right;
                             if (animationTick % 20 == 0)
                                 enemy.projectile.Image = Resources.twitter_right_move;
-                        }
-                        else
-                        {
+                        } else {
                             if (animationTick % 10 == 0)
                                 enemy.projectile.Image = Resources.twitter_left;
                             if (animationTick % 20 == 0)
@@ -1178,13 +1019,11 @@ public partial class MainWindow : Form
                         }
 
                     }
-                    if (enemy.type == "Stark")
-                    {
+                    if (enemy.type == "Stark") {
                         //odrážení køídy do Starka
                         if ((HitboxAttackLeft != null && HitboxAttackLeft.Bounds.IntersectsWith(enemy.projectile.Bounds))
                             || (HitboxAttackRight != null && HitboxAttackRight.Bounds.IntersectsWith(enemy.projectile.Bounds))
-                            || (HitboxAttackTop != null && HitboxAttackTop.Bounds.IntersectsWith(enemy.projectile.Bounds)))
-                        {
+                            || (HitboxAttackTop != null && HitboxAttackTop.Bounds.IntersectsWith(enemy.projectile.Bounds))) {
                             enemy.projectileParry = true;
                             if (HitboxAttackLeft != null && HitboxAttackLeft.Bounds.IntersectsWith(enemy.projectile.Bounds))
                                 enemy.projectileLeft = true;
@@ -1203,8 +1042,7 @@ public partial class MainWindow : Form
                             enemy.projectile.Top -= 6;
 
                         //dmg Starkovi, znièí se køída
-                        if (enemy.projectile.Bounds.IntersectsWith(enemy.pb.Bounds) && enemy.projectileParry && !alreadyHit)
-                        {
+                        if (enemy.projectile.Bounds.IntersectsWith(enemy.pb.Bounds) && enemy.projectileParry && !alreadyHit) {
                             enemy.projectileStop = true;
                             alreadyHit = true;
                             enemy.CheckHealth(GameScene);
@@ -1219,14 +1057,10 @@ public partial class MainWindow : Form
         }
 
         #region Absence
-        if (absenceArray != null)
-        {
-            foreach (Absence absence in absenceArray)
-            {
-                if (absence.spawn && absence.move)
-                {
-                    if (absence.spawned == false)
-                    {
+        if (absenceArray != null) {
+            foreach (Absence absence in absenceArray) {
+                if (absence.spawn && absence.move) {
+                    if (absence.spawned == false) {
                         absence.spawned = true;
                         if (absence.type == "X")
                             absence.pb.Left = absence.from;
@@ -1237,47 +1071,34 @@ public partial class MainWindow : Form
                         GameScene.Controls.Add(absence.pb);
                     }
 
-                    if (absence.type == "X")
-                    {
-                        if (absence.plusCoordinates)
-                        {
+                    if (absence.type == "X") {
+                        if (absence.plusCoordinates) {
                             if (absence.pb.Left < absence.to)
                                 absence.pb.Left += absence.movementSpeed;
-                            else
-                            {
+                            else {
                                 absence.pb.Bounds = Rectangle.Empty;
                                 GameScene.Controls.Remove(absence.pb);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             if (absence.pb.Left > absence.to)
                                 absence.pb.Left -= absence.movementSpeed;
-                            else
-                            {
+                            else {
                                 absence.pb.Bounds = Rectangle.Empty;
                                 GameScene.Controls.Remove(absence.pb);
                             }
                         }
-                    }
-                    else if (absence.type == "Y")
-                    {
-                        if (absence.plusCoordinates)
-                        {
+                    } else if (absence.type == "Y") {
+                        if (absence.plusCoordinates) {
                             if (absence.pb.Top < absence.to)
                                 absence.pb.Top += absence.movementSpeed;
-                            else
-                            {
+                            else {
                                 absence.pb.Bounds = Rectangle.Empty;
                                 GameScene.Controls.Remove(absence.pb);
                             }
-                        }
-                        else
-                        {
+                        } else {
                             if (absence.pb.Top > absence.to)
                                 absence.pb.Top -= absence.movementSpeed;
-                            else
-                            {
+                            else {
                                 absence.pb.Bounds = Rectangle.Empty;
                                 GameScene.Controls.Remove(absence.pb);
                             }
@@ -1291,8 +1112,7 @@ public partial class MainWindow : Form
         #endregion
 
         // Sysalova
-        if (stopwatch.ElapsedMilliseconds > 15000 && !basnickaHit)
-        {
+        if (stopwatch.ElapsedMilliseconds > 15000 && !basnickaHit) {
             basnickaHit = true;
             basnicka.Pause();
             soundHit.PlaySound();
@@ -1303,15 +1123,12 @@ public partial class MainWindow : Form
                 continueGame = false;
             SaveFileWrite();
             HealthUI();
-        }
-        else if (stopwatch.ElapsedMilliseconds > 18000)
-        {
+        } else if (stopwatch.ElapsedMilliseconds > 18000) {
             stopwatch.Restart();
             basnicka.Resume();
             basnickaHit = false;
         }
-        if (reader.Position >= reader.Length)
-        {
+        if (reader.Position >= reader.Length) {
             reader.Position = 0;
             basnicka.Play();
             basnicka.Pause();
@@ -1319,25 +1136,19 @@ public partial class MainWindow : Form
         }
 
         // Odhozeni od nepratel
-        if (knockback)
-        {
-            if (Player.Right < enMiddle && moveLeft)
-            {
+        if (knockback) {
+            if (Player.Right < enMiddle && moveLeft) {
                 Player.Left -= 10;
                 Dash.Interval = 1;
-            }
-            else if (moveRight)
-            {
+            } else if (moveRight) {
                 Player.Left += 10;
                 Dash.Interval = 1;
             }
         }
 
         // Smrt
-        if (playerHealth <= 0)
-        {
-            if (!soundDeathOnce)
-            {
+        if (playerHealth <= 0) {
+            if (!soundDeathOnce) {
                 soundDeath.PlaySound();
                 soundDeathOnce = true;
             }
@@ -1385,17 +1196,13 @@ public partial class MainWindow : Form
     }
 
     #region Tutorial
-    private async void InstrukceTimer_Tick(object sender, EventArgs e)
-    {
-        if (writeInstructions)
-        {
-            if (tutorialPhase < poleInstrukci.Length)
-            {
+    private async void InstrukceTimer_Tick(object sender, EventArgs e) {
+        if (writeInstructions) {
+            if (tutorialPhase < poleInstrukci.Length) {
                 writeInstructions = false;
                 typing = true;
                 lbTutorial.Text = string.Empty;
-                foreach (char a in poleInstrukci[tutorialPhase])
-                {
+                foreach (char a in poleInstrukci[tutorialPhase]) {
                     lbTutorial.Text += a;
                     Application.DoEvents();
                     await Task.Delay(20);
@@ -1414,8 +1221,7 @@ public partial class MainWindow : Form
                 tutorialPhase++;
                 typing = false;
 
-                switch (tutorialPhase)
-                {
+                switch (tutorialPhase) {
                     case 2 or 3 or 6 or 11 or 13 or 16 or 21 or 24:
                         break;
                     default:
@@ -1423,36 +1229,27 @@ public partial class MainWindow : Form
                         break;
                 }
 
-                if (tutorialPhase == 9)
-                {
+                if (tutorialPhase == 9) {
                     tutorialLemka.moving = true;
                     tutorialLemka.pb.Left = 1100;
                     tutorialLemka.pb.Top = 137;
-                }
-                else if (tutorialPhase == 14)
-                {
+                } else if (tutorialPhase == 14) {
                     tutorialSysalova.pb.Left = 1200;
                     tutorialSysalova.pb.Top = 157;
                     basnicka.Resume();
                     stopwatch.Restart();
-                }
-                else if (tutorialPhase == 19)
-                {
+                } else if (tutorialPhase == 19) {
                     tutorialHacek.pb.Left = 1300;
                     tutorialHacek.pb.Top = GameScene.Height - tutorialHacek.pb.Height;
                     Hacek.Start();
                     tutBanQ = false;
-                }
-                else if (tutorialPhase == 22)
-                {
+                } else if (tutorialPhase == 22) {
                     tutorialOberhofnerova.pb.Left = 800;
                     tutorialOberhofnerova.pb.Top = 112;
                     tutorialOberhofnerova.moving = true;
                     Oberhofnerova.Start();
                 }
-            }
-            else
-            {
+            } else {
                 //konec tutorialu
                 FullReset();
                 GameScene.Enabled = false;
@@ -1482,10 +1279,8 @@ public partial class MainWindow : Form
     #endregion
 
     #region playerTimers
-    private void abilityLMB_Tick(object sender, EventArgs e)
-    {
-        if (abilityLMBIndex == 0)
-        {
+    private void abilityLMB_Tick(object sender, EventArgs e) {
+        if (abilityLMBIndex == 0) {
             if (HitboxAttackLeft != null)
                 DestroyAll(HitboxAttackLeft, GameScene);
             if (HitboxAttackRight != null)
@@ -1496,17 +1291,14 @@ public partial class MainWindow : Form
             LMB = false;
             abilityLMB.Interval = 600;
         }
-        if (abilityLMBIndex == 1)
-        {
+        if (abilityLMBIndex == 1) {
             attackLMBcooldown = false;
             abilityLMB.Stop();
         }
         abilityLMBIndex++;
     }
-    private void Dash_Tick(object sender, EventArgs e)
-    {
-        if (dashIndex == 0)
-        {
+    private void Dash_Tick(object sender, EventArgs e) {
+        if (dashIndex == 0) {
             canDash = false;
             dashLeft = false;
             dashRight = false;
@@ -1514,51 +1306,41 @@ public partial class MainWindow : Form
             jumpSpeed = -1;
             Dash.Interval = 1500;
         }
-        if (dashIndex == 1)
-        {
+        if (dashIndex == 1) {
             canDash = true;
             Dash.Stop();
         }
         dashIndex++;
 
     }
-    private void AbilityQ_Tick(object sender, EventArgs e)
-    {
-        if (abilityQIndex == 0)
-        {
+    private void AbilityQ_Tick(object sender, EventArgs e) {
+        if (abilityQIndex == 0) {
             attackQphase1 = true;
             AbilityQ.Interval = 350;
         }
-        if (abilityQIndex == 1)
-        {
+        if (abilityQIndex == 1) {
             attackQphase1 = false;
             attackQphase2 = true;
             AbilityQ.Interval = 200;
         }
-        if (abilityQIndex == 2)
-        {
+        if (abilityQIndex == 2) {
             AbilityQ.Interval = 2000;
             attackQphase2 = false;
             banInput = false;
             unHitable = false;
         }
-        if (abilityQIndex == 3)
-        {
+        if (abilityQIndex == 3) {
             attackQcooldown = false;
             AbilityQ.Stop();
         }
         abilityQIndex++;
     }
 
-    private void DMGcooldown_Tick(object sender, EventArgs e)
-    {
-        if (dmgIndex == 0)
-        {
+    private void DMGcooldown_Tick(object sender, EventArgs e) {
+        if (dmgIndex == 0) {
             knockback = false;
             DMGcooldown.Interval = 1900;
-        }
-        else
-        {
+        } else {
             canGetHit = true;
             DMGcooldown.Stop();
         }
@@ -1568,18 +1350,15 @@ public partial class MainWindow : Form
     #endregion
 
     #region Absence
-    private void Absence1_Tick(object sender, EventArgs e)
-    {
-        if (absence1Index == 1)
-        {
+    private void Absence1_Tick(object sender, EventArgs e) {
+        if (absence1Index == 1) {
             Absence(absenceArray[0]);
 
             absenceArray[0].spawned = false;
             absenceArray[0].spawn = true;
             Absence1.Interval = absenceArray[0].cooldown;
         }
-        if (absence1Index == 2)
-        {
+        if (absence1Index == 2) {
             absenceArray[0].spawn = false;
             Absence1.Interval = 1;
             absence1Index = 0;
@@ -1587,18 +1366,15 @@ public partial class MainWindow : Form
         absence1Index++;
     }
 
-    private void Absence2_Tick(object sender, EventArgs e)
-    {
-        if (absence2Index == 1)
-        {
+    private void Absence2_Tick(object sender, EventArgs e) {
+        if (absence2Index == 1) {
             Absence(absenceArray[1]);
 
             absenceArray[1].spawned = false;
             absenceArray[1].spawn = true;
             Absence2.Interval = absenceArray[1].cooldown;
         }
-        if (absence2Index == 2)
-        {
+        if (absence2Index == 2) {
             absenceArray[1].spawn = false;
             Absence2.Interval = 1;
             absence2Index = 0;
@@ -1606,21 +1382,16 @@ public partial class MainWindow : Form
         absence2Index++;
     }
 
-    static private void Absence(Absence absence)
-    {
-        if (absence.changeDirection)
-        {
-            if (absence.indexDirection != 0)
-            {
-                if (absence.type == "X")
-                {
+    static private void Absence(Absence absence) {
+        if (absence.changeDirection) {
+            if (absence.indexDirection != 0) {
+                if (absence.type == "X") {
                     if (absence.positionX == absence.from)
                         absence.positionX = absence.to;
                     else
                         absence.positionX = absence.from;
                 }
-                if (absence.type == "Y")
-                {
+                if (absence.type == "Y") {
                     if (absence.positionY == absence.from)
                         absence.positionY = absence.to;
                     else
@@ -1645,14 +1416,10 @@ public partial class MainWindow : Form
 
     #region EnemyTimers
 
-    private void Lemka_Tick(object sender, EventArgs e)
-    {
-        if (lemkaIndex == 0)
-        {
-            if (lemkaRight)
-            {
-                HitboxLemkaRight = new PictureBox
-                {
+    private void Lemka_Tick(object sender, EventArgs e) {
+        if (lemkaIndex == 0) {
+            if (lemkaRight) {
+                HitboxLemkaRight = new PictureBox {
                     Left = lemka.pb.Right,
                     Top = lemka.pb.Top + 50,
                     Width = 100,
@@ -1660,11 +1427,8 @@ public partial class MainWindow : Form
                     BackColor = Color.Purple,
                 };
                 GameScene.Controls.Add(HitboxLemkaRight);
-            }
-            else
-            {
-                HitboxLemkaLeft = new PictureBox
-                {
+            } else {
+                HitboxLemkaLeft = new PictureBox {
                     Left = lemka.pb.Left - 100,
                     Top = lemka.pb.Top + 50,
                     Width = 100,
@@ -1676,8 +1440,7 @@ public partial class MainWindow : Form
             soundLemka.PlaySound();
             Lemka.Interval = 100;
         }
-        if (lemkaIndex == 1)
-        {
+        if (lemkaIndex == 1) {
             if (HitboxLemkaLeft != null)
                 DestroyAll(HitboxLemkaLeft, GameScene);
             if (HitboxLemkaRight != null)
@@ -1685,52 +1448,41 @@ public partial class MainWindow : Form
             Lemka.Interval = 3000;
             lemka.moving = true;
         }
-        if (lemkaIndex == 2)
-        {
+        if (lemkaIndex == 2) {
             lemkaCooldown = false;
             Lemka.Stop();
         }
         lemkaIndex++;
     }
-    private void Oberhofnerova_Tick(object sender, EventArgs e)
-    {
-        foreach (Enemy enemy in enemyArray)
-        {
-            if (enemy.type == "Oberhofnerova" && enemy.health > 0)
-            {
+    private void Oberhofnerova_Tick(object sender, EventArgs e) {
+        foreach (Enemy enemy in enemyArray) {
+            if (enemy.type == "Oberhofnerova" && enemy.health > 0) {
                 enemy.ShootProjectile(Player, GameScene);
                 soundProjectile.PlaySound();
             }
         }
     }
 
-    private void Hacek_Tick(object sender, EventArgs e)
-    {
-        foreach (Enemy enemy in enemyArray)
-        {
-            if (enemy.type == "Hacek" && enemy.health > 0)
-            {
+    private void Hacek_Tick(object sender, EventArgs e) {
+        foreach (Enemy enemy in enemyArray) {
+            if (enemy.type == "Hacek" && enemy.health > 0) {
                 enemy.ShootProjectile(Player, GameScene);
                 soundProjectile.PlaySound();
             }
         }
         Hacek.Stop();
     }
-    private void Stark_Tick(object sender, EventArgs e)
-    {
-        if (bossPhase == 1)
-        {
+    private void Stark_Tick(object sender, EventArgs e) {
+        if (bossPhase == 1) {
             //bouchani baseballkou
-            if (starkIndex == 0)
-            {
+            if (starkIndex == 0) {
                 //bouchne
-                baseballka = new PictureBox
-                {
+                baseballka = new PictureBox {
                     Left = stark.pb.Left + 55,
                     Top = stark.pb.Top + 465,
                     Width = 225,
                     Height = 185,
-                    BackColor = Color.Purple,
+                    Image = Resources.Stark_Baseballka,
                 };
                 GameScene.Controls.Add(baseballka);
                 baseballka.BringToFront();
@@ -1738,34 +1490,28 @@ public partial class MainWindow : Form
                 baseballCooldown = true;
                 baseballSlam++;
 
+                stark.pb.Image = Resources.Stark_Baseball_Smack;
                 soundBaseball.PlaySound();
 
-                if (baseballSlam % 3 == 0)
-                {
+                if (baseballSlam % 3 == 0) {
                     baseballGetDMG = true;
                     baseballCooldown = true;
                     Stark.Stop();
-                }
-                else
-                {
+                } else {
                     baseballGetDMG = false;
                     Stark.Interval = 500;
                 }
-            }
-            else if (starkIndex == 1)
-            {
+            } else if (starkIndex == 1) {
                 if (baseballka != null)
                     DestroyAll(baseballka, GameScene);
                 stark.moving = true;
                 Stark.Interval = 3000;
-            }
-            else if (starkIndex == 2)
+                stark.pb.Image = Resources.Stark_Baseball_Idle;
+            } else if (starkIndex == 2)
                 baseballCooldown = false;
 
             starkIndex++;
-        }
-        else if (bossPhase == 2 && !starkIdle)
-        {
+        } else if (bossPhase == 2 && !starkIdle) {
             //spawn enemy a strileni kridy
             stark.ShootProjectile(Player, GameScene);
             stark.projectileParry = false;
@@ -1773,17 +1519,12 @@ public partial class MainWindow : Form
             stark.projectileRight = false;
             stark.projectileUp = false;
             soundChalk.PlaySound();
-        }
-        else if (bossPhase == 3)
-        {
-            if (starkIndex == 0)
-            {
+        } else if (bossPhase == 3) {
+            if (starkIndex == 0) {
                 //special, hacek objevi a nici knizky, prida pruzinu
                 int cooldown = 0;
-                foreach (Terrain book in terrainArray)
-                {
-                    if (book.pb.Tag.ToString().Contains("Book") && book.pb.Bounds != Rectangle.Empty)
-                    {
+                foreach (Terrain book in terrainArray) {
+                    if (book.pb.Tag.ToString().Contains("Book") && book.pb.Bounds != Rectangle.Empty) {
                         DestroyAll(book.pb, GameScene);
                         soundDestroy.PlaySound();
                         GameScene.Refresh();
@@ -1802,20 +1543,15 @@ public partial class MainWindow : Form
                 lbRozvrh2.Visible = false;
                 Stark.Interval = 4000;
             }
-            if (starkIndex == 1)
-            {
+            if (starkIndex == 1) {
                 stark.pb.BackColor = Color.Green;
                 Stark.Interval = 1000;
-            }
-            else if (starkIndex == 2)
-            {
+            } else if (starkIndex == 2) {
                 stark.moveLeft = !stark.moveLeft;
                 stark.moveRight = !stark.moveRight;
                 stark.pb.BackColor = Color.Yellow;
                 Stark.Interval = 2000;
-            }
-            else if (starkIndex == 3)
-            {
+            } else if (starkIndex == 3) {
                 stark.pb.BackColor = Color.Red;
                 Stark.Interval = 3000;
                 starkIndex = 0;
@@ -1828,46 +1564,39 @@ public partial class MainWindow : Form
 
     #region Voidy
 
-    private void CheckPS()
-    {
+    private void CheckPS() {
         var input = new DirectInput();
         var joystickGuid = Guid.Empty;
 
-        foreach (var deviceInstance in input.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AllDevices))
-        {
+        foreach (var deviceInstance in input.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AllDevices)) {
             if (!(deviceInstance.Type == DeviceType.Gamepad)) // nepøidá xbox
                 joystickGuid = deviceInstance.InstanceGuid;
         }
 
         if (joystickGuid == Guid.Empty)
             psController = false;
-        else
-        {
+        else {
             joystick = new Joystick(input, joystickGuid);
             joystick.Properties.BufferSize = 128;
             joystick.Acquire();
             psController = true;
         }
     }
-    private void SpawnEnemyBoss()
-    {
+    private void SpawnEnemyBoss() {
         if (Player.Left > GameScene.Width / 2)
             playerSideLeft = false;
         else
             playerSideLeft = true;
 
         int random1 = 0, random2 = 0, LemkaMove = 0;
-        if (playerSideLeft && bookRightDestroyed)
-        {
+        if (playerSideLeft && bookRightDestroyed) {
             random1 = Random.Shared.Next(1, 4);
             random2 = Random.Shared.Next(1, 4);
             while (random1 == random2)
                 random1 = Random.Shared.Next(1, 4);
 
             LemkaMove = 925;
-        }
-        else if (playerSideLeft && !bookRightDestroyed)
-        {
+        } else if (playerSideLeft && !bookRightDestroyed) {
             random1 = Random.Shared.Next(1, 5);
             random2 = Random.Shared.Next(1, 5);
             while (random1 == random2)
@@ -1875,17 +1604,14 @@ public partial class MainWindow : Form
 
             LemkaMove = 1393;
         }
-        if (!playerSideLeft && bookLeftDestroyed)
-        {
+        if (!playerSideLeft && bookLeftDestroyed) {
             random1 = Random.Shared.Next(1, 4);
             random2 = Random.Shared.Next(1, 4);
             while (random1 == random2)
                 random1 = Random.Shared.Next(1, 4);
 
             LemkaMove = 485;
-        }
-        else if (!playerSideLeft && !bookLeftDestroyed)
-        {
+        } else if (!playerSideLeft && !bookLeftDestroyed) {
             random1 = Random.Shared.Next(1, 5);
             random2 = Random.Shared.Next(1, 5);
             while (random1 == random2)
@@ -1894,34 +1620,27 @@ public partial class MainWindow : Form
             LemkaMove = 18;
         }
 
-        if (playerSideLeft)
-        {
-            switch (random1)
-            {
+        if (playerSideLeft) {
+            switch (random1) {
                 case 1: bossEnemy1 = new(1296, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
                 case 2: bossEnemy1 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
                 case 3: bossEnemy1 = new(1420, 616, 110, 180, Color.Red, LemkaHP, true, LemkaMove, 1420, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
                 case 4: bossEnemy1 = new(1282, 418, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy1; break;
             }
-            switch (random2)
-            {
+            switch (random2) {
                 case 1: bossEnemy2 = new(1296, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
                 case 2: bossEnemy2 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
                 case 3: bossEnemy2 = new(1420, 616, 110, 180, Color.Red, LemkaHP, true, LemkaMove, 1420, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
                 case 4: bossEnemy2 = new(1282, 418, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy2; break;
             }
-        }
-        else
-        {
-            switch (random1)
-            {
+        } else {
+            switch (random1) {
                 case 1: bossEnemy1 = new(100, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
                 case 2: bossEnemy1 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
                 case 3: bossEnemy1 = new(0, 616, 110, 180, Color.Red, LemkaHP, true, 0, LemkaMove, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
                 case 4: bossEnemy1 = new(122, 419, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy1; break;
             }
-            switch (random2)
-            {
+            switch (random2) {
                 case 1: bossEnemy2 = new(100, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
                 case 2: bossEnemy2 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
                 case 3: bossEnemy2 = new(0, 616, 110, 180, Color.Red, LemkaHP, true, 0, LemkaMove, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
@@ -1930,13 +1649,11 @@ public partial class MainWindow : Form
         }
         enemyArray = new Enemy[] { stark, bossEnemy1, bossEnemy2 };
     }
-    private void NuggetDisappear_Tick(object sender, EventArgs e)
-    {
+    private void NuggetDisappear_Tick(object sender, EventArgs e) {
         DestroyAll(nuggetPB, GameScene);
         NuggetDisappear.Stop();
     }
-    void Hit(PictureBox pb)
-    {
+    void Hit(PictureBox pb) {
         soundHit.PlaySound();
         enMiddle = pb.Right;
         canGetHit = false;
@@ -1951,22 +1668,19 @@ public partial class MainWindow : Form
         SaveFileWrite();
         HealthUI();
     }
-    static private void DestroyAll(PictureBox pb, Panel panel)
-    {
+    static private void DestroyAll(PictureBox pb, Panel panel) {
         pb.Bounds = Rectangle.Empty;
         panel.Controls.Remove(pb);
         pb.Dispose();
     }
-    void Reset()
-    {
+    void Reset() {
         stopwatch.Reset();
         basnicka.Pause();
 
         nuggetSpawn = false;
 
         //fix na Q
-        if (attackQphase1 || attackQphase2)
-        {
+        if (attackQphase1 || attackQphase2) {
             attackQphase1 = false;
             attackQphase2 = false;
             AbilityQ.Stop();
@@ -1985,29 +1699,23 @@ public partial class MainWindow : Form
         Oberhofnerova.Stop();
         Hacek.Stop();
 
-        if (enemyArray != null)
-        {
-            foreach (Enemy enemy in enemyArray)
-            {
+        if (enemyArray != null) {
+            foreach (Enemy enemy in enemyArray) {
                 enemy.health = 0;
                 enemy.CheckHealth(GameScene);
             }
         }
-        if (terrainArray != null)
-        {
+        if (terrainArray != null) {
             foreach (Terrain terrain in terrainArray)
                 DestroyAll(terrain.pb, GameScene);
         }
-        if (absenceArray != null)
-        {
-            foreach (Absence absence in absenceArray)
-            {
+        if (absenceArray != null) {
+            foreach (Absence absence in absenceArray) {
                 absence.move = false;
                 DestroyAll(absence.pb, GameScene);
             }
         }
-        if (nuggetList != null)
-        {
+        if (nuggetList != null) {
             foreach (Nugget nugget in nuggetList)
                 DestroyAll(nugget.pb, GameScene);
         }
@@ -2021,8 +1729,7 @@ public partial class MainWindow : Form
         StarkHealthBackground.Visible = false;
         StarkHealth.Visible = false;
     }
-    void FullReset()
-    {
+    void FullReset() {
         //pozice,timery,bloky,enemy...
         Reset();
 
@@ -2054,10 +1761,8 @@ public partial class MainWindow : Form
         HealthUI();
     }
 
-    void HealthUI()
-    {
-        if (difficulty != "Insane")
-        {
+    void HealthUI() {
+        if (difficulty != "Insane") {
             if (playerHealth > 0)
                 health1.Image = Resources.nugeta1;
             else
@@ -2078,9 +1783,7 @@ public partial class MainWindow : Form
                 health5.Image = Resources.nugeta5;
             else
                 health5.Image = Resources.nugeta_drobky;
-        }
-        else
-        {
+        } else {
             if (playerHealth == 1)
                 health1.Image = Resources.nugeta1_insane;
             else
@@ -2092,11 +1795,9 @@ public partial class MainWindow : Form
         }
     }
 
-    void TimerHandler(string action)
-    {
+    void TimerHandler(string action) {
         //bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear;
-        if (action == "Pause")
-        {
+        if (action == "Pause") {
             if (Oberhofnerova.Enabled)
                 tOberhofnerova = true;
             if (Hacek.Enabled)
@@ -2113,15 +1814,18 @@ public partial class MainWindow : Form
             DMGcooldown.Stop();
             NuggetDisappear.Stop();
 
-            if (basnicka.PlaybackState == PlaybackState.Playing)
-            {
+            if (Stark.Enabled && bossPhase == 2) {
+                tStark = true;
+                Stark.Stop();
+            }
+
+            if (basnicka.PlaybackState == PlaybackState.Playing) {
                 basnickaPlaying = true;
                 stopwatch.Stop();
                 basnicka.Pause();
             }
         }
-        if (action == "Play")
-        {
+        if (action == "Play") {
             if (tOberhofnerova)
                 Oberhofnerova.Start();
             if (tHacek)
@@ -2132,14 +1836,17 @@ public partial class MainWindow : Form
                 DMGcooldown.Start();
             if (tNuggetDisappear)
                 NuggetDisappear.Start();
+            if (tStark)
+                Stark.Start();
+
             tOberhofnerova = false;
             tHacek = false;
             tJumpCooldown = false;
             tDMGCooldown = false;
             tNuggetDisappear = false;
+            tStark = false;
 
-            if (basnickaPlaying)
-            {
+            if (basnickaPlaying) {
                 basnicka.Resume();
                 stopwatch.Start();
             }
@@ -2147,26 +1854,20 @@ public partial class MainWindow : Form
         }
     }
 
-    void SaveFileRead()
-    {
+    void SaveFileRead() {
         string filePath = Path.Combine(folderPath, fileName);
 
-        if (!File.Exists(filePath))
-        {
+        if (!File.Exists(filePath)) {
             continueGame = false;
             savedHealth = 0;
             savedLevel = 0;
             completedGame = false;
             hardestDifficulty = false;
-            using (StreamWriter writer = File.CreateText(filePath))
-            {
+            using (StreamWriter writer = File.CreateText(filePath)) {
                 writer.Write("false\n0\n0\nEasy\nfalse\nfalse");
             }
-        }
-        else
-        {
-            using (StreamReader reader = new StreamReader(filePath))
-            {
+        } else {
+            using (StreamReader reader = new StreamReader(filePath)) {
                 continueGame = Convert.ToBoolean(reader.ReadLine());
                 savedHealth = Convert.ToInt32(reader.ReadLine());
                 savedLevel = Convert.ToInt32(reader.ReadLine());
@@ -2177,8 +1878,7 @@ public partial class MainWindow : Form
         }
     }
 
-    void SaveFileWrite()
-    {
+    void SaveFileWrite() {
         // velmi jednoduchý saveFile, každá line jeden udaj
         // pokraèovat ve høe, hp, level, dohral hru, dohral na nejtezsi obtiznost.. 
 
@@ -2190,22 +1890,18 @@ public partial class MainWindow : Form
         File.WriteAllTextAsync(filePath, saveFile);
     }
 
-    void UpdateProgress()
-    {
+    void UpdateProgress() {
         SaveFileRead();
-        if (continueGame)
-        {
+        if (continueGame) {
             levelCount = savedLevel;
             playerHealth = savedHealth;
             btContinue.Enabled = true;
         }
-        if (completedGame)
-        {
+        if (completedGame) {
             pbCompletedGame.Visible = true;
             btInsane.Enabled = true;
             lbZaskolak.Visible = false;
-        }
-        else
+        } else
             pbCompletedGame.Visible = false;
 
         if (hardestDifficulty)
@@ -2214,10 +1910,8 @@ public partial class MainWindow : Form
             pbHardestDifficulty.Visible = false;
     }
 
-    void Pauza()
-    {
-        if (!Pause.Visible)
-        {
+    void Pauza() {
+        if (!Pause.Visible) {
             Pause.Visible = true;
             Pause.Enabled = true;
             GameScene.Enabled = false;
@@ -2228,9 +1922,7 @@ public partial class MainWindow : Form
             UpdateMethod.Stop();
             TimerHandler("Pause");
             Focus();
-        }
-        else if (lbNazev.Text == "Pauza")
-        {
+        } else if (lbNazev.Text == "Pauza") {
             Pause.Visible = false;
             Pause.Enabled = false;
             GameScene.Enabled = true;
@@ -2244,11 +1936,9 @@ public partial class MainWindow : Form
     #endregion
 
     #region LevelDesign
-    void LevelPrepare()
-    {
+    void LevelPrepare() {
         //doplni jedno HP
-        if (playerHealth < 5 && difficulty == "Easy")
-        {
+        if (playerHealth < 5 && difficulty == "Easy") {
             playerHealth++;
             HealthUI();
         }
@@ -2257,8 +1947,7 @@ public partial class MainWindow : Form
         soundNextLevel.PlaySound();
         continueGame = true;
     }
-    void TutorialLevel()
-    {
+    void TutorialLevel() {
         FullReset();
         continueGame = false;
         Terrain terrain1 = new(486, 563, 130, 34, "Terrain Book", Resources.Knizka, GameScene);
@@ -2282,8 +1971,7 @@ public partial class MainWindow : Form
         lbLevel.Text = "Tutorial";
         lbLevel.ForeColor = Color.LightGreen;
     }
-    void Level1()
-    {
+    void Level1() {
         LevelPrepare();
         Terrain terrain1 = new(28, 658, 164, 39, "Terrain Book", Resources.Knizka, GameScene);
         Terrain terrain2 = new(291, 753, 100, 72, "Terrain", Resources.PC, GameScene);
@@ -2310,8 +1998,7 @@ public partial class MainWindow : Form
         currentLevel = 1;
         SaveFileWrite();
     }
-    void Level2()
-    {
+    void Level2() {
         LevelPrepare();
         Terrain terrain1 = new(28, 658, 164, 39, "Terrain Book", Resources.Knizka, GameScene);
         Terrain terrain2 = new(28, 360, 97, 34, "Terrain Book", Resources.Knizka, GameScene);
@@ -2349,8 +2036,7 @@ public partial class MainWindow : Form
         SaveFileWrite();
     }
 
-    void Level3()
-    {
+    void Level3() {
         LevelPrepare();
         Terrain terrain1 = new(28, 658, 164, 39, "Terrain Book", Resources.Knizka, GameScene);
         Terrain terrain2 = new(270, 377, 100, 69, "Terrain", Resources.PC, GameScene);
@@ -2371,8 +2057,7 @@ public partial class MainWindow : Form
 
         absenceArray = new Absence[] { absence1, absence2 };
 
-        if (difficulty == "Easy" || difficulty == "Normal")
-        {
+        if (difficulty == "Easy" || difficulty == "Normal") {
             Nugget nugget1 = new(714, 73, 2, Resources.nugeta_double, GameScene);
             nuggetList.Add(nugget1);
         }
@@ -2395,8 +2080,7 @@ public partial class MainWindow : Form
         currentLevel = 3;
         SaveFileWrite();
     }
-    void Level4()
-    {
+    void Level4() {
         LevelPrepare();
         Terrain terrain1 = new(28, 658, 164, 39, "Terrain Book", Resources.Knizka, GameScene);
         Terrain terrain2 = new(126, 280, 110, 35, "Terrain Book", Resources.Knizka, GameScene);
@@ -2442,8 +2126,7 @@ public partial class MainWindow : Form
         currentLevel = 4;
         SaveFileWrite();
     }
-    void Level5()
-    {
+    void Level5() {
         LevelPrepare();
         Player.Left = 138;
         Player.Top = 477;
@@ -2476,14 +2159,11 @@ public partial class MainWindow : Form
 
     #endregion
 
-    private void Controller_Tick(object sender, EventArgs e)
-    {
+    private void Controller_Tick(object sender, EventArgs e) {
         // XBOX
         GamePadState xboxState = GamePad.GetState(PlayerIndex.One);
-        if (xboxState.IsConnected)
-        {
-            if (!disableAllInputs)
-            {
+        if (xboxState.IsConnected) {
+            if (!disableAllInputs) {
                 xboxA = xboxState.Buttons.A == ButtonState.Pressed;
                 xboxX = xboxState.Buttons.X == ButtonState.Pressed && previousXboxState.Buttons.X == ButtonState.Released;
                 xboxB = xboxState.Buttons.B == ButtonState.Pressed && previousXboxState.Buttons.B == ButtonState.Released;
@@ -2499,17 +2179,14 @@ public partial class MainWindow : Form
         }
 
         // PlayStation
-        try
-        {
-            if (psController)
-            {
+        try {
+            if (psController) {
                 joystick.Poll();
 
                 var state = joystick.GetCurrentState();
                 var buttons = state.Buttons;
 
-                if (!disableAllInputs)
-                {
+                if (!disableAllInputs) {
                     psA = buttons[1];
                     psX = buttons[0] && !previousButtons[0];
                     psB = buttons[2] && !previousButtons[2];
@@ -2522,9 +2199,7 @@ public partial class MainWindow : Form
 
                 previousButtons = buttons;
             }
-        }
-        catch
-        {
+        } catch {
             psController = false;
             return;
         }
@@ -2546,11 +2221,9 @@ public partial class MainWindow : Form
             Pauza();
     }
 
-    private void MainWindow_KeyDown(object sender, KeyEventArgs e)
-    {
+    private void MainWindow_KeyDown(object sender, KeyEventArgs e) {
         //Input - zmacknuti
-        if (!disableAllInputs)
-        {
+        if (!disableAllInputs) {
             if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
                 A = true;
             if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
@@ -2561,8 +2234,7 @@ public partial class MainWindow : Form
                 Q = true;
             if (e.KeyCode == Keys.E)
                 E = true;
-            if (e.KeyCode == Keys.F3 && !versionForRelease)
-            {
+            if (e.KeyCode == Keys.F3 && !versionForRelease) {
                 if (lbStats.Visible)
                     lbStats.Visible = false;
                 else
@@ -2570,56 +2242,45 @@ public partial class MainWindow : Form
             }
             if (e.KeyCode == Keys.Escape && !Menu.Enabled)
                 Pauza();
-            if (e.KeyCode == Keys.K && !tutorial && !versionForRelease)
-            {
-                foreach (Enemy enemy in enemyArray)
-                {
-                    if (enemy != stark)
-                    {
+            if (e.KeyCode == Keys.K && !tutorial && !versionForRelease) {
+                foreach (Enemy enemy in enemyArray) {
+                    if (enemy != stark) {
                         enemy.health = 0;
                         enemy.CheckHealth(GameScene);
                     }
                 }
             }
-            if (e.KeyCode == Keys.L && !versionForRelease)
-            {
+            if (e.KeyCode == Keys.L && !versionForRelease) {
                 if (cheatHealth)
                     cheatHealth = false;
                 else
                     cheatHealth = true;
             }
-            if (e.KeyCode == Keys.P && !versionForRelease)
-            {
+            if (e.KeyCode == Keys.P && !versionForRelease) {
                 if (stark != null)
                     stark.health = 40;
                 changedPhase = false;
             }
-            if (e.KeyCode == Keys.O && !versionForRelease)
-            {
+            if (e.KeyCode == Keys.O && !versionForRelease) {
                 if (stark != null)
                     stark.health = 20;
                 changedPhase = false;
             }
-            if (e.KeyCode == Keys.I && !versionForRelease)
-            {
-                if (stark != null)
-                {
+            if (e.KeyCode == Keys.I && !versionForRelease) {
+                if (stark != null) {
                     stark.health -= 2;
                     stark.CheckHealth(GameScene);
                 }
             }
-            if (e.KeyCode == Keys.Oemtilde && Pause.Enabled && lbNazev.Text == "Pauza")
-            {
+            if (e.KeyCode == Keys.Oemtilde && Pause.Enabled && lbNazev.Text == "Pauza") {
                 panelCheat.Enabled = !panelCheat.Enabled;
                 panelCheat.Visible = !panelCheat.Visible;
             }
-        }
-        else if (e.KeyCode == Keys.R)
+        } else if (e.KeyCode == Keys.R)
             FullReset();
     }
 
-    private void MainWindow_KeyUp(object sender, KeyEventArgs e)
-    {
+    private void MainWindow_KeyUp(object sender, KeyEventArgs e) {
         //Input - uvolneni klavesy
         if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
             A = false;
@@ -2633,14 +2294,12 @@ public partial class MainWindow : Form
             E = false;
     }
 
-    private void btPlay_Click(object sender, EventArgs e)
-    {
+    private void btPlay_Click(object sender, EventArgs e) {
         difficultySelect.Visible = !difficultySelect.Visible;
         soundSelect.PlaySound();
     }
 
-    private void btOptions_Click(object sender, EventArgs e)
-    {
+    private void btOptions_Click(object sender, EventArgs e) {
         Menu.Visible = false;
         Menu.Enabled = false;
         Pause.Enabled = true;
@@ -2651,8 +2310,7 @@ public partial class MainWindow : Form
         Focus();
         soundSelect.PlaySound();
     }
-    private void btMenu_Click(object sender, EventArgs e)
-    {
+    private void btMenu_Click(object sender, EventArgs e) {
         Pause.Enabled = false;
         Pause.Visible = false;
         Menu.Visible = true;
@@ -2660,8 +2318,7 @@ public partial class MainWindow : Form
         Focus();
         soundSelect.PlaySound();
 
-        if (tutorial)
-        {
+        if (tutorial) {
             cheatHealth = false;
             tutorial = false;
             UpdateMethod.Stop();
@@ -2675,8 +2332,7 @@ public partial class MainWindow : Form
             lbTutorial.Text = string.Empty;
         }
     }
-    private void btDifficulty(object sender, EventArgs e)
-    {
+    private void btDifficulty(object sender, EventArgs e) {
         soundSelect.PlaySound();
         Button diff = sender as Button;
         if (diff.Name == "btEasy")
@@ -2685,12 +2341,10 @@ public partial class MainWindow : Form
             difficulty = "Normal";
         if (diff.Name == "btHard")
             difficulty = "Hard";
-        if (diff.Name == "btInsane")
-        {
+        if (diff.Name == "btInsane") {
             difficulty = "Insane";
             playerHealth = 1;
-        }
-        else
+        } else
             playerHealth = 5;
 
         FullReset();
@@ -2707,8 +2361,7 @@ public partial class MainWindow : Form
         Focus();
         UpdateMethod.Start();
     }
-    private void btContinue_Click(object sender, EventArgs e)
-    {
+    private void btContinue_Click(object sender, EventArgs e) {
         Menu.Visible = false;
         Menu.Enabled = false;
         GameScene.Enabled = true;
@@ -2719,30 +2372,25 @@ public partial class MainWindow : Form
         soundSelect.PlaySound();
         HealthUI();
     }
-    private void JumpCooldown_Tick(object sender, EventArgs e)
-    {
+    private void JumpCooldown_Tick(object sender, EventArgs e) {
         jumpCooldown = false;
     }
 
-    private void Sound_Click(object sender, EventArgs e)
-    {
+    private void Sound_Click(object sender, EventArgs e) {
         SoundManager.bannedSound = !SoundManager.bannedSound;
         if (SoundManager.bannedSound)
             Sound.Image = Resources.sound_muted;
-        else
-        {
+        else {
             Sound.Image = Resources.sound;
             soundSelect.PlaySound();
         }
 
     }
-    private void btExit_Click(object sender, EventArgs e)
-    {
+    private void btExit_Click(object sender, EventArgs e) {
         Application.Exit();
     }
 
-    private void MainWindow_Load(object sender, EventArgs e)
-    {
+    private void MainWindow_Load(object sender, EventArgs e) {
         UpdateProgress();
         basnicka.Play();
         basnicka.Pause();
@@ -2750,17 +2398,14 @@ public partial class MainWindow : Form
         CheckPS();
     }
 
-    private void btResetProgress_Click(object sender, EventArgs e)
-    {
+    private void btResetProgress_Click(object sender, EventArgs e) {
         string filePath = Path.Combine(folderPath, fileName);
-        using (StreamWriter writer = File.CreateText(filePath))
-        {
+        using (StreamWriter writer = File.CreateText(filePath)) {
             writer.Write("false\n0\n0\nfalse\nfalse");
         }
         UpdateProgress();
     }
-    private void btTutorial_Click(object sender, EventArgs e)
-    {
+    private void btTutorial_Click(object sender, EventArgs e) {
         Menu.Visible = false;
         Menu.Enabled = false;
         GameScene.Visible = true;
@@ -2782,12 +2427,10 @@ public partial class MainWindow : Form
         soundSelect.PlaySound();
     }
 
-    private void btCheat_Click(object sender, EventArgs e)
-    {
+    private void btCheat_Click(object sender, EventArgs e) {
         string code = tbCheat.Text;
 
-        switch (code)
-        {
+        switch (code) {
             case "jsemnoob":
                 cheatHealth = true;
                 tbCheat.Text = "Kód aktivován!";

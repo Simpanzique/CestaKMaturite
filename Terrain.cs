@@ -1,14 +1,13 @@
 ﻿namespace Petr_RP_CestaKMaturite;
 
-internal class Terrain
-{
+internal class Terrain {
+
     public PictureBox pb;
     static int Count = 1;
     public bool spawn = true;
-    public Terrain(int positionX, int positionY, int width, int height, string Tag, Bitmap image, Panel scene)
-    {
-        pb = new PictureBox
-        {
+
+    public Terrain(int positionX, int positionY, int width, int height, string Tag, Bitmap image, Panel scene) {
+        pb = new PictureBox {
             Left = positionX,
             Top = positionY,
             Width = width,

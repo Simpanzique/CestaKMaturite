@@ -463,6 +463,46 @@ namespace Petr_RP_CestaKMaturite.Properties {
         }
         
         /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Baseball_Charge {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Baseball_Charge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Baseball_Idle {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Baseball_Idle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Baseball_Smack {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Baseball_Smack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Baseballka {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Baseballka", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream Sysalova {
