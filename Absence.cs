@@ -1,4 +1,6 @@
-﻿namespace Petr_RP_CestaKMaturite;
+﻿using Petr_RP_CestaKMaturite.Properties;
+
+namespace Petr_RP_CestaKMaturite;
 internal class Absence {
 
     public PictureBox pb;
@@ -21,7 +23,7 @@ internal class Absence {
     static int Count = 1;
 
 
-    public Absence(int _positionX, int _positionY, Color color, int _cooldown, string _type,
+    public Absence(int _positionX, int _positionY, int _cooldown, string _type,
         bool _plusCoordinates, bool _changeDirection, int _from, int _to, int _movementSpeed) {
         positionX = _positionX;
         positionY = _positionY;
@@ -39,7 +41,8 @@ internal class Absence {
             Top = _positionY,
             Width = 30,
             Height = 30,
-            BackColor = color,
+            Image = Resources.Absence,
+            SizeMode = PictureBoxSizeMode.StretchImage,
             Tag = "Absence",
             Name = "absence" + Count
         };

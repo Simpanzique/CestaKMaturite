@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Absence" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Absence.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="baseball" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\baseball.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -151,8 +154,59 @@
   <data name="lemka" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\lemka.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Milanka" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Milanka.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Lemka_Attack_Left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Attack_Left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Attack_Right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Attack_Right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Charge_Left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Charge_Left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Charge_Right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Charge_Right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Mouse_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Mouse_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Mouse_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Mouse_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Left_Angry1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Left_Angry1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Left_Angry2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Left_Angry2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Left_Angry3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Left_Angry3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Left_Normal1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Left_Normal1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Left_Normal2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Left_Normal2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Left_Normal3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Left_Normal3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Right_Angry1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Right_Angry1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Right_Angry2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Right_Angry2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Right_Angry3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Right_Angry3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Right_Normal1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Right_Normal1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Right_Normal2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Right_Normal2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lemka_Walk_Right_Normal3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lemka_Walk_Right_Normal3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="nextLevel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\nextLevel.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -186,6 +240,15 @@
   </data>
   <data name="nugget" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\nugget.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Oberhofnerova_Charge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Oberhofnerova_Charge.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Oberhofnerova_Idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Milanka.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Oberhofnerova_Shoot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Oberhofnerova_Shoot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="OProjektil_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OProjektil_5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -256,11 +319,32 @@
   <data name="Stark_Baseball_Smack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Stark_Baseball_Smack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Stark_Chalk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Chalk.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Sysalova" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Sysalova.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Sysalova_Basnicka" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Sysalova_Basnicka.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Sysalova_dying_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sysalova_dying_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sysalova_dying_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sysalova_dying_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sysalova_living_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sysalova_living_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sysalova_living_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sysalova_living_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sysalova_singing_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sysalova_singing_left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Sysalova_singing_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Sysalova_singing_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Tuzka" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Tuzka.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

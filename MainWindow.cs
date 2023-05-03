@@ -127,6 +127,7 @@ public partial class MainWindow : Form {
     Enemy tutorialLemka;
     Enemy tutorialSysalova;
     Enemy tutorialhidden;
+
     private void UpdateMethod_Tick(object sender, EventArgs e) {
         //reset promìnných
         moveLeft = true;
@@ -256,14 +257,14 @@ public partial class MainWindow : Form {
 
         //Doleva a Doprava
         if (!(A && D)) {
-            if ((D || cRight) && moveRight == true && !(Player.Right >= GameScene.Width) && !banInput && !tutBanMovement) {
+            if ((D || cRight) && moveRight && !(Player.Right >= GameScene.Width) && !banInput && !tutBanMovement) {
                 Player.Left += 8; //movementSpeed
                 lastInputLeft = false;
 
                 if (tutorialPhase == 2 && !typing)
                     writeInstructions = true;
             }
-            if ((A || cLeft) && moveLeft == true && !(Player.Left <= 0) && !banInput && !tutBanMovement) {
+            if ((A || cLeft) && moveLeft && !(Player.Left <= 0) && !banInput && !tutBanMovement) {
                 Player.Left -= 8; //movementSpeed
                 lastInputLeft = true;
 
@@ -315,7 +316,7 @@ public partial class MainWindow : Form {
         }
 
         //gravitace
-        if (isJumping || (!isJumping && (GameScene.Height - Player.Bottom >= 0))) {
+        if (true) {
             Player.Top -= jumpSpeed;
 
             if (jumpSpeed > -20)
@@ -376,11 +377,12 @@ public partial class MainWindow : Form {
             }
         }
 
-        if (dashLeft && dashX - Player.Left < 300) {
+        int dashDistance = 300;
+        if (dashLeft && dashX - Player.Left < dashDistance) {
             Player.Left -= 15;
             jumpSpeed = 0;
         }
-        if (dashRight && Player.Left - dashX < 300) {
+        if (dashRight && Player.Left - dashX < dashDistance) {
             Player.Left += 15;
             jumpSpeed = 0;
         }
@@ -550,7 +552,7 @@ public partial class MainWindow : Form {
 
             #region Attack
             //Útok LMB
-            if (((LMB && cursor.Y < Player.Top - 50) || cUp && cX) && !attackLMBcooldown && !tutBanLMB) {
+            if (((LMB && cursor.Y < Player.Top) || cUp && cX) && !attackLMBcooldown && !tutBanLMB) {
                 //utok nahoru
                 HitboxAttackTop = new PictureBox {
                     Left = Player.Left,
@@ -618,14 +620,88 @@ public partial class MainWindow : Form {
             #endregion
 
             foreach (Enemy enemy in enemyArray) {
-                //Sysalova smrt
-                if (enemy.type == "Sysalova" && enemy.dead) {
-                    stopwatch.Reset();
-                    basnicka.Pause();
+
+                //Sysalova
+                if (enemy.type == Enemy.enemyType.Sysalova) {
+
+                    //Sysalova smrt
+                    if (enemy.dead) {
+                        stopwatch.Reset();
+                        basnicka.Pause();
+                    }
+
+                    //Sysalova animace
+
+                    if (Player.Left < enemy.pb.Left)
+                        enemy.facingRight = false;
+                    else
+                        enemy.facingRight = true;
+
+                    if (enemy.hitImage) {
+                        if (enemy.facingRight)
+                            enemy.pb.Image = Resources.Sysalova_dying_right;
+                        else
+                            enemy.pb.Image = Resources.Sysalova_dying_left;
+                    } else {
+                        if (enemy.facingRight) {
+                            if (animationTick % 10 == 0)
+                                enemy.pb.Image = Resources.Sysalova_living_right;
+                            if (animationTick % 20 == 0)
+                                enemy.pb.Image = Resources.Sysalova_singing_right;
+                        } else {
+                            if (animationTick % 10 == 0)
+                                enemy.pb.Image = Resources.Sysalova_living_left;
+                            if (animationTick % 20 == 0)
+                                enemy.pb.Image = Resources.Sysalova_singing_left;
+                        }
+                    }
+                }
+
+                // Lemka
+                if (enemy.type == Enemy.enemyType.Lemka && !enemy.differentAnimation) {
+                    //Lemka animace
+
+                    if (enemy.moveSwitch) {
+                        // normal
+                        if (enemy.facingRight) {
+                            if (animationTick % 20 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Right_Normal1;
+                            if (animationTick % 40 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Right_Normal2;
+                            if (animationTick % 60 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Right_Normal3;
+
+                        } else {
+                            if (animationTick % 20 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Left_Normal1;
+                            if (animationTick % 40 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Left_Normal2;
+                            if (animationTick % 60 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Left_Normal3;
+                        }
+
+                    } else {
+                        // angry
+                        if (enemy.facingRight) {
+                            if (animationTick % 20 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Right_Angry1;
+                            if (animationTick % 40 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Right_Angry2;
+                            if (animationTick % 60 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Right_Angry3;
+                        } else {
+                            if (animationTick % 20 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Left_Angry1;
+                            if (animationTick % 40 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Left_Angry2;
+                            if (animationTick % 60 == 0)
+                                enemy.pb.Image = Resources.Lemka_Walk_Left_Angry3;
+                        }
+                    }
                 }
 
                 #region Lemka
-                if (enemy.type == "Lemka" && enemy.health > 0) {
+                if (enemy.type == Enemy.enemyType.Lemka && enemy.health > 0) {
                     //Lemka movement
                     if (enemy.pb.Top + enemy.pb.Height > Player.Top + Player.Height - 5) {
                         enemy.moveSwitch = false;
@@ -655,6 +731,14 @@ public partial class MainWindow : Form {
                             lemkaCooldown = true;
                             lemkaIndex = 0;
                             Lemka.Interval = 300;
+
+                            if (enemy.facingRight)
+                                enemy.pb.Image = Resources.Lemka_Charge_Right;
+                            else
+                                enemy.pb.Image = Resources.Lemka_Charge_Left;
+
+                            enemy.differentAnimation = true;
+
                             Lemka.Start();
                         }
                     }
@@ -780,7 +864,7 @@ public partial class MainWindow : Form {
                             if (bossEnemy != stark) {
                                 bossEnemy.health = 0;
                                 bossEnemy.CheckHealth(GameScene);
-                                if (bossEnemy.type == "Sysalova") {
+                                if (bossEnemy.type == Enemy.enemyType.Sysalova) {
                                     basnicka.Pause();
                                     stopwatch.Reset();
                                 }
@@ -793,7 +877,7 @@ public partial class MainWindow : Form {
                             if (bossEnemy != stark) {
                                 bossEnemy.health = 0;
                                 bossEnemy.CheckHealth(GameScene);
-                                if (bossEnemy.type == "Sysalova") {
+                                if (bossEnemy.type == Enemy.enemyType.Sysalova) {
                                     basnicka.Pause();
                                     stopwatch.Reset();
                                 }
@@ -881,6 +965,7 @@ public partial class MainWindow : Form {
                             enemy.moveLeft = false;
                             enemy.moveRight = true;
                         }
+                        enemy.facingRight = false;
                     }
                     if (enemy.moveRight) {
                         if (enemy.pb.Left < enemy.xRight)
@@ -889,6 +974,7 @@ public partial class MainWindow : Form {
                             enemy.moveLeft = true;
                             enemy.moveRight = false;
                         }
+                        enemy.facingRight = true;
                     }
                 }
 
@@ -923,7 +1009,7 @@ public partial class MainWindow : Form {
                     foreach (PictureBox terrain in GameScene.Controls.OfType<PictureBox>().Where(x => x.Tag != null)) {
                         if (terrain.Tag.ToString().Contains("Terrain")) {
                             //Stark nièí knížky
-                            if (enemy.type == "Stark" && enemy.projectile.Bounds.IntersectsWith(terrain.Bounds) && terrain.Tag.ToString().Contains("Book")) {
+                            if (enemy.type == Enemy.enemyType.Stark && enemy.projectile.Bounds.IntersectsWith(terrain.Bounds) && terrain.Tag.ToString().Contains("Book")) {
                                 if (terrain == bookLeft.pb)
                                     bookLeftDestroyed = true;
                                 if (terrain == bookRight.pb)
@@ -954,7 +1040,7 @@ public partial class MainWindow : Form {
                             enemy.projectileStop = true;
                         }
                     }
-                    if (enemy.type == "Oberhofnerova" || enemy.type == "Stark") {
+                    if (enemy.type == Enemy.enemyType.Oberhofnerova || enemy.type == Enemy.enemyType.Stark) {
                         //Oberhofnerovy a Starkovo pohyb projektilù
                         if (!enemy.projectileStop && !enemy.projectileParry) {
                             if (enemy.projectileGoRight)
@@ -968,7 +1054,7 @@ public partial class MainWindow : Form {
                                 enemy.projectile.Top -= enemy.projectileSpeedY;
                         }
                     }
-                    if (enemy.type == "Hacek") {
+                    if (enemy.type == Enemy.enemyType.Hacek) {
                         //Háèkovo navádìný støely
                         if ((HitboxAttackLeft != null && HitboxAttackLeft.Bounds.IntersectsWith(enemy.projectile.Bounds))
                             || (HitboxAttackRight != null && HitboxAttackRight.Bounds.IntersectsWith(enemy.projectile.Bounds))
@@ -1019,7 +1105,7 @@ public partial class MainWindow : Form {
                         }
 
                     }
-                    if (enemy.type == "Stark") {
+                    if (enemy.type == Enemy.enemyType.Stark) {
                         //odrážení køídy do Starka
                         if ((HitboxAttackLeft != null && HitboxAttackLeft.Bounds.IntersectsWith(enemy.projectile.Bounds))
                             || (HitboxAttackRight != null && HitboxAttackRight.Bounds.IntersectsWith(enemy.projectile.Bounds))
@@ -1424,7 +1510,8 @@ public partial class MainWindow : Form {
                     Top = lemka.pb.Top + 50,
                     Width = 100,
                     Height = 80,
-                    BackColor = Color.Purple,
+                    Image = Resources.Lemka_Mouse_right,
+                    SizeMode = PictureBoxSizeMode.StretchImage,
                 };
                 GameScene.Controls.Add(HitboxLemkaRight);
             } else {
@@ -1433,11 +1520,18 @@ public partial class MainWindow : Form {
                     Top = lemka.pb.Top + 50,
                     Width = 100,
                     Height = 80,
-                    BackColor = Color.Purple,
+                    Image = Resources.Lemka_Mouse_left,
+                    SizeMode = PictureBoxSizeMode.StretchImage,
                 };
                 GameScene.Controls.Add(HitboxLemkaLeft);
             }
             soundLemka.PlaySound();
+
+            if (lemka.facingRight)
+                lemka.pb.Image = Resources.Lemka_Attack_Right;
+            else
+                lemka.pb.Image = Resources.Lemka_Attack_Left;
+
             Lemka.Interval = 100;
         }
         if (lemkaIndex == 1) {
@@ -1447,6 +1541,7 @@ public partial class MainWindow : Form {
                 DestroyAll(HitboxLemkaRight, GameScene);
             Lemka.Interval = 3000;
             lemka.moving = true;
+            lemka.differentAnimation = false;
         }
         if (lemkaIndex == 2) {
             lemkaCooldown = false;
@@ -1456,7 +1551,7 @@ public partial class MainWindow : Form {
     }
     private void Oberhofnerova_Tick(object sender, EventArgs e) {
         foreach (Enemy enemy in enemyArray) {
-            if (enemy.type == "Oberhofnerova" && enemy.health > 0) {
+            if (enemy.type == Enemy.enemyType.Oberhofnerova && enemy.health > 0) {
                 enemy.ShootProjectile(Player, GameScene);
                 soundProjectile.PlaySound();
             }
@@ -1465,7 +1560,7 @@ public partial class MainWindow : Form {
 
     private void Hacek_Tick(object sender, EventArgs e) {
         foreach (Enemy enemy in enemyArray) {
-            if (enemy.type == "Hacek" && enemy.health > 0) {
+            if (enemy.type == Enemy.enemyType.Hacek && enemy.health > 0) {
                 enemy.ShootProjectile(Player, GameScene);
                 soundProjectile.PlaySound();
             }
@@ -1622,29 +1717,29 @@ public partial class MainWindow : Form {
 
         if (playerSideLeft) {
             switch (random1) {
-                case 1: bossEnemy1 = new(1296, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
-                case 2: bossEnemy1 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
-                case 3: bossEnemy1 = new(1420, 616, 110, 180, Color.Red, LemkaHP, true, LemkaMove, 1420, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
-                case 4: bossEnemy1 = new(1282, 418, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy1; break;
+                case 1: bossEnemy1 = new(1296, 112, 100, 100, Resources.Oberhofnerova_Charge, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, Enemy.enemyType.Oberhofnerova, 2000, GameScene); Oberhofnerova.Start(); break;
+                case 2: bossEnemy1 = new(714, 500, 100, 160, Resources.Sysalova_living_left, SysalovaHP, false, 0, 0, 0, Enemy.enemyType.Sysalova, 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
+                case 3: bossEnemy1 = new(1420, 616, 110, 180, Resources.Lemka_Walk_Right_Normal1, LemkaHP, true, LemkaMove, 1420, LemkaMovementSpeed, Enemy.enemyType.Lemka, 0, GameScene); break;
+                case 4: bossEnemy1 = new(1282, 418, 110, 180, null, HacekHP, false, 0, 0, 0, Enemy.enemyType.Hacek, 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy1; break;
             }
             switch (random2) {
-                case 1: bossEnemy2 = new(1296, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
-                case 2: bossEnemy2 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
-                case 3: bossEnemy2 = new(1420, 616, 110, 180, Color.Red, LemkaHP, true, LemkaMove, 1420, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
-                case 4: bossEnemy2 = new(1282, 418, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy2; break;
+                case 1: bossEnemy2 = new(1296, 112, 100, 100, Resources.Oberhofnerova_Charge, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, Enemy.enemyType.Oberhofnerova, 2000, GameScene); Oberhofnerova.Start(); break;
+                case 2: bossEnemy2 = new(714, 500, 100, 160, Resources.Sysalova_living_left, SysalovaHP, false, 0, 0, 0, Enemy.enemyType.Sysalova, 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
+                case 3: bossEnemy2 = new(1420, 616, 110, 180, Resources.Lemka_Walk_Right_Normal1, LemkaHP, true, LemkaMove, 1420, LemkaMovementSpeed, Enemy.enemyType.Lemka, 0, GameScene); break;
+                case 4: bossEnemy2 = new(1282, 418, 110, 180, null, HacekHP, false, 0, 0, 0, Enemy.enemyType.Hacek, 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy2; break;
             }
         } else {
             switch (random1) {
-                case 1: bossEnemy1 = new(100, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
-                case 2: bossEnemy1 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
-                case 3: bossEnemy1 = new(0, 616, 110, 180, Color.Red, LemkaHP, true, 0, LemkaMove, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
-                case 4: bossEnemy1 = new(122, 419, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy1; break;
+                case 1: bossEnemy1 = new(100, 112, 100, 100, Resources.Oberhofnerova_Charge, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, Enemy.enemyType.Oberhofnerova, 2000, GameScene); Oberhofnerova.Start(); break;
+                case 2: bossEnemy1 = new(714, 500, 100, 160, Resources.Sysalova_living_left, SysalovaHP, false, 0, 0, 0, Enemy.enemyType.Sysalova, 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
+                case 3: bossEnemy1 = new(0, 616, 110, 180, Resources.Lemka_Walk_Right_Normal1, LemkaHP, true, 0, LemkaMove, LemkaMovementSpeed, Enemy.enemyType.Lemka, 0, GameScene); break;
+                case 4: bossEnemy1 = new(122, 419, 110, 180, null, HacekHP, false, 0, 0, 0, Enemy.enemyType.Hacek, 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy1; break;
             }
             switch (random2) {
-                case 1: bossEnemy2 = new(100, 112, 100, 100, Color.Red, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene); Oberhofnerova.Start(); break;
-                case 2: bossEnemy2 = new(714, 500, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
-                case 3: bossEnemy2 = new(0, 616, 110, 180, Color.Red, LemkaHP, true, 0, LemkaMove, LemkaMovementSpeed, "Lemka", 0, GameScene); break;
-                case 4: bossEnemy2 = new(122, 419, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy2; break;
+                case 1: bossEnemy2 = new(100, 112, 100, 100, Resources.Oberhofnerova_Charge, OberhofnerovaHP, true, 15, 1408, OberhofnerovaMovementSpeed, Enemy.enemyType.Oberhofnerova, 2000, GameScene); Oberhofnerova.Start(); break;
+                case 2: bossEnemy2 = new(714, 500, 100, 160, Resources.Sysalova_living_left, SysalovaHP, false, 0, 0, 0, Enemy.enemyType.Sysalova, 0, GameScene); basnicka.Resume(); stopwatch.Restart(); break;
+                case 3: bossEnemy2 = new(0, 616, 110, 180, Resources.Lemka_Walk_Right_Normal1, LemkaHP, true, 0, LemkaMove, LemkaMovementSpeed, Enemy.enemyType.Lemka, 0, GameScene); break;
+                case 4: bossEnemy2 = new(122, 419, 110, 180, null, HacekHP, false, 0, 0, 0, Enemy.enemyType.Hacek, 3000, GameScene); Hacek.Start(); hacekOnBook = bossEnemy2; break;
             }
         }
         enemyArray = new Enemy[] { stark, bossEnemy1, bossEnemy2 };
@@ -1956,12 +2051,12 @@ public partial class MainWindow : Form {
 
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3 };
 
-        tutorialOberhofnerova = new(-100, -100, 100, 100, Color.Red, OberhofnerovaHP, true,
-            15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene);
-        tutorialLemka = new(-200, -200, 110, 180, Color.Red, LemkaHP, false, 1000, 1400, LemkaMovementSpeed, "Lemka", 0, GameScene);
-        tutorialSysalova = new(-200, -200, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene);
-        tutorialHacek = new(-200, -200, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene);
-        tutorialhidden = new(-100, -100, 20, 20, Color.Red, 20, false, 0, 0, 0, "secret", 0, GameScene);
+        tutorialOberhofnerova = new(-100, -100, 100, 100, Resources.Oberhofnerova_Charge, OberhofnerovaHP, true,
+            15, 1408, OberhofnerovaMovementSpeed, Enemy.enemyType.Oberhofnerova, 2000, GameScene);
+        tutorialLemka = new(-200, -200, 110, 180, Resources.Lemka_Walk_Right_Normal1, LemkaHP, false, 1000, 1400, LemkaMovementSpeed, Enemy.enemyType.Lemka, 0, GameScene);
+        tutorialSysalova = new(-200, -200, 100, 160, Resources.Sysalova_living_left, SysalovaHP, false, 0, 0, 0, Enemy.enemyType.Sysalova, 0, GameScene);
+        tutorialHacek = new(-200, -200, 110, 180, null, HacekHP, false, 0, 0, 0, Enemy.enemyType.Hacek, 3000, GameScene);
+        tutorialhidden = new(-100, -100, 20, 20, null, 20, false, 0, 0, 0, Enemy.enemyType.Secret, 0, GameScene);
 
         enemyArray = new Enemy[] { tutorialHacek, tutorialhidden, tutorialLemka, tutorialOberhofnerova, tutorialSysalova };
 
@@ -1983,13 +2078,13 @@ public partial class MainWindow : Form {
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3, terrain4, terrain5, terrain6 };
 
 
-        Enemy enemy1 = new(1296, 12, 100, 100, Color.Red, OberhofnerovaHP, true,
-            15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene);
-        Enemy enemy2 = new(1000, 645, 110, 180, Color.Red, LemkaHP, true, 400, 1150, LemkaMovementSpeed, "Lemka", 0, GameScene);
+        Enemy enemy1 = new(1296, 12, 100, 100, Resources.Oberhofnerova_Charge, OberhofnerovaHP, true,
+            15, 1408, OberhofnerovaMovementSpeed, Enemy.enemyType.Oberhofnerova, 2000, GameScene);
+        Enemy enemy2 = new(1000, 645, 110, 180, Resources.Lemka_Walk_Right_Normal1, LemkaHP, true, 400, 1150, LemkaMovementSpeed, Enemy.enemyType.Lemka, 0, GameScene);
 
         enemyArray = new Enemy[] { enemy1, enemy2 };
 
-        enemy1.pb.Image = Resources.Milanka;
+        enemy1.pb.Image = Resources.Oberhofnerova_Idle;
         enemy1.pb.BackColor = Color.Transparent;
         Oberhofnerova.Interval = enemy1.projectileCooldown;
         Oberhofnerova.Start();
@@ -2010,14 +2105,14 @@ public partial class MainWindow : Form {
 
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3, terrain4, terrain5, terrain6, terrain7 };
 
-        Enemy enemy1 = new(1296, 12, 100, 100, Color.Red, OberhofnerovaHP, true,
-            15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 3000, GameScene);
-        Enemy enemy2 = new(1342, 499, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene);
-        Enemy enemy3 = new(830, 330, 110, 180, Color.Red, LemkaHP, true, 460, 940, LemkaMovementSpeed, "Lemka", 0, GameScene);
+        Enemy enemy1 = new(1296, 12, 100, 100, Resources.Oberhofnerova_Charge, OberhofnerovaHP, true,
+            15, 1408, OberhofnerovaMovementSpeed, Enemy.enemyType.Oberhofnerova, 3000, GameScene);
+        Enemy enemy2 = new(1342, 499, 100, 160, Resources.Sysalova_living_left, SysalovaHP, false, 0, 0, 0, Enemy.enemyType.Sysalova, 0, GameScene);
+        Enemy enemy3 = new(830, 330, 110, 180, Resources.Lemka_Walk_Right_Normal1, LemkaHP, true, 460, 940, LemkaMovementSpeed, Enemy.enemyType.Lemka, 0, GameScene);
 
         enemyArray = new Enemy[] { enemy1, enemy2, enemy3 };
 
-        Absence absence1 = new(740, 720, Color.Purple, 2000, "Y", false, false, 720, 550, 8);
+        Absence absence1 = new(740, 720, 2000, "Y", false, false, 720, 550, 8);
 
         absenceArray = new Absence[] { absence1 };
 
@@ -2047,13 +2142,13 @@ public partial class MainWindow : Form {
 
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3, terrain4, terrain5, terrain6 };
 
-        Enemy enemy1 = new(686, 372, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene);
-        Enemy enemy2 = new(1353, 460, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene);
+        Enemy enemy1 = new(686, 372, 100, 160, Resources.Sysalova_living_left, SysalovaHP, false, 0, 0, 0, Enemy.enemyType.Sysalova, 0, GameScene);
+        Enemy enemy2 = new(1353, 460, 110, 180, null, HacekHP, false, 0, 0, 0, Enemy.enemyType.Hacek, 3000, GameScene);
 
         enemyArray = new Enemy[] { enemy1, enemy2 };
 
-        Absence absence1 = new(576, 121, Color.Purple, 1000, "Y", false, true, 121, 12, 8);
-        Absence absence2 = new(878, 12, Color.Purple, 1000, "Y", true, true, 12, 121, 8);
+        Absence absence1 = new(576, 121, 1000, "Y", false, true, 121, 12, 8);
+        Absence absence2 = new(878, 12, 1000, "Y", true, true, 12, 121, 8);
 
         absenceArray = new Absence[] { absence1, absence2 };
 
@@ -2092,16 +2187,16 @@ public partial class MainWindow : Form {
 
         terrainArray = new Terrain[] { terrain1, terrain2, terrain3, terrain4, terrain5, terrain6, terrain7 };
 
-        Enemy enemy1 = new(132, 120, 100, 160, Color.Red, SysalovaHP, false, 0, 0, 0, "Sysalova", 0, GameScene);
-        Enemy enemy2 = new(1323, 239, 110, 180, Color.Red, HacekHP, false, 0, 0, 0, "Hacek", 3000, GameScene);
-        Enemy enemy3 = new(1296, 12, 100, 100, Color.Red, OberhofnerovaHP, true,
-            15, 1408, OberhofnerovaMovementSpeed, "Oberhofnerova", 2000, GameScene);
-        Enemy enemy4 = new(1066, 645, 110, 180, Color.Red, LemkaHP, true, 548, 1410, LemkaMovementSpeed, "Lemka", 0, GameScene);
+        Enemy enemy1 = new(132, 120, 100, 160, Resources.Sysalova_living_left, SysalovaHP, false, 0, 0, 0, Enemy.enemyType.Sysalova, 0, GameScene);
+        Enemy enemy2 = new(1323, 239, 110, 180, null, HacekHP, false, 0, 0, 0, Enemy.enemyType.Hacek, 3000, GameScene);
+        Enemy enemy3 = new(1296, 12, 100, 100, Resources.Oberhofnerova_Charge, OberhofnerovaHP, true,
+            15, 1408, OberhofnerovaMovementSpeed, Enemy.enemyType.Oberhofnerova, 2000, GameScene);
+        Enemy enemy4 = new(1066, 645, 110, 180, Resources.Lemka_Walk_Right_Normal1, LemkaHP, true, 548, 1410, LemkaMovementSpeed, Enemy.enemyType.Lemka, 0, GameScene);
 
         enemyArray = new Enemy[] { enemy1, enemy2, enemy3, enemy4 };
 
-        Absence absence1 = new(934, 198, Color.Purple, 1000, "Y", true, true, 198, 449, 8);
-        Absence absence2 = new(1111, 449, Color.Purple, 1000, "Y", false, true, 449, 198, 8);
+        Absence absence1 = new(934, 198, 1000, "Y", true, true, 198, 449, 8);
+        Absence absence2 = new(1111, 449, 1000, "Y", false, true, 449, 198, 8);
 
         absenceArray = new Absence[] { absence1, absence2 };
 
@@ -2142,7 +2237,7 @@ public partial class MainWindow : Form {
 
         terrainArray = new Terrain[] { spring, bookLeft, terrain3, terrain4, bookRight, terrain6, terrain7, terrain8 };
 
-        stark = new(1185, 175, 335, 650, Color.Red, StarkHP, true, 0, 1185, StarkMovementSpeed, "Stark", 5000, GameScene);
+        stark = new(1185, 175, 335, 650, Resources.Stark_Baseball_Idle, StarkHP, true, 0, 1185, StarkMovementSpeed, Enemy.enemyType.Stark, 5000, GameScene);
 
         enemyArray = new Enemy[] { stark };
 
@@ -2271,10 +2366,6 @@ public partial class MainWindow : Form {
                     stark.health -= 2;
                     stark.CheckHealth(GameScene);
                 }
-            }
-            if (e.KeyCode == Keys.Oemtilde && Pause.Enabled && lbNazev.Text == "Pauza") {
-                panelCheat.Enabled = !panelCheat.Enabled;
-                panelCheat.Visible = !panelCheat.Visible;
             }
         } else if (e.KeyCode == Keys.R)
             FullReset();
@@ -2425,20 +2516,5 @@ public partial class MainWindow : Form {
         btContinue.Enabled = false;
         InstrukceTimer.Start();
         soundSelect.PlaySound();
-    }
-
-    private void btCheat_Click(object sender, EventArgs e) {
-        string code = tbCheat.Text;
-
-        switch (code) {
-            case "jsemnoob":
-                cheatHealth = true;
-                tbCheat.Text = "Kód aktivován!";
-                break;
-            default:
-                tbCheat.Text = "Neplatný kód!";
-                break;
-        }
-        this.Focus();
     }
 }

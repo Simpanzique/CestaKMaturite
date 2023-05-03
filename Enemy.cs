@@ -1,4 +1,5 @@
 ﻿using Petr_RP_CestaKMaturite.Properties;
+using System.Drawing;
 
 namespace Petr_RP_CestaKMaturite;
 
@@ -19,7 +20,17 @@ internal class Enemy {
     public int xLeft;
     public int xRight;
     public int movementSpeed;
-    public string type;
+    public enum enemyType{
+        Stark,
+        Oberhofnerova,
+        Hacek,
+        Lemka,
+        Sysalova,
+        Secret,
+    };
+
+    public enemyType type;
+
     public PictureBox projectile;
     public bool projectileStop;
     public int projectileCooldown;
@@ -33,10 +44,17 @@ internal class Enemy {
     public bool projectileUp;
     public bool projectileBirdFacingRight;
     public Point player;
+    public bool hitImage = false;
+    public bool facingRight = true;
+    public bool differentAnimation = false;
 
-    public Enemy(int positionX, int positionY, int width, int height, Color color,
+    private System.Windows.Forms.Timer hitTimer;
+    private System.Windows.Forms.Timer oberAnim;
+    private int oberAnimIndex;
+
+    public Enemy(int positionX, int positionY, int width, int height, Image image,
         int _health, bool _moving, int _xLeft, int _xRight, int _movementSpeed,
-        string _type, int _projectileCooldown, Panel scene) {
+        enemyType _type, int _projectileCooldown, Panel scene) {
         //X,Y,Width,Height,Color,HP,Gravitation,Moving
         //color premenit na img
         projectileCooldown = _projectileCooldown;
@@ -51,19 +69,23 @@ internal class Enemy {
             Top = positionY,
             Width = width,
             Height = height,
-            BackColor = color,
             Tag = "Enemy",
-            Name = "enemy" + Count
+            Name = "enemy" + Count,
+            SizeMode = PictureBoxSizeMode.StretchImage
         };
-        scene.Controls.Add(pb);
-        if (type == "Oberhofnerova")
-            pb.BringToFront();
-        Count++;
 
-        if (type == "Stark") {
-            pb.Image = Resources.Stark_Baseball_Idle;
-            pb.BackColor = Color.Transparent;
+        if (image == null) {
+            pb.BackColor = Color.Red;
+        } else {
+            pb.Image = image;
         }
+
+        scene.Controls.Add(pb);
+
+        if (type == enemyType.Oberhofnerova)
+            pb.BringToFront();
+
+        Count++;
     }
 
     public void ShootProjectile(PictureBox Player, Panel panel) {
@@ -78,9 +100,10 @@ internal class Enemy {
             Height = 30
         };
 
-        if (type == "Oberhofnerova" || type == "Stark") {
-            if (type == "Oberhofnerova") {
-                //random co hodi
+        if (type == enemyType.Oberhofnerova || type == enemyType.Stark) {
+            if (type == enemyType.Oberhofnerova) {
+                
+                //random co hodi projektil
                 switch (Random.Shared.Next(0, 8)) {
                     case 0: projectile.Image = Resources.OProjektil_5; break;
                     case 1: projectile.Image = Resources.OProjektil_binder; break;
@@ -97,9 +120,22 @@ internal class Enemy {
                 projectile.Top = pb.Top + 45;
                 projectile.SetBounds(pb.Left + 45, pb.Top + 45, 30, 30);
                 ProjectileCountO++;
+
+                //animace jeji
+
+                pb.Image = Resources.Oberhofnerova_Shoot;
+
+                oberAnimIndex = 0;
+                oberAnim = new();
+                oberAnim.Interval = 500;
+                oberAnim.Tick += OberAnim_Tick;
+                oberAnim.Start();
+
+
             } else //Stark
               {
-                projectile.BackColor = Color.Yellow;
+                projectile.Image = Resources.Stark_Chalk;
+                projectile.SizeMode = PictureBoxSizeMode.StretchImage;
                 projectile.Name = "projectileS" + ProjectileCountS;
                 projectile.Left = pb.Left + 40;
                 projectile.Top = pb.Top + 60;
@@ -128,7 +164,7 @@ internal class Enemy {
             else
                 projectileGoRight = true;
         }
-        if (type == "Hacek") {
+        if (type == enemyType.Hacek) {
             projectile.Name = "projectileH" + ProjectileCountH;
             projectile.Left = pb.Left + 40;
             projectile.Top = pb.Top + 75;
@@ -140,6 +176,18 @@ internal class Enemy {
 
         panel.Controls.Add(projectile);
         projectile.BringToFront();
+    }
+
+    private void OberAnim_Tick(object? sender, EventArgs e) {
+        if (oberAnimIndex == 0) {
+            pb.Image = Resources.Oberhofnerova_Idle;
+            oberAnim.Interval = projectileCooldown / 2;
+        }else if (oberAnimIndex == 1) {
+            pb.Image = Resources.Oberhofnerova_Charge;
+            oberAnim.Stop();
+            oberAnim.Dispose();
+        }
+        oberAnimIndex++;
     }
 
     public void CheckHealth(Panel panel) {
@@ -157,6 +205,27 @@ internal class Enemy {
             pb.Bounds = Rectangle.Empty;
             panel.Controls.Remove(pb);
             pb.Dispose();
+        } else {
+            
+            // Obrazek hitu
+            hitImage = true;
+
+            if (hitTimer != null) {
+                hitTimer.Stop();
+                hitTimer.Dispose();
+            }
+
+            // Timer pro obnoveni normalnich obrazku
+            hitTimer = new();
+            hitTimer.Interval = 1000;
+            hitTimer.Tick += HitTimer_Tick;
+            hitTimer.Start();
         }
+    }
+
+    private void HitTimer_Tick(object? sender, EventArgs e) {
+        hitImage = false;
+        hitTimer.Stop();
+        hitTimer.Dispose();
     }
 }

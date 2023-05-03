@@ -1,7 +1,5 @@
-﻿namespace Petr_RP_CestaKMaturite
-{
-    partial class MainWindow
-    {
+﻿namespace Petr_RP_CestaKMaturite {
+    partial class MainWindow {
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -11,10 +9,8 @@
         ///  Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -26,8 +22,7 @@
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             GameScene = new Panel();
@@ -46,10 +41,6 @@
             lbStats = new Label();
             Player = new PictureBox();
             Pause = new Panel();
-            panelCheat = new Panel();
-            btCheat = new Button();
-            lbCheat = new Label();
-            tbCheat = new TextBox();
             btResetProgress = new Button();
             Sound = new PictureBox();
             panelPauza = new Panel();
@@ -127,7 +118,6 @@
             ((System.ComponentModel.ISupportInitialize)health1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Player).BeginInit();
             Pause.SuspendLayout();
-            panelCheat.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)Sound).BeginInit();
             panelPauza.SuspendLayout();
             Menu.SuspendLayout();
@@ -303,7 +293,6 @@
             // Pause
             // 
             Pause.BackColor = SystemColors.ActiveCaption;
-            Pause.Controls.Add(panelCheat);
             Pause.Controls.Add(btResetProgress);
             Pause.Controls.Add(Sound);
             Pause.Controls.Add(panelPauza);
@@ -331,45 +320,6 @@
             Pause.Size = new Size(1520, 825);
             Pause.TabIndex = 4;
             Pause.Visible = false;
-            // 
-            // panelCheat
-            // 
-            panelCheat.Controls.Add(btCheat);
-            panelCheat.Controls.Add(lbCheat);
-            panelCheat.Controls.Add(tbCheat);
-            panelCheat.Enabled = false;
-            panelCheat.Location = new Point(1175, 781);
-            panelCheat.Name = "panelCheat";
-            panelCheat.Size = new Size(342, 35);
-            panelCheat.TabIndex = 27;
-            panelCheat.Visible = false;
-            // 
-            // btCheat
-            // 
-            btCheat.Location = new Point(288, 8);
-            btCheat.Name = "btCheat";
-            btCheat.Size = new Size(42, 23);
-            btCheat.TabIndex = 26;
-            btCheat.TabStop = false;
-            btCheat.Text = "OK";
-            btCheat.UseVisualStyleBackColor = true;
-            btCheat.Click += btCheat_Click;
-            // 
-            // lbCheat
-            // 
-            lbCheat.AutoSize = true;
-            lbCheat.Location = new Point(6, 12);
-            lbCheat.Name = "lbCheat";
-            lbCheat.Size = new Size(111, 15);
-            lbCheat.TabIndex = 25;
-            lbCheat.Text = "Zadejte CheatCode:";
-            // 
-            // tbCheat
-            // 
-            tbCheat.Location = new Point(123, 9);
-            tbCheat.Name = "tbCheat";
-            tbCheat.Size = new Size(159, 23);
-            tbCheat.TabIndex = 24;
             // 
             // btResetProgress
             // 
@@ -696,7 +646,7 @@
             label32.Name = "label32";
             label32.Size = new Size(37, 15);
             label32.TabIndex = 11;
-            label32.Text = "v0.4.0";
+            label32.Text = "v0.5.0";
             // 
             // btTutorial
             // 
@@ -1116,8 +1066,6 @@
             ((System.ComponentModel.ISupportInitialize)Player).EndInit();
             Pause.ResumeLayout(false);
             Pause.PerformLayout();
-            panelCheat.ResumeLayout(false);
-            panelCheat.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)Sound).EndInit();
             panelPauza.ResumeLayout(false);
             panelPauza.PerformLayout();
@@ -1215,10 +1163,6 @@
         private System.Windows.Forms.Timer InstrukceTimer;
         private Label lbTutorial;
         private Label label32;
-        private Panel panelCheat;
-        private Button btCheat;
-        private Label lbCheat;
-        private TextBox tbCheat;
         private System.Windows.Forms.Timer Controller;
     }
 }

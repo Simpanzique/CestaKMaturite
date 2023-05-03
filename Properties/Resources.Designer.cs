@@ -61,6 +61,16 @@ namespace Petr_RP_CestaKMaturite.Properties {
         }
         
         /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Absence {
+            get {
+                object obj = ResourceManager.GetObject("Absence", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream baseball {
@@ -163,9 +173,179 @@ namespace Petr_RP_CestaKMaturite.Properties {
         /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Milanka {
+        internal static System.Drawing.Bitmap Lemka_Attack_Left {
             get {
-                object obj = ResourceManager.GetObject("Milanka", resourceCulture);
+                object obj = ResourceManager.GetObject("Lemka_Attack_Left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Attack_Right {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Attack_Right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Charge_Left {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Charge_Left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Charge_Right {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Charge_Right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Mouse_left {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Mouse_left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Mouse_right {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Mouse_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Left_Angry1 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Left_Angry1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Left_Angry2 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Left_Angry2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Left_Angry3 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Left_Angry3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Left_Normal1 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Left_Normal1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Left_Normal2 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Left_Normal2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Left_Normal3 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Left_Normal3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Right_Angry1 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Right_Angry1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Right_Angry2 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Right_Angry2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Right_Angry3 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Right_Angry3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Right_Normal1 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Right_Normal1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Right_Normal2 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Right_Normal2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lemka_Walk_Right_Normal3 {
+            get {
+                object obj = ResourceManager.GetObject("Lemka_Walk_Right_Normal3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -275,6 +455,36 @@ namespace Petr_RP_CestaKMaturite.Properties {
         internal static System.IO.UnmanagedMemoryStream nugget {
             get {
                 return ResourceManager.GetStream("nugget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Oberhofnerova_Charge {
+            get {
+                object obj = ResourceManager.GetObject("Oberhofnerova_Charge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Oberhofnerova_Idle {
+            get {
+                object obj = ResourceManager.GetObject("Oberhofnerova_Idle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Oberhofnerova_Shoot {
+            get {
+                object obj = ResourceManager.GetObject("Oberhofnerova_Shoot", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -503,6 +713,16 @@ namespace Petr_RP_CestaKMaturite.Properties {
         }
         
         /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Chalk {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Chalk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream Sysalova {
@@ -517,6 +737,66 @@ namespace Petr_RP_CestaKMaturite.Properties {
         internal static System.IO.UnmanagedMemoryStream Sysalova_Basnicka {
             get {
                 return ResourceManager.GetStream("Sysalova_Basnicka", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sysalova_dying_left {
+            get {
+                object obj = ResourceManager.GetObject("Sysalova_dying_left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sysalova_dying_right {
+            get {
+                object obj = ResourceManager.GetObject("Sysalova_dying_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sysalova_living_left {
+            get {
+                object obj = ResourceManager.GetObject("Sysalova_living_left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sysalova_living_right {
+            get {
+                object obj = ResourceManager.GetObject("Sysalova_living_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sysalova_singing_left {
+            get {
+                object obj = ResourceManager.GetObject("Sysalova_singing_left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sysalova_singing_right {
+            get {
+                object obj = ResourceManager.GetObject("Sysalova_singing_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
