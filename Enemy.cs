@@ -49,8 +49,9 @@ internal class Enemy {
     public bool differentAnimation = false;
 
     private System.Windows.Forms.Timer hitTimer;
-    private System.Windows.Forms.Timer oberAnim;
-    private int oberAnimIndex;
+    private System.Windows.Forms.Timer shootAnim;
+    private int shootIndex; // Index pro timer
+    public int shootAnimIndex = 1; // 0 - Idle , 1 - Charge, 2- Throw
 
     public Enemy(int positionX, int positionY, int width, int height, Image image,
         int _health, bool _moving, int _xLeft, int _xRight, int _movementSpeed,
@@ -120,18 +121,6 @@ internal class Enemy {
                 projectile.Top = pb.Top + 45;
                 projectile.SetBounds(pb.Left + 45, pb.Top + 45, 30, 30);
                 ProjectileCountO++;
-
-                //animace jeji
-
-                pb.Image = Resources.Oberhofnerova_Shoot;
-
-                oberAnimIndex = 0;
-                oberAnim = new();
-                oberAnim.Interval = 500;
-                oberAnim.Tick += OberAnim_Tick;
-                oberAnim.Start();
-
-
             } else //Stark
               {
                 projectile.Image = Resources.Stark_Chalk;
@@ -174,20 +163,29 @@ internal class Enemy {
             ProjectileCountH++;
         }
 
+        //animace
+        shootAnimIndex = 2;
+
+        shootIndex = 0;
+        shootAnim = new();
+        shootAnim.Interval = 500;
+        shootAnim.Tick += ShootAnim_Tick;
+        shootAnim.Start();
+
         panel.Controls.Add(projectile);
         projectile.BringToFront();
     }
 
-    private void OberAnim_Tick(object? sender, EventArgs e) {
-        if (oberAnimIndex == 0) {
-            pb.Image = Resources.Oberhofnerova_Idle;
-            oberAnim.Interval = projectileCooldown / 2;
-        }else if (oberAnimIndex == 1) {
-            pb.Image = Resources.Oberhofnerova_Charge;
-            oberAnim.Stop();
-            oberAnim.Dispose();
+    private void ShootAnim_Tick(object? sender, EventArgs e) {
+        if (shootIndex == 0) {
+            shootAnimIndex = 0;
+            shootAnim.Interval = projectileCooldown / 2;
+        }else if (shootIndex == 1) {
+            shootAnimIndex = 1;
+            shootAnim.Stop();
+            shootAnim.Dispose();
         }
-        oberAnimIndex++;
+        shootIndex++;
     }
 
     public void CheckHealth(Panel panel) {

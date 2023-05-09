@@ -116,6 +116,66 @@ namespace Petr_RP_CestaKMaturite.Properties {
         }
         
         /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Hacek_Charge_Left {
+            get {
+                object obj = ResourceManager.GetObject("Hacek_Charge_Left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Hacek_Charge_Right {
+            get {
+                object obj = ResourceManager.GetObject("Hacek_Charge_Right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Hacek_Idle_Left {
+            get {
+                object obj = ResourceManager.GetObject("Hacek_Idle_Left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Hacek_Idle_Right {
+            get {
+                object obj = ResourceManager.GetObject("Hacek_Idle_Right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Hacek_Shoot_Left {
+            get {
+                object obj = ResourceManager.GetObject("Hacek_Shoot_Left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Hacek_Shoot_Right {
+            get {
+                object obj = ResourceManager.GetObject("Hacek_Shoot_Right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.IO.UnmanagedMemoryStream podobný System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream hit {
@@ -685,6 +745,16 @@ namespace Petr_RP_CestaKMaturite.Properties {
         /// <summary>
         ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Stark_Baseball_Exhausted {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Baseball_Exhausted", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Stark_Baseball_Idle {
             get {
                 object obj = ResourceManager.GetObject("Stark_Baseball_Idle", resourceCulture);
@@ -718,6 +788,86 @@ namespace Petr_RP_CestaKMaturite.Properties {
         internal static System.Drawing.Bitmap Stark_Chalk {
             get {
                 object obj = ResourceManager.GetObject("Stark_Chalk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Chalk_Charge {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Chalk_Charge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Chalk_Shoot {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Chalk_Shoot", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Dash_Charge_Left {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Dash_Charge_Left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Dash_Charge_Right {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Dash_Charge_Right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Dash_Left {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Dash_Left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Dash_Right {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Dash_Right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Exhausted {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Exhausted", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Vyhledává lokalizovaný prostředek typu System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stark_Walk {
+            get {
+                object obj = ResourceManager.GetObject("Stark_Walk", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
