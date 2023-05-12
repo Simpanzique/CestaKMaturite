@@ -41,6 +41,7 @@
             lbStats = new Label();
             Player = new PictureBox();
             Pause = new Panel();
+            btFindController = new Button();
             btResetProgress = new Button();
             Sound = new PictureBox();
             panelPauza = new Panel();
@@ -91,15 +92,12 @@
             btOptions = new Button();
             label1 = new Label();
             btPlay = new Button();
-            lbPress = new Label();
             lbGameOver = new Label();
             UpdateMethod = new System.Windows.Forms.Timer(components);
             AbilityQ = new System.Windows.Forms.Timer(components);
             Dash = new System.Windows.Forms.Timer(components);
             abilityLMB = new System.Windows.Forms.Timer(components);
             DMGcooldown = new System.Windows.Forms.Timer(components);
-            Absence1 = new System.Windows.Forms.Timer(components);
-            Absence2 = new System.Windows.Forms.Timer(components);
             Oberhofnerova = new System.Windows.Forms.Timer(components);
             Hacek = new System.Windows.Forms.Timer(components);
             NuggetDisappear = new System.Windows.Forms.Timer(components);
@@ -293,6 +291,7 @@
             // Pause
             // 
             Pause.BackColor = SystemColors.ActiveCaption;
+            Pause.Controls.Add(btFindController);
             Pause.Controls.Add(btResetProgress);
             Pause.Controls.Add(Sound);
             Pause.Controls.Add(panelPauza);
@@ -320,6 +319,19 @@
             Pause.Size = new Size(1520, 825);
             Pause.TabIndex = 4;
             Pause.Visible = false;
+            // 
+            // btFindController
+            // 
+            btFindController.BackColor = Color.Silver;
+            btFindController.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            btFindController.Location = new Point(12, 718);
+            btFindController.Name = "btFindController";
+            btFindController.Size = new Size(108, 37);
+            btFindController.TabIndex = 24;
+            btFindController.TabStop = false;
+            btFindController.Text = "Vyhledat ovladače";
+            btFindController.UseVisualStyleBackColor = false;
+            btFindController.Click += btFindController_Click;
             // 
             // btResetProgress
             // 
@@ -354,7 +366,7 @@
             panelPauza.Controls.Add(label15);
             panelPauza.Location = new Point(12, 12);
             panelPauza.Name = "panelPauza";
-            panelPauza.Size = new Size(419, 100);
+            panelPauza.Size = new Size(523, 100);
             panelPauza.TabIndex = 21;
             // 
             // label17
@@ -392,9 +404,9 @@
             label15.ForeColor = Color.White;
             label15.Location = new Point(292, 26);
             label15.Name = "label15";
-            label15.Size = new Size(103, 37);
+            label15.Size = new Size(228, 37);
             label15.TabIndex = 15;
-            label15.Text = "Escape";
+            label15.Text = "Escape (options)";
             // 
             // label18
             // 
@@ -405,9 +417,9 @@
             label18.ForeColor = Color.White;
             label18.Location = new Point(869, 510);
             label18.Name = "label18";
-            label18.Size = new Size(31, 37);
+            label18.Size = new Size(91, 37);
             label18.TabIndex = 20;
-            label18.Text = "E";
+            label18.Text = "E (RT)";
             // 
             // label19
             // 
@@ -457,9 +469,9 @@
             label12.ForeColor = Color.White;
             label12.Location = new Point(869, 440);
             label12.Name = "label12";
-            label12.Size = new Size(37, 37);
+            label12.Size = new Size(81, 37);
             label12.TabIndex = 12;
-            label12.Text = "Q";
+            label12.Text = "Q (B)";
             // 
             // label13
             // 
@@ -496,9 +508,9 @@
             label9.ForeColor = Color.White;
             label9.Location = new Point(869, 377);
             label9.Name = "label9";
-            label9.Size = new Size(71, 37);
+            label9.Size = new Size(116, 37);
             label9.TabIndex = 9;
-            label9.Text = "LTM";
+            label9.Text = "LTM (X)";
             // 
             // label10
             // 
@@ -535,9 +547,9 @@
             label6.ForeColor = Color.White;
             label6.Location = new Point(869, 318);
             label6.Name = "label6";
-            label6.Size = new Size(136, 37);
+            label6.Size = new Size(182, 37);
             label6.TabIndex = 6;
-            label6.Text = "Mezerník";
+            label6.Text = "Mezerník (A)";
             // 
             // label7
             // 
@@ -574,9 +586,9 @@
             label5.ForeColor = Color.White;
             label5.Location = new Point(869, 257);
             label5.Name = "label5";
-            label5.Size = new Size(64, 37);
+            label5.Size = new Size(193, 37);
             label5.TabIndex = 3;
-            label5.Text = "A,D";
+            label5.Text = "A,D (joystick)";
             // 
             // label4
             // 
@@ -646,7 +658,7 @@
             label32.Name = "label32";
             label32.Size = new Size(37, 15);
             label32.TabIndex = 11;
-            label32.Text = "v0.5.0";
+            label32.Text = "v0.6.0";
             // 
             // btTutorial
             // 
@@ -940,29 +952,18 @@
             btPlay.UseVisualStyleBackColor = false;
             btPlay.Click += btPlay_Click;
             // 
-            // lbPress
-            // 
-            lbPress.AutoSize = true;
-            lbPress.BackColor = Color.Transparent;
-            lbPress.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point);
-            lbPress.ForeColor = Color.Red;
-            lbPress.Location = new Point(586, -200);
-            lbPress.Name = "lbPress";
-            lbPress.Size = new Size(580, 108);
-            lbPress.TabIndex = 16;
-            lbPress.Text = "Zkus to za rok\r\n       nebo zmáčkni R (options)";
-            // 
             // lbGameOver
             // 
-            lbGameOver.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lbGameOver.AutoSize = true;
-            lbGameOver.BackColor = Color.Transparent;
-            lbGameOver.Font = new Font("Segoe UI", 50F, FontStyle.Bold, GraphicsUnit.Point);
-            lbGameOver.Location = new Point(450, -200);
+            lbGameOver.BackColor = Color.Black;
+            lbGameOver.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point);
+            lbGameOver.ForeColor = Color.White;
+            lbGameOver.Location = new Point(517, -300);
             lbGameOver.Name = "lbGameOver";
-            lbGameOver.Size = new Size(619, 89);
-            lbGameOver.TabIndex = 15;
-            lbGameOver.Text = "Neodmaturoval si!";
+            lbGameOver.Size = new Size(503, 216);
+            lbGameOver.TabIndex = 16;
+            lbGameOver.Text = "Zemřel jsi!\r\n\r\nZkus to za rok\r\nnebo zmáčkni R (options)";
+            lbGameOver.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // UpdateMethod
             // 
@@ -988,14 +989,6 @@
             // 
             DMGcooldown.Interval = 2000;
             DMGcooldown.Tick += DMGcooldown_Tick;
-            // 
-            // Absence1
-            // 
-            Absence1.Tick += Absence1_Tick;
-            // 
-            // Absence2
-            // 
-            Absence2.Tick += Absence2_Tick;
             // 
             // Oberhofnerova
             // 
@@ -1035,10 +1028,8 @@
             // 
             // MainWindow
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.Inherit;
             ClientSize = new Size(1520, 825);
-            Controls.Add(lbPress);
             Controls.Add(lbGameOver);
             Controls.Add(Menu);
             Controls.Add(Pause);
@@ -1118,10 +1109,7 @@
         private System.Windows.Forms.Timer abilityLMB;
         private System.Windows.Forms.Timer DMGcooldown;
         private Label lbGameOver;
-        private Label lbPress;
         private Label lbPozastaveno;
-        private System.Windows.Forms.Timer Absence1;
-        private System.Windows.Forms.Timer Absence2;
         private System.Windows.Forms.Timer Oberhofnerova;
         private System.Windows.Forms.Timer Hacek;
         private System.Windows.Forms.Timer NuggetDisappear;
@@ -1164,5 +1152,6 @@
         private Label lbTutorial;
         private Label label32;
         private System.Windows.Forms.Timer Controller;
+        private Button btFindController;
     }
 }

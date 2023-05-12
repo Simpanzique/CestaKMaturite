@@ -20,7 +20,9 @@ internal class Absence {
     public int indexDirection = 0;
     public int movementSpeed;
     public string type;
-    static int Count = 1;
+
+    public System.Windows.Forms.Timer absenceTimer = new();
+    private int index = 0;
 
 
     public Absence(int _positionX, int _positionY, int _cooldown, string _type,
@@ -43,10 +45,53 @@ internal class Absence {
             Height = 30,
             Image = Resources.Absence,
             SizeMode = PictureBoxSizeMode.StretchImage,
-            Tag = "Absence",
-            Name = "absence" + Count
         };
 
-        Count++;
+        absenceTimer.Interval = 1;
+        absenceTimer.Tick += AbsenceTimer_Tick;
+        absenceTimer.Start();
+    }
+
+    private void AbsenceTimer_Tick(object? sender, EventArgs e) {
+        if (index == 0) {
+            if (changeDirection) {
+                if (indexDirection != 0) {
+                    if (type == "X") {
+                        if (positionX == from)
+                            positionX = to;
+                        else
+                            positionX = from;
+                    }
+                    if (type == "Y") {
+                        if (positionY == from)
+                            positionY = to;
+                        else
+                            positionY = from;
+                    }
+
+                    plusCoordinates = !plusCoordinates;
+
+                    help = from;
+                    from = to;
+                    to = help;
+
+                    boundsX = positionX;
+                    boundsY = positionY;
+                }
+
+                indexDirection++;
+            }
+
+            spawned = false;
+            spawn = true;
+            absenceTimer.Interval = cooldown;
+
+            index++;
+        }else if (index == 1) {
+            spawn = false;
+            absenceTimer.Interval = 1;
+
+            index = 0;
+        }
     }
 }

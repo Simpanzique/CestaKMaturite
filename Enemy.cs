@@ -5,11 +5,6 @@ namespace Petr_RP_CestaKMaturite;
 
 internal class Enemy {
 
-    public static int Count = 1;
-    public static int ProjectileCountO = 1;
-    public static int ProjectileCountH = 1;
-    public static int ProjectileCountS = 1;
-
     public bool dead;
     public int health;
     public PictureBox pb;
@@ -71,7 +66,6 @@ internal class Enemy {
             Width = width,
             Height = height,
             Tag = "Enemy",
-            Name = "enemy" + Count,
             SizeMode = PictureBoxSizeMode.StretchImage
         };
 
@@ -83,10 +77,8 @@ internal class Enemy {
 
         scene.Controls.Add(pb);
 
-        if (type == enemyType.Oberhofnerova)
+        if (type != enemyType.Stark)
             pb.BringToFront();
-
-        Count++;
     }
 
     public void ShootProjectile(PictureBox Player, Panel panel) {
@@ -116,22 +108,18 @@ internal class Enemy {
                     case 7: projectile.Image = Resources.OProjektil_sin; break;
                 }
 
-                projectile.Name = "projectileO" + ProjectileCountO;
                 projectile.Left = pb.Left + 45;
                 projectile.Top = pb.Top + 45;
                 projectile.SetBounds(pb.Left + 45, pb.Top + 45, 30, 30);
-                ProjectileCountO++;
             } else //Stark
               {
                 projectile.Image = Resources.Stark_Chalk;
                 projectile.SizeMode = PictureBoxSizeMode.StretchImage;
-                projectile.Name = "projectileS" + ProjectileCountS;
                 projectile.Left = pb.Left + 40;
                 projectile.Top = pb.Top + 60;
                 projectile.Width = 60;
                 projectile.Height = 80;
                 projectile.SetBounds(pb.Left + 40, pb.Top + 60, 60, 80);
-                ProjectileCountS++;
             }
 
             player = new Point(Player.Left + Player.Width / 2, Player.Top + Player.Height / 2);
@@ -153,8 +141,8 @@ internal class Enemy {
             }
             catch
             {
-                projectileSpeedX = 2;
-                projectileSpeedY = 2;
+                projectileSpeedX = 1;
+                projectileSpeedY = 1;
             }
 
 
@@ -164,13 +152,10 @@ internal class Enemy {
             projectileGoRight = projectileX < player.X;
         }
         if (type == enemyType.Hacek) {
-            projectile.Name = "projectileH" + ProjectileCountH;
             projectile.Left = pb.Left + 40;
             projectile.Top = pb.Top + 75;
             projectile.SetBounds(pb.Left + 40, pb.Top + 75, 30, 30);
             projectileStop = false;
-
-            ProjectileCountH++;
         }
 
         //animace
