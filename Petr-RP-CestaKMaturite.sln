@@ -5,8 +5,6 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Petr-RP-CestaKMaturite", "Petr-RP-CestaKMaturite.csproj", "{F00B3C50-06A5-45E7-AF4A-1B77030FA75E}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Cesta K Maturitě", "..\Cesta K Maturitě\Cesta K Maturitě.vdproj", "{6A12D16A-B46A-4A89-9B70-E80317F99CB7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,8 +15,6 @@ Global
 		{F00B3C50-06A5-45E7-AF4A-1B77030FA75E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F00B3C50-06A5-45E7-AF4A-1B77030FA75E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F00B3C50-06A5-45E7-AF4A-1B77030FA75E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A12D16A-B46A-4A89-9B70-E80317F99CB7}.Debug|Any CPU.ActiveCfg = Release
-		{6A12D16A-B46A-4A89-9B70-E80317F99CB7}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
