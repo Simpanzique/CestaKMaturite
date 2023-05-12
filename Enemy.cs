@@ -135,23 +135,25 @@ internal class Enemy {
             }
 
             player = new Point(Player.Left + Player.Width / 2, Player.Top + Player.Height / 2);
-            if (player.Y - projectile.Bottom > 300) {
-                projectileSpeedX = Math.Abs(player.X - projectile.Left) / 100;
-                projectileSpeedY = (player.Y - projectile.Bottom) / 100;
-            } else {
-                projectileSpeedX = Math.Abs(player.X - projectile.Left) / 50;
-                projectileSpeedY = (player.Y - projectile.Bottom) / 50;
-            }
-            projectileStop = false;
-            if (projectile.Bottom > player.Y)
-                projectileGoDown = false;
-            else
-                projectileGoDown = true;
 
-            if (projectile.Left > player.X)
-                projectileGoRight = false;
-            else
-                projectileGoRight = true;
+            int projectileSpeed = 9;
+
+            int projectileX = projectile.Left + projectile.Width / 2;
+            int projectileY = projectile.Top + projectile.Height / 2;
+
+            double uX = Math.Abs(player.X - projectileX);
+            double uY = Math.Abs(player.Y - projectileY);
+
+            double u = Math.Sqrt(Math.Pow(uX, 2) + Math.Pow(uY, 2));
+
+            projectileSpeedX = Convert.ToInt32(uX / u * projectileSpeed);
+            projectileSpeedY = Convert.ToInt32(uY / u * projectileSpeed);
+
+
+            projectileStop = false;
+
+            projectileGoDown = projectileY < player.Y;
+            projectileGoRight = projectileX < player.X;
         }
         if (type == enemyType.Hacek) {
             projectile.Name = "projectileH" + ProjectileCountH;

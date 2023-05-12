@@ -3,6 +3,7 @@ using Petr_RP_CestaKMaturite.Properties;
 using SharpDX.DirectInput;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Numerics;
 using XInputDotNetPure;
 using ButtonState = XInputDotNetPure.ButtonState;
 
@@ -1121,27 +1122,52 @@ public partial class MainWindow : Form {
                             enemy.projectileStop = true;
                         }
                         if (!enemy.projectileStop) {
-                            if (Math.Abs(Player.Left - enemy.projectile.Left) > 400) {
-                                enemy.projectileSpeedX = Math.Abs(Player.Left + Player.Width / 2 - enemy.projectile.Left + 15) / 80;
-                                enemy.projectileSpeedY = Math.Abs(Player.Top + Player.Height / 2 - enemy.projectile.Top + 15) / 50;
-                            } else {
-                                enemy.projectileSpeedX = (Math.Abs(Player.Left + Player.Width / 2 - enemy.projectile.Left + 15) / 80) + 4;
-                                enemy.projectileSpeedY = (Math.Abs(Player.Top + Player.Height / 2 - enemy.projectile.Top + 15) / 50) + 4;
-                            }
+                            //if (Math.Abs(Player.Left - enemy.projectile.Left) > 400) {
+                            //    enemy.projectileSpeedX = Math.Abs(Player.Left + Player.Width / 2 - enemy.projectile.Left + 15) / 80;
+                            //    enemy.projectileSpeedY = Math.Abs(Player.Top + Player.Height / 2 - enemy.projectile.Top + 15) / 50;
+                            //} else {
+                            //    enemy.projectileSpeedX = (Math.Abs(Player.Left + Player.Width / 2 - enemy.projectile.Left + 15) / 80) + 4;
+                            //    enemy.projectileSpeedY = (Math.Abs(Player.Top + Player.Height / 2 - enemy.projectile.Top + 15) / 50) + 4;
+                            //}
 
-                            if (enemy.projectile.Left + 15 > Player.Left + Player.Width / 2) {
-                                enemy.projectile.Left -= enemy.projectileSpeedX;
-                                enemy.projectileBirdFacingRight = false;
-                            }
-                            if (enemy.projectile.Left + 15 < Player.Left + Player.Width / 2) {
-                                enemy.projectile.Left += enemy.projectileSpeedX;
-                                enemy.projectileBirdFacingRight = true;
-                            }
+                            //if (enemy.projectile.Left + 15 > Player.Left + Player.Width / 2) {
+                            //    enemy.projectile.Left -= enemy.projectileSpeedX;
+                            //    enemy.projectileBirdFacingRight = false;
+                            //}
+                            //if (enemy.projectile.Left + 15 < Player.Left + Player.Width / 2) {
+                            //    enemy.projectile.Left += enemy.projectileSpeedX;
+                            //    enemy.projectileBirdFacingRight = true;
+                            //}
 
-                            if (enemy.projectile.Top + 15 > Player.Top + Player.Height / 2)
-                                enemy.projectile.Top -= enemy.projectileSpeedY;
-                            if (enemy.projectile.Top + 15 < Player.Top + Player.Height / 2)
-                                enemy.projectile.Top += enemy.projectileSpeedY;
+                            //if (enemy.projectile.Top + 15 > Player.Top + Player.Height / 2)
+                            //    enemy.projectile.Top -= enemy.projectileSpeedY;
+                            //if (enemy.projectile.Top + 15 < Player.Top + Player.Height / 2)
+                            //    enemy.projectile.Top += enemy.projectileSpeedY;
+
+
+                            int projectileSpeed = 9;
+
+                            int projectileX = enemy.projectile.Left + enemy.projectile.Width / 2;
+                            int projectileY = enemy.projectile.Top + enemy.projectile.Height / 2;
+
+                            double uX = Math.Abs(Player.Left + Player.Width / 2 - projectileX);
+                            double uY = Math.Abs(Player.Top + Player.Height / 2 - projectileY);
+
+                            double u = Math.Sqrt(Math.Pow(uX, 2) + Math.Pow(uY, 2));
+
+                            int projectileSpeedX = Convert.ToInt32(uX / u * projectileSpeed);
+                            int projectileSpeedY = Convert.ToInt32(uY / u * projectileSpeed);
+
+                            if (projectileX < Player.Left + Player.Width / 2)
+                                enemy.projectile.Left += projectileSpeedX;
+                            else
+                                enemy.projectile.Left -= projectileSpeedX;
+
+                            if (projectileY < Player.Top + Player.Height / 2)
+                                enemy.projectile.Top += projectileSpeedY;
+                            else
+                                enemy.projectile.Top -= projectileSpeedY;
+
                         } else {
                             DestroyAll(enemy.projectile, GameScene);
                             enemy.projectileStop = true;
