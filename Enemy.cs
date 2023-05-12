@@ -146,8 +146,16 @@ internal class Enemy {
 
             double u = Math.Sqrt(Math.Pow(uX, 2) + Math.Pow(uY, 2));
 
-            projectileSpeedX = Convert.ToInt32(uX / u * projectileSpeed);
-            projectileSpeedY = Convert.ToInt32(uY / u * projectileSpeed);
+            try
+            {
+                projectileSpeedX = Convert.ToInt32(uX / u * projectileSpeed);
+                projectileSpeedY = Convert.ToInt32(uY / u * projectileSpeed);
+            }
+            catch
+            {
+                projectileSpeedX = 2;
+                projectileSpeedY = 2;
+            }
 
 
             projectileStop = false;

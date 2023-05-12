@@ -1155,8 +1155,19 @@ public partial class MainWindow : Form {
 
                             double u = Math.Sqrt(Math.Pow(uX, 2) + Math.Pow(uY, 2));
 
-                            int projectileSpeedX = Convert.ToInt32(uX / u * projectileSpeed);
-                            int projectileSpeedY = Convert.ToInt32(uY / u * projectileSpeed);
+                            int projectileSpeedX;
+                            int projectileSpeedY;
+
+                            try
+                            {
+                                projectileSpeedX = Convert.ToInt32(uX / u * projectileSpeed);
+                                projectileSpeedY = Convert.ToInt32(uY / u * projectileSpeed);
+                            }
+                            catch
+                            {
+                                projectileSpeedX = 2;
+                                projectileSpeedY = 2;
+                            }
 
                             if (projectileX < Player.Left + Player.Width / 2)
                                 enemy.projectile.Left += projectileSpeedX;
