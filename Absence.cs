@@ -1,7 +1,7 @@
 ﻿using Petr_RP_CestaKMaturite.Properties;
 
 namespace Petr_RP_CestaKMaturite;
-internal class Absence {
+internal class Absence : IDisposable {
 
     public PictureBox pb;
     public bool move = true;
@@ -50,6 +50,14 @@ internal class Absence {
         absenceTimer.Interval = 1;
         absenceTimer.Tick += AbsenceTimer_Tick;
         absenceTimer.Start();
+    }
+
+    public void Dispose() {
+        absenceTimer.Tick -= AbsenceTimer_Tick;
+        absenceTimer.Dispose();
+        pb.Parent?.Controls.Remove(pb);
+        pb.Dispose();
+        pb.Bounds = Rectangle.Empty;
     }
 
     private void AbsenceTimer_Tick(object? sender, EventArgs e) {

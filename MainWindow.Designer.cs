@@ -141,7 +141,6 @@
             GameScene.Controls.Add(lbPozastaveno);
             GameScene.Controls.Add(lbStats);
             GameScene.Controls.Add(Player);
-            GameScene.Dock = DockStyle.Fill;
             GameScene.Enabled = false;
             GameScene.Location = new Point(0, 0);
             GameScene.Name = "GameScene";
@@ -312,7 +311,6 @@
             Pause.Controls.Add(label4);
             Pause.Controls.Add(label3);
             Pause.Controls.Add(lbNazev);
-            Pause.Dock = DockStyle.Fill;
             Pause.Enabled = false;
             Pause.Location = new Point(0, 0);
             Pause.Name = "Pause";
@@ -645,7 +643,6 @@
             Menu.Controls.Add(btOptions);
             Menu.Controls.Add(label1);
             Menu.Controls.Add(btPlay);
-            Menu.Dock = DockStyle.Fill;
             Menu.Location = new Point(0, 0);
             Menu.Name = "Menu";
             Menu.Size = new Size(1520, 825);
@@ -1031,9 +1028,9 @@
             AutoScaleMode = AutoScaleMode.Inherit;
             ClientSize = new Size(1520, 825);
             Controls.Add(lbGameOver);
+            Controls.Add(GameScene);
             Controls.Add(Menu);
             Controls.Add(Pause);
-            Controls.Add(GameScene);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");

@@ -1,9 +1,13 @@
-﻿using Petr_RP_CestaKMaturite.Properties;
-using System.Drawing;
+﻿using NAudio.Wave;
+using Petr_RP_CestaKMaturite.Properties;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Petr_RP_CestaKMaturite;
 
-internal class Enemy {
+internal class Enemy : IDisposable {
+
+    public bool disposed;
 
     public bool dead;
     public int health;
@@ -47,6 +51,26 @@ internal class Enemy {
     private System.Windows.Forms.Timer shootAnim;
     private int shootIndex; // Index pro timer
     public int shootAnimIndex = 1; // 0 - Idle , 1 - Charge, 2- Throw
+
+
+    //Sysalova
+    public static Stopwatch stopwatch;
+    public static WaveOut basnicka;
+    public static bool basnickaHit;
+    public static WaveFileReader reader;
+
+    static Enemy () {
+
+        // Příprava pro Sysalovou
+        ComponentResourceManager rm = new(typeof(Resources));
+        Stream stream = (Stream)rm.GetObject("Sysalova_Basnicka");
+        reader = new WaveFileReader(stream);
+        basnicka = new();
+        basnicka.Init(reader);
+        basnicka.Play();
+        basnicka.Pause();
+        stopwatch = new();
+    }
 
     public Enemy(int positionX, int positionY, int width, int height, Image image,
         int _health, bool _moving, int _xLeft, int _xRight, int _movementSpeed,
@@ -145,7 +169,6 @@ internal class Enemy {
                 projectileSpeedY = 1;
             }
 
-
             projectileStop = false;
 
             projectileGoDown = projectileY < player.Y;
@@ -185,21 +208,8 @@ internal class Enemy {
 
     public void CheckHealth(Panel panel) {
         if (health <= 0) {
-            if (projectile != null) {
-                projectile.Bounds = Rectangle.Empty;
-                panel.Controls.Remove(projectile);
-                projectile.Dispose();
-            }
-
-            moving = false;
-            projectileStop = true;
-            dead = true;
-
-            pb.Bounds = Rectangle.Empty;
-            panel.Controls.Remove(pb);
-            pb.Dispose();
+            Dispose();
         } else {
-            
             // Obrazek hitu
             hitImage = true;
 
@@ -219,6 +229,41 @@ internal class Enemy {
     private void HitTimer_Tick(object? sender, EventArgs e) {
         hitImage = false;
         hitTimer.Stop();
+        hitTimer.Tick -= HitTimer_Tick;
         hitTimer.Dispose();
+    }
+
+    public void Dispose() {
+
+        if (disposed) return;
+
+        if (type == enemyType.Sysalova) {
+            basnicka.Pause();
+            stopwatch.Reset();
+            basnickaHit = false;
+        }
+
+        if (hitTimer != null) {
+            hitTimer.Tick -= HitTimer_Tick;
+            hitTimer.Dispose();
+        }
+        if (shootAnim != null) {
+            shootAnim.Tick -= ShootAnim_Tick;
+            shootAnim.Dispose();
+        }
+        if (projectile != null) {
+            projectile.Parent?.Controls.Remove(projectile);
+            projectile.Dispose();
+            projectile.Bounds = Rectangle.Empty;
+        }
+        
+        pb.Parent?.Controls.Remove(pb);
+        pb.Dispose();
+        pb.Bounds = Rectangle.Empty;
+
+        dead = true;
+        moving = false;
+        projectileStop = true;
+        disposed = true;
     }
 }

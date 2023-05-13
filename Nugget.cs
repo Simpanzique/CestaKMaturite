@@ -1,5 +1,5 @@
 ﻿namespace Petr_RP_CestaKMaturite;
-internal class Nugget {
+internal class Nugget : IDisposable{
 
     public PictureBox pb;
     public int healthAdd;
@@ -14,5 +14,11 @@ internal class Nugget {
             Image = nugeta,
         };
         panel.Controls.Add(pb);
+    }
+
+    public void Dispose() {
+        pb.Parent?.Controls.Remove(pb);
+        pb.Dispose();
+        pb.Bounds = Rectangle.Empty;
     }
 }

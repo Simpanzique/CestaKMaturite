@@ -1,6 +1,6 @@
 ﻿namespace Petr_RP_CestaKMaturite;
 
-internal class Terrain {
+internal class Terrain : IDisposable {
 
     public PictureBox pb;
     public bool spawn = true;
@@ -17,5 +17,11 @@ internal class Terrain {
         };
         if (!Tag.Contains("Spring"))
             scene.Controls.Add(pb);
+    }
+
+    public void Dispose() {
+        pb.Parent?.Controls.Remove(pb);
+        pb.Dispose();
+        pb.Bounds = Rectangle.Empty;
     }
 }
