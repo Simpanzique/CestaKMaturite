@@ -3,6 +3,7 @@ using Petr_RP_CestaKMaturite.Properties;
 using SharpDX.DirectInput;
 using XInputDotNetPure;
 using ButtonState = XInputDotNetPure.ButtonState;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Petr_RP_CestaKMaturite;
 public partial class MainWindow : Form {
@@ -10,6 +11,24 @@ public partial class MainWindow : Form {
         InitializeComponent();
 
         Maximize();
+
+        // Loading Screen
+        loadingScreen = new PictureBox() {
+            Left = 0,
+            Top = 0,
+            Width = Screen.PrimaryScreen.Bounds.Width,
+            Height = Screen.PrimaryScreen.Bounds.Height,
+            Image = null,
+            BackColor = Color.Purple
+        };
+        this.Controls.Add(loadingScreen);
+        loadingScreen.BringToFront();
+
+        loadingScreenTimer = new Timer();
+        loadingScreenTimer.Interval = 2000;
+        loadingScreenTimer.Tick += LoadingScreenTimer_Tick;
+        loadingScreenTimer.Start();
+        
     }
 
     #region Zvuky
@@ -45,7 +64,7 @@ public partial class MainWindow : Form {
     bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain, soundFixQ; //utok
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
     int levelCount = 1, playerHealth, dmgIndex, enMiddle, currentLevel, animationTick = 0;
-    bool canGetHit = true, disableAllInputs = false, unHitable = false, knockback, cheatHealth, nuggetSpawn = false, soundDeathOnce, won, maximized; string difficulty; //managment
+    bool canGetHit = true, disableAllInputs = false, unHitable = false, knockback, cheatHealth, nuggetSpawn = false, soundDeathOnce, won, maximized, reseting; string difficulty; //managment
     bool lemkaCooldown, lemkaRight; int lemkaIndex; //enemy
     int OberhofnerovaHP = 6, LemkaHP = 12, HacekHP = 10, SysalovaHP = 12, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft, bookLeftDestroyed, bookRightDestroyed, starkSmackFix; //bossfight
@@ -111,6 +130,9 @@ public partial class MainWindow : Form {
     Enemy tutorialLemka;
     Enemy tutorialSysalova;
     Enemy tutorialhidden;
+
+    PictureBox loadingScreen;
+    Timer loadingScreenTimer;
 
     private void UpdateMethod_Tick(object sender, EventArgs e) {
         //reset promìnných
@@ -317,9 +339,9 @@ public partial class MainWindow : Form {
 
 
         //spodek sceny
-        if (Player.Bottom >= GameScene.Height) 
+        if (Player.Bottom >= GameScene.Height)
             jumpSpeed = 0;
-        
+
 
         //nezaboreni do zeme
         if (GameScene.Height - Player.Bottom < 0)
@@ -770,7 +792,7 @@ public partial class MainWindow : Form {
                 #region BossFight
                 //BOSS FIGHT
 
-                if (stark != null) {
+                if (stark != null && bossPhase != 0) {
                     //stark movement phase 1
                     if (enemy == stark && bossPhase == 1 && !starkIdle) {
                         stark.moveSwitch = false;
@@ -1240,7 +1262,7 @@ public partial class MainWindow : Form {
         if (Enemy.stopwatch.IsRunning && !Enemy.basnickaHit && (Enemy.basnicka.PlaybackState == PlaybackState.Stopped || Enemy.basnicka.PlaybackState == PlaybackState.Paused))
             Enemy.basnicka.Play();
 
-        lbStats.Text = "stopwatch:" + Enemy.stopwatch.IsRunning + "\nbasnickaHit"+ Enemy.basnickaHit + "\nPlaybackState: "+ Enemy.basnicka.PlaybackState;
+        lbStats.Text = "stopwatch:" + Enemy.stopwatch.IsRunning + "\nbasnickaHit" + Enemy.basnickaHit + "\nPlaybackState: " + Enemy.basnicka.PlaybackState;
 
 
         // Odhozeni od nepratel
@@ -1263,9 +1285,12 @@ public partial class MainWindow : Form {
 
             UpdateMethod.Interval = 35;
             GameScene.Enabled = false;
-            lbGameOver.Top = 220;
+            lbGameOver.Left = this.Width / 2 - lbGameOver.Width / 2;
+            lbGameOver.Top = this.Height / 2 - lbGameOver.Height / 2 - 100;
             disableAllInputs = true;
         }
+
+        Player.BringToFront();
 
         //Animace
         //if (facingRight)
@@ -1625,6 +1650,9 @@ public partial class MainWindow : Form {
         }
     }
     private void SpawnEnemyBoss() {
+
+        if (reseting) return;
+
         if (Player.Left > GameScene.Width / 2)
             playerSideLeft = false;
         else
@@ -2355,8 +2383,11 @@ public partial class MainWindow : Form {
                 MessageBox.Show("Nekoneèno životù aktivováno!\nAchievementy deaktivovány.\nPro ukonèení restartujte aplikaci.", "Cheat Mode", MessageBoxButtons.OK);
                 cheatHealth = true;
             }
-        } else if (e.KeyCode == Keys.R)
+        } else if (e.KeyCode == Keys.R) {
+            reseting = true;
             FullReset();
+            ResetTimer.Start();
+        }
     }
 
     private void MainWindow_KeyUp(object sender, KeyEventArgs e) {
@@ -2518,5 +2549,17 @@ public partial class MainWindow : Form {
 
     private void btFindController_Click(object sender, EventArgs e) {
         CheckPS();
+    }
+
+    private void ResetTimer_Tick(object sender, EventArgs e) {
+        reseting = false;
+        ResetTimer.Stop();
+    }
+    private void LoadingScreenTimer_Tick(object? sender, EventArgs e) {
+        loadingScreen.Parent?.Controls.Remove(loadingScreen);
+        loadingScreen.Dispose();
+        loadingScreenTimer.Stop();
+        loadingScreenTimer.Tick -= LoadingScreenTimer_Tick;
+        loadingScreenTimer.Dispose();
     }
 }

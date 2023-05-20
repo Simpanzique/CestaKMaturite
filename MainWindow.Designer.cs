@@ -106,6 +106,7 @@
             JumpCooldown = new System.Windows.Forms.Timer(components);
             InstrukceTimer = new System.Windows.Forms.Timer(components);
             Controller = new System.Windows.Forms.Timer(components);
+            ResetTimer = new System.Windows.Forms.Timer(components);
             GameScene.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)StarkHealth).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StarkHealthBackground).BeginInit();
@@ -955,7 +956,7 @@
             lbGameOver.BackColor = Color.Black;
             lbGameOver.Font = new Font("Segoe UI", 30F, FontStyle.Bold, GraphicsUnit.Point);
             lbGameOver.ForeColor = Color.White;
-            lbGameOver.Location = new Point(517, -300);
+            lbGameOver.Location = new Point(517, -500);
             lbGameOver.Name = "lbGameOver";
             lbGameOver.Size = new Size(503, 216);
             lbGameOver.TabIndex = 16;
@@ -1022,6 +1023,11 @@
             Controller.Enabled = true;
             Controller.Interval = 1;
             Controller.Tick += Controller_Tick;
+            // 
+            // ResetTimer
+            // 
+            ResetTimer.Interval = 1000;
+            ResetTimer.Tick += ResetTimer_Tick;
             // 
             // MainWindow
             // 
@@ -1150,5 +1156,6 @@
         private Label label32;
         private System.Windows.Forms.Timer Controller;
         private Button btFindController;
+        private System.Windows.Forms.Timer ResetTimer;
     }
 }
