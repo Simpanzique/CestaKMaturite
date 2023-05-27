@@ -35,8 +35,6 @@ internal class Enemy : IDisposable {
     public int projectileCooldown;
     public int projectileSpeedX;
     public int projectileSpeedY;
-    public bool projectileGoDown;
-    public bool projectileGoRight;
     public bool projectileParry;
     public bool projectileLeft;
     public bool projectileRight;
@@ -153,8 +151,8 @@ internal class Enemy : IDisposable {
             int projectileX = projectile.Left + projectile.Width / 2;
             int projectileY = projectile.Top + projectile.Height / 2;
 
-            double uX = Math.Abs(player.X - projectileX);
-            double uY = Math.Abs(player.Y - projectileY);
+            double uX = player.X - projectileX;
+            double uY = player.Y - projectileY;
 
             double u = Math.Sqrt(Math.Pow(uX, 2) + Math.Pow(uY, 2));
 
@@ -170,9 +168,6 @@ internal class Enemy : IDisposable {
             }
 
             projectileStop = false;
-
-            projectileGoDown = projectileY < player.Y;
-            projectileGoRight = projectileX < player.X;
         }
         if (type == enemyType.Hacek) {
             projectile.Left = pb.Left + 40;
@@ -211,18 +206,27 @@ internal class Enemy : IDisposable {
             Dispose();
         } else {
             // Obrazek hitu
-            hitImage = true;
+            if (type == enemyType.Sysalova) {
+                hitImage = true;
 
-            if (hitTimer != null) {
-                hitTimer.Stop();
-                hitTimer.Dispose();
+                if (facingRight)
+                    pb.Image = Resources.Sysalova_dying_right;
+                else
+                    pb.Image = Resources.Sysalova_dying_left;
+
+
+                if (hitTimer != null) {
+                    hitTimer.Stop();
+                    hitTimer.Tick -= HitTimer_Tick;
+                    hitTimer.Dispose();
+                }
+
+                // Timer pro obnoveni normalnich obrazku
+                hitTimer = new();
+                hitTimer.Interval = 1000;
+                hitTimer.Tick += HitTimer_Tick;
+                hitTimer.Start();
             }
-
-            // Timer pro obnoveni normalnich obrazku
-            hitTimer = new();
-            hitTimer.Interval = 1000;
-            hitTimer.Tick += HitTimer_Tick;
-            hitTimer.Start();
         }
     }
 
@@ -256,7 +260,7 @@ internal class Enemy : IDisposable {
             projectile.Dispose();
             projectile.Bounds = Rectangle.Empty;
         }
-        
+
         pb.Parent?.Controls.Remove(pb);
         pb.Dispose();
         pb.Bounds = Rectangle.Empty;

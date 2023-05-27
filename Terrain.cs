@@ -3,19 +3,19 @@
 internal class Terrain : IDisposable {
 
     public PictureBox pb;
-    public bool spawn = true;
+    public Terrain(int positionX, int positionY, int width, int height, string tag, Bitmap image, Panel scene) {
 
-    public Terrain(int positionX, int positionY, int width, int height, string Tag, Bitmap image, Panel scene) {
-        pb = new PictureBox {
+        pb = new PictureBox() {
             Left = positionX,
             Top = positionY,
             Width = width,
             Height = height,
             Image = image,
             SizeMode = PictureBoxSizeMode.StretchImage,
-            Tag = Tag,
+            Tag = tag
         };
-        if (!Tag.Contains("Spring"))
+
+        if (!tag.Contains("Spring"))
             scene.Controls.Add(pb);
     }
 

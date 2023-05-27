@@ -280,10 +280,11 @@
             // Player
             // 
             Player.Anchor = AnchorStyles.None;
-            Player.BackColor = Color.DarkOrange;
+            Player.BackColor = Color.Transparent;
             Player.Location = new Point(731, 377);
             Player.Name = "Player";
             Player.Size = new Size(75, 115);
+            Player.SizeMode = PictureBoxSizeMode.StretchImage;
             Player.TabIndex = 1;
             Player.TabStop = false;
             Player.Tag = "Player";
@@ -656,7 +657,7 @@
             label32.Name = "label32";
             label32.Size = new Size(37, 15);
             label32.TabIndex = 11;
-            label32.Text = "v0.6.0";
+            label32.Text = "v1.0.0";
             // 
             // btTutorial
             // 
@@ -673,20 +674,24 @@
             // 
             // pbHardestDifficulty
             // 
-            pbHardestDifficulty.BackColor = Color.Maroon;
+            pbHardestDifficulty.BackColor = Color.Transparent;
+            pbHardestDifficulty.Image = Properties.Resources.ultimatni_hardcore;
             pbHardestDifficulty.Location = new Point(83, 15);
             pbHardestDifficulty.Name = "pbHardestDifficulty";
             pbHardestDifficulty.Size = new Size(50, 50);
+            pbHardestDifficulty.SizeMode = PictureBoxSizeMode.StretchImage;
             pbHardestDifficulty.TabIndex = 9;
             pbHardestDifficulty.TabStop = false;
             pbHardestDifficulty.Visible = false;
             // 
             // pbCompletedGame
             // 
-            pbCompletedGame.BackColor = Color.GreenYellow;
+            pbCompletedGame.BackColor = Color.Transparent;
+            pbCompletedGame.Image = Properties.Resources.odznak_normal;
             pbCompletedGame.Location = new Point(15, 15);
             pbCompletedGame.Name = "pbCompletedGame";
             pbCompletedGame.Size = new Size(50, 50);
+            pbCompletedGame.SizeMode = PictureBoxSizeMode.StretchImage;
             pbCompletedGame.TabIndex = 8;
             pbCompletedGame.TabStop = false;
             pbCompletedGame.Visible = false;
@@ -1034,8 +1039,8 @@
             AutoScaleMode = AutoScaleMode.Inherit;
             ClientSize = new Size(1520, 825);
             Controls.Add(lbGameOver);
-            Controls.Add(GameScene);
             Controls.Add(Menu);
+            Controls.Add(GameScene);
             Controls.Add(Pause);
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;

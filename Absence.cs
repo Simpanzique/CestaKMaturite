@@ -55,6 +55,7 @@ internal class Absence : IDisposable {
     public void Dispose() {
         absenceTimer.Tick -= AbsenceTimer_Tick;
         absenceTimer.Dispose();
+
         pb.Parent?.Controls.Remove(pb);
         pb.Dispose();
         pb.Bounds = Rectangle.Empty;
