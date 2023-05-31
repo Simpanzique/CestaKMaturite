@@ -50,7 +50,6 @@ internal class Enemy : IDisposable {
     private int shootIndex; // Index pro timer
     public int shootAnimIndex = 1; // 0 - Idle , 1 - Charge, 2- Throw
 
-
     //Sysalova
     public static Stopwatch stopwatch;
     public static WaveOut basnicka;
@@ -88,14 +87,9 @@ internal class Enemy : IDisposable {
             Width = width,
             Height = height,
             Tag = "Enemy",
-            SizeMode = PictureBoxSizeMode.StretchImage
+            SizeMode = PictureBoxSizeMode.StretchImage,
+            Image = image
         };
-
-        if (image == null) {
-            pb.BackColor = Color.Red;
-        } else {
-            pb.Image = image;
-        }
 
         scene.Controls.Add(pb);
 
@@ -200,8 +194,9 @@ internal class Enemy : IDisposable {
         }
         shootIndex++;
     }
+    public void TakeDamage(int damage,Panel panel) {
+        health -= damage;
 
-    public void CheckHealth(Panel panel) {
         if (health <= 0) {
             Dispose();
         } else {
