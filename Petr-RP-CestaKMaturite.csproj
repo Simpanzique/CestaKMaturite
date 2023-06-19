@@ -3,10 +3,11 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <RootNamespace>Petr_RP_CestaKMaturite</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>Milanka.ico</ApplicationIcon>
+    <RootNamespace>$(MSBuildProjectName.Replace("-", "_"))</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +34,10 @@
     <None Remove="Resources\Sysalova.wav" />
     <None Remove="Resources\Sysalova_Basnicka.wav" />
     <None Remove="Resources\win.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Milanka.ico" />
   </ItemGroup>
 
   <ItemGroup>

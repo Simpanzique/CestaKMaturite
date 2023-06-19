@@ -66,6 +66,7 @@
             label3 = new Label();
             lbNazev = new Label();
             Menu = new Panel();
+            pbLanguage = new PictureBox();
             label32 = new Label();
             btTutorial = new Button();
             pbHardestDifficulty = new PictureBox();
@@ -120,6 +121,7 @@
             ((System.ComponentModel.ISupportInitialize)Sound).BeginInit();
             panelPauza.SuspendLayout();
             Menu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pbLanguage).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbHardestDifficulty).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pbCompletedGame).BeginInit();
             difficultySelect.SuspendLayout();
@@ -633,6 +635,7 @@
             // 
             Menu.BackColor = SystemColors.ActiveCaption;
             Menu.BackgroundImageLayout = ImageLayout.Stretch;
+            Menu.Controls.Add(pbLanguage);
             Menu.Controls.Add(label32);
             Menu.Controls.Add(btTutorial);
             Menu.Controls.Add(pbHardestDifficulty);
@@ -649,6 +652,17 @@
             Menu.Name = "Menu";
             Menu.Size = new Size(1520, 825);
             Menu.TabIndex = 14;
+            // 
+            // pbLanguage
+            // 
+            pbLanguage.Image = Properties.Resources.English;
+            pbLanguage.Location = new Point(15, 766);
+            pbLanguage.Name = "pbLanguage";
+            pbLanguage.Size = new Size(71, 50);
+            pbLanguage.SizeMode = PictureBoxSizeMode.StretchImage;
+            pbLanguage.TabIndex = 12;
+            pbLanguage.TabStop = false;
+            pbLanguage.Click += pbLanguage_Click;
             // 
             // label32
             // 
@@ -668,7 +682,7 @@
             btTutorial.Size = new Size(248, 65);
             btTutorial.TabIndex = 2;
             btTutorial.TabStop = false;
-            btTutorial.Text = "Tutoriál";
+            btTutorial.Text = "Tutorial";
             btTutorial.UseVisualStyleBackColor = false;
             btTutorial.Click += btTutorial_Click;
             // 
@@ -702,7 +716,7 @@
             label30.BackColor = Color.Transparent;
             label30.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
             label30.ForeColor = Color.White;
-            label30.Location = new Point(44, 788);
+            label30.Location = new Point(97, 788);
             label30.Name = "label30";
             label30.Size = new Size(323, 28);
             label30.TabIndex = 7;
@@ -898,11 +912,11 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI", 15F, FontStyle.Bold, GraphicsUnit.Point);
             label2.ForeColor = Color.White;
-            label2.Location = new Point(1281, 788);
+            label2.Location = new Point(1091, 788);
             label2.Name = "label2";
-            label2.Size = new Size(172, 28);
+            label2.Size = new Size(417, 28);
             label2.TabIndex = 4;
-            label2.Text = "© RP - Petr 2023";
+            label2.Text = "© Programator - Štěpán Petr (@petstepan)";
             // 
             // btExit
             // 
@@ -1070,6 +1084,7 @@
             panelPauza.PerformLayout();
             Menu.ResumeLayout(false);
             Menu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pbLanguage).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbHardestDifficulty).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbCompletedGame).EndInit();
             difficultySelect.ResumeLayout(false);
@@ -1162,5 +1177,6 @@
         private System.Windows.Forms.Timer Controller;
         private Button btFindController;
         private System.Windows.Forms.Timer ResetTimer;
+        private PictureBox pbLanguage;
     }
 }

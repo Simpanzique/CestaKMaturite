@@ -23,7 +23,7 @@ public partial class MainWindow : Form {
         };
         this.Controls.Add(loadingScreen);
         loadingScreen.BringToFront();
-        
+
         loadingScreenTimer = new Timer();
         loadingScreenTimer.Interval = 3500;
         loadingScreenTimer.Tick += LoadingScreenTimer_Tick;
@@ -63,12 +63,12 @@ public partial class MainWindow : Form {
     bool attackQphase1, attackQphase2, attackQcooldown, QOnLeft, attackLMBcooldown = false, alreadyHit, hitQ, underTerrain, soundFixQ; //utok
     int abilityQIndex, rulerLength = 100, abilityLMBIndex; //utok
     int levelCount = 1, playerHealth, dmgIndex, enMiddle, currentLevel, animationTick = 0;
-    bool canGetHit = true, disableAllInputs = false, unHitable = false, knockback, cheatHealth, nuggetSpawn = false, soundDeathOnce, won, maximized, reseting; string difficulty; //managment
+    bool canGetHit = true, disableAllInputs = false, unHitable = false, knockback, cheatHealth, nuggetSpawn = false, soundDeathOnce, won, maximized, reseting, soundShouldBeBanned; string difficulty; //managment
     bool lemkaCooldown, lemkaRight; int lemkaIndex; //enemy
     int OberhofnerovaHP = 6, LemkaHP = 12, HacekHP = 10, SysalovaHP = 12, StarkHP = 60, OberhofnerovaMovementSpeed = 10, LemkaMovementSpeed = 6, StarkMovementSpeed = 3; //enemy
     int bossPhase = 0, baseballSlam = 0, starkIndex; bool starkQ = false, baseballGetDMG = false, baseballCooldown = false, changedPhase = false, starkIdle, playerSideLeft, bookLeftDestroyed, bookRightDestroyed, starkSmackFix; //bossfight
     bool tOberhofnerova, tHacek, tJumpCooldown, tDMGCooldown, tNuggetDisappear, tStark, basnickaPlaying; //fixy timerù
-    bool continueGame, completedGame, hardestDifficulty, versionForRelease = true;
+    bool continueGame, completedGame, hardestDifficulty, versionForRelease = true, enLanguage;
     int savedHealth, savedLevel;
 
     bool tutorial, writeInstructions, typing, tutBanJump, tutBanDash, tutBanQ, tutBanLMB, tutBanMovement;
@@ -218,7 +218,7 @@ public partial class MainWindow : Form {
         HitboxRight = new Rectangle(Player.Right, Player.Top, 3, Player.Height - 10);
         HitboxUp = new Rectangle(Player.Left + 10, Player.Top - 4, Player.Width - 10, 2);
         HitboxDown = new Rectangle(Player.Left + 2, Player.Bottom - 2, Player.Width - 4, 2);
-        
+
         //Hitboxy, které jsou dál kvùli dashi
         HitboxDashLeft = new Rectangle(Player.Left - 15, Player.Top, Player.Width, Player.Height - 2);
         HitboxDashRight = new Rectangle(Player.Left + 15, Player.Top, Player.Width, Player.Height - 2);
@@ -1165,18 +1165,18 @@ public partial class MainWindow : Form {
                         if (enemy.projectileStop)
                             Hacek.Start();
 
-                    //Ptáèek
-                    if (enemy.projectileBirdFacingRight) {
-                        if (animationTick % 10 == 0)
-                            enemy.projectile.Image = Resources.twitter_right;
-                        if (animationTick % 20 == 0)
-                            enemy.projectile.Image = Resources.twitter_right_move;
-                    } else {
-                        if (animationTick % 10 == 0)
-                            enemy.projectile.Image = Resources.twitter_left;
-                        if (animationTick % 20 == 0)
-                            enemy.projectile.Image = Resources.twitter_left_move;
-                    }
+                        //Ptáèek
+                        if (enemy.projectileBirdFacingRight) {
+                            if (animationTick % 10 == 0)
+                                enemy.projectile.Image = Resources.twitter_right;
+                            if (animationTick % 20 == 0)
+                                enemy.projectile.Image = Resources.twitter_right_move;
+                        } else {
+                            if (animationTick % 10 == 0)
+                                enemy.projectile.Image = Resources.twitter_left;
+                            if (animationTick % 20 == 0)
+                                enemy.projectile.Image = Resources.twitter_left_move;
+                        }
 
                     }
                     if (enemy.type == Enemy.enemyType.Stark) {
@@ -1326,7 +1326,7 @@ public partial class MainWindow : Form {
         Player.BringToFront();
 
         if (!specialImage && !winAnimation) {
-            if ((A || D) && jumpSpeed < 2 && jumpSpeed > -2) {
+            if ((A || D || cLeft || cRight) && jumpSpeed < 2 && jumpSpeed > -2) {
                 if (facingRight) {
                     if (animationTick % 10 == 0)
                         Player.Image = Resources.Player_Walk_Right1;
@@ -1991,29 +1991,29 @@ public partial class MainWindow : Form {
         }
     }
 
-void SaveFileRead() {
-    string filePath = Path.Combine(folderPath, fileName);
+    void SaveFileRead() {
+        string filePath = Path.Combine(folderPath, fileName);
 
-    if (!File.Exists(filePath)) {
-        continueGame = false;
-        savedHealth = 0;
-        savedLevel = 0;
-        completedGame = false;
-        hardestDifficulty = false;
-        using (StreamWriter writer = File.CreateText(filePath)) {
-            writer.Write("false\n0\n0\nEasy\nfalse\nfalse");
-        }
-    } else {
-        using (StreamReader reader = new StreamReader(filePath)) {
-            continueGame = Convert.ToBoolean(reader.ReadLine());
-            savedHealth = Convert.ToInt32(reader.ReadLine());
-            savedLevel = Convert.ToInt32(reader.ReadLine());
-            difficulty = reader.ReadLine();
-            completedGame = Convert.ToBoolean(reader.ReadLine());
-            hardestDifficulty = Convert.ToBoolean(reader.ReadLine());
+        if (!File.Exists(filePath)) {
+            continueGame = false;
+            savedHealth = 0;
+            savedLevel = 0;
+            completedGame = false;
+            hardestDifficulty = false;
+            using (StreamWriter writer = File.CreateText(filePath)) {
+                writer.Write("false\n0\n0\nEasy\nfalse\nfalse");
+            }
+        } else {
+            using (StreamReader reader = new StreamReader(filePath)) {
+                continueGame = Convert.ToBoolean(reader.ReadLine());
+                savedHealth = Convert.ToInt32(reader.ReadLine());
+                savedLevel = Convert.ToInt32(reader.ReadLine());
+                difficulty = reader.ReadLine();
+                completedGame = Convert.ToBoolean(reader.ReadLine());
+                hardestDifficulty = Convert.ToBoolean(reader.ReadLine());
+            }
         }
     }
-}
 
     void SaveFileWrite() {
         // velmi jednoduchý saveFile, každá line jeden udaj
@@ -2054,12 +2054,15 @@ void SaveFileRead() {
             GameScene.Enabled = false;
             GameScene.Visible = false;
             panelPauza.Visible = true;
-            lbNazev.Text = "Pauza";
+            if (enLanguage)
+                lbNazev.Text = "Paused";
+            else
+                lbNazev.Text = "Pauza";
             lbNazev.Left = 650;
             UpdateMethod.Stop();
             TimerHandler("Pause");
             Focus();
-        } else if (lbNazev.Text == "Pauza") {
+        } else if (lbNazev.Text == "Pauza" || lbNazev.Text == "Paused") {
             Pause.Visible = false;
             Pause.Enabled = false;
             GameScene.Enabled = true;
@@ -2168,7 +2171,7 @@ void SaveFileRead() {
         enemy1.pb.BackColor = Color.Transparent;
         Oberhofnerova.Interval = enemy1.projectileCooldown;
         Oberhofnerova.Start();
-        
+
         lbLevel.Text = "1 / 5";
         currentLevel = 1;
         SaveFileWrite();
@@ -2498,7 +2501,10 @@ void SaveFileRead() {
         Pause.Enabled = true;
         Pause.Visible = true;
         panelPauza.Visible = false;
-        lbNazev.Text = "Ovládání";
+        if (enLanguage)
+            lbNazev.Text = "Controls";
+        else
+            lbNazev.Text = "Ovládání";
         lbNazev.Left = 600;
         Focus();
         soundSelect.PlaySound();
@@ -2578,11 +2584,13 @@ void SaveFileRead() {
 
     private void Sound_Click(object sender, EventArgs e) {
         SoundManager.bannedSound = !SoundManager.bannedSound;
-        if (SoundManager.bannedSound)
+        if (SoundManager.bannedSound) {
             Sound.Image = Resources.sound_muted;
-        else {
+            soundShouldBeBanned = true;
+        } else {
             Sound.Image = Resources.sound;
             soundSelect.PlaySound();
+            soundShouldBeBanned = false;
         }
     }
     private void btExit_Click(object sender, EventArgs e) {
@@ -2650,11 +2658,16 @@ void SaveFileRead() {
             this.Controls.Add(winScreen);
             winScreen.BringToFront();
 
+            SoundManager.bannedSound = true;
+
             winScreenTimer.Interval = 10000;
             winIndex++;
         } else {
             winScreen.Parent?.Controls.Remove(winScreen);
             winScreen.Dispose();
+
+            if (!soundShouldBeBanned)
+                SoundManager.bannedSound = false;
 
             disableAllInputs = false;
             winAnimation = false;
@@ -2669,6 +2682,96 @@ void SaveFileRead() {
             winScreenTimer.Stop();
             winScreenTimer.Tick -= WinScreenTimer_Tick;
             winScreenTimer.Dispose();
+        }
+    }
+
+    private void pbLanguage_Click(object sender, EventArgs e) {
+        enLanguage = !enLanguage;
+
+        if (enLanguage) {
+            pbLanguage.Image = Resources.Czech;
+
+            poleInstrukci = new string[] { "Welcome to this school!" , "Move using A and D", "Great! Now try to jump using Space.", "Be carefull, a lot of things wants to stop you from succeding at exams!", 
+                "And there is a lot of those.", "Try to attck using LMB", "When you point over Player, you attack up.", "For other directions, move mouse down and into side.", 
+                "Lets introduce you to teachers now.", "This is Mr. Lemka", "He will follow you, once you are over his height.", "TIP: Watch out for his mouse!", "You are lucky you can't lose health for now.", "If you would like to get out of nasty situation, use E",
+                "This is Mrs. Sysalová", "Unfortunatelly, Deutch is not your favorite language.", "So try to deal with her as fast as possible!", "You can try to dive into enemy if you are over them using Q.", "This deals double the damage!", 
+                "You can try that on Mr. Hacek.", "Just be carefull about his guided twitter.", "TIP: You can destroy it with your ruler.", "Last is Mrs. Oberhofnerova.", "She will definitely be your biggest problem.", "TIP: Try not to catch her stuff <3", "That's it, Good luck!"};
+
+            label22.Text = "Choose difficulty";
+            btEasy.Text = "Teacher's pet";
+            btNormal.Text = "Average student";
+            btHard.Text = "Slacker";
+            btInsane.Text = "Truant";
+            lbZaskolak.Text = "Complete game for unlocking this difficulty.";
+            label30.Text = " Arts - Jakub Svoboda (@j4c.k0b)";
+            label21.Text = "Don't you have homework? Does not matter. will you be late\r\nCool. Did you mess something up? It happens.";
+            label24.Text = "Sometimes you mess up, but otherwise you understand most of it\r\nand you don't have major problems with your studies.";
+            label26.Text = "You don't study at all and just somehow hope that you'll pass\r\nto the next year and you will finish your studies.";
+            label28.Text = "You start with conditional exclusion, so wrong\r\nlook and you are out.";
+            label23.Text = "5 health, 1HP recovery after each level, nuggets are allowed";
+            label25.Text = "5 health, nuggets are allowed";
+            label27.Text = "5 health";
+            label29.Text = "1 health";
+            label1.Text = "Graduation Journey";
+            btContinue.Text = "Continue";
+            btPlay.Text = "New Game";
+            btOptions.Text = "Controls";
+            btExit.Text = "Quit Game";
+            lbRozvrh1.Text = "Unexpected change in schedule!";
+            lbRozvrh2.Text = "Unexpected change in schedule!";
+            btResetProgress.Text = "Reset Achievements";
+            btFindController.Text = "Search controller";
+            btMenu.Text = "Back to menu";
+            label17.Text = "Pause/Continue";
+            lbNazev.Text = "Paused";
+            label3.Text = "Movement";
+            label8.Text = "Jump";
+            label11.Text = "Attack";
+            label6.Text = "Space (A)";
+            label9.Text = "LMB (X)";
+            label14.Text = "Dive";
+        } else {
+            pbLanguage.Image = Resources.English;
+
+            poleInstrukci = new string[] { "Vítej na škole SPŠ Ostrov!", "Pohybuj se pomocí kláves A a D", "Skvìle! Zkus si vyskoèit pomocí mezerníku.", "Dobrá práce, ale bacha, mnoha vìcí ti bude bránit v jednoduché maturitì.",
+    "A to už tak jednoduché nebude...", "Zkus si bouchnout pravítkem pomocí levého tlaèítka myši.","Když míøíš kurzorem nad hráèe, boucháš nahoru.", "Pro útok doleva èi doprava, pøesuò kurzor do patøièné strany.",
+    "Nyní ti pøedstavím uèitele. Zaèneme s panem uèitelem Lemkou.", "Jakmile jsi nad jeho úrovní, zaène tì sledovat.", "TIP: Dávej bacha na jeho kulièkovou myš!", "Máš štìstí, že zatím nemùžeš ztrácet životy.", "Kdybys chtìl nìjaký rychlý útìk, zkus zmáèkout E.",
+    "Pokraèujme nyní s paní uèitelkou Sysalovou.", "Bohužel nìmèina není tvùj oblíbený jazyk.", "A proto se jí pokus zastavit co nejdøíve :)", "Když jsi ve vzduchu nad uèitelem, mùžeš na nìj namíøit myší a zmáèknout Q.", "Tento výpad dává dvojnásobné poškození!",
+    "Mùžeš si to vyzkoušet na panu Háèkovi.", "Jenom dávej bacha na navádìný twitter!", "TIP: Pravítkem se twitteru zbavíš", "A jako poslední je tu paní uèitelka Oberhofnerova", "Jako flákaè u ní rozhodnì neprojdeš!", "TIP: Zkus se nenechat trefit <3" , "To bude ode mì všechno, hodnì štìstí!"};
+
+            label22.Text = "Vyber si obtížnost";
+            btEasy.Text = "Uèitelù miláèek";
+            btNormal.Text = "Prùmìrný student";
+            btHard.Text = "Flákaè";
+            btInsane.Text = "Záškolák";
+            lbZaskolak.Text = "Pro zpøístupnìní obtížnosti Záškolák, dokonèi hru.";
+            label30.Text = "Arty - Jakub Svoboda (@j4c.k0b)";
+            label21.Text = "Nemáš domácí úkol? Nevadí. Pøijdeš pozdì?\r\nV pohodì. Nìco si pokazil? Stává se.";
+            label24.Text = "Obèas nìco pokazíš, ale jinak vìtšinu chápeš\r\na nemáš vìtší problémy se studiem.";
+            label26.Text = "Na studium kašleš a prostì nìjak doufáš, že prolezeš\r\ndo dalšího roèníku a dokonèíš studium.";
+            label28.Text = "Zaèínáš s podmínìným vylouèením, tudíž špatnì\r\nse na nìkoho podíváš a takzvanì letíš.";
+            label23.Text = "5 životù, obnova 1HP po každém levelu,nugetky jsou povolené";
+            label25.Text = "5 životù, nugetky jsou povolené";
+            label27.Text = "5 životù";
+            label29.Text = "1 život";
+            label1.Text = "Cesta k Maturitì";
+            btContinue.Text = "Pokraèovat";
+            btPlay.Text = "Nová hra";
+            btOptions.Text = "Ovládání";
+            btExit.Text = "Opustit hru";
+            lbRozvrh1.Text = "Neèekaná zmìna v rozvrhu!";
+            lbRozvrh2.Text = "Neèekaná zmìna v rozvrhu!";
+            btResetProgress.Text = "Reset úspìchù";
+            btFindController.Text = "Vyhledat ovladaèe";
+            btMenu.Text = "Zpátky do menu";
+            label17.Text = "Pauza/Pokraèovat";
+            lbNazev.Text = "Pauza";
+            label3.Text = "Pohyb";
+            label8.Text = "Skok";
+            label11.Text = "Útok";
+            label6.Text = "Mezerník (A)";
+            label9.Text = "LTM (X)";
+            label14.Text = "Výpad";
         }
     }
 }
